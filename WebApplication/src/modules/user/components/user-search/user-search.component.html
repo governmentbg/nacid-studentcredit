@@ -1,0 +1,180 @@
+<div class="search-panel">
+  <form #userSearchForm="ngForm">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-4">
+        <label>{{ 'user.repeatable.firstName' | translate }}</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="firstName"
+                 type="text"
+                 [(ngModel)]="filter.firstName">
+        </div>
+      </div>
+      <div class="form-group col-sm-12 col-md-4">
+        <label>{{ 'user.repeatable.middleName' | translate }}</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="middleName"
+                 type="text"
+                 [(ngModel)]="filter.middleName">
+        </div>
+      </div>
+      <div class="form-group col-sm-12 col-md-4">
+        <label>{{ 'user.repeatable.lastName' | translate }}</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="lastName"
+                 type="text"
+                 [(ngModel)]="filter.lastName">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-4">
+        <label>{{ 'user.repeatable.email' | translate }}</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="email"
+                 type="text"
+                 (keypress)="sharedService.filterMail($event)"
+                 [(ngModel)]="filter.email">
+        </div>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label>{{ 'user.repeatable.role' | translate }}</label>
+        <app-async-select #userRoles="ngModel"
+                          name="userRoles"
+                          restUrl="role"
+                          [(ngModel)]="filter.role"
+                          (ngModelChange)="filter.roleId = $event.id; clearBank($event)"
+                          [enableBorder]="true">
+        </app-async-select>
+      </div>
+      <div class="form-group col-sm-4">
+        <label>{{ 'user.repeatable.status' | translate }}</label>
+        <select class="custom-select custom-select-sm"
+                name="status"
+                [(ngModel)]="filter.status">
+          <option selected
+                  [ngValue]="null">{{ 'user.userStatus.all' | translate }}</option>
+          <option [ngValue]="userStatus.active">
+            {{ 'user.userStatus.active' | translate }}
+          </option>
+          <option [ngValue]="userStatus.deactivated">
+            {{ 'user.userStatus.deactivated' | translate }}
+          </option>
+          <option [ngValue]="userStatus.inactive">
+            {{ 'user.userStatus.inactive' | translate }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-8">
+        <label class="d-inline-flex align-items-center">
+          {{ 'user.bank' | translate }}
+        </label>
+        <app-async-select #bank="ngModel"
+                          name="bank"
+                          restUrl="BankNomenclature"
+                          [(ngModel)]="filter.bank"
+                          (ngModelChange)="filter.bankId = $event.id"
+                          [enableBorder]="true"
+                          [disabled]="filter.role?.alias === userRoleAliases.ADMINISTRATOR">
+        </app-async-select>
+      </div>
+    </div>
+  </form>
+  <div class="row utility-btns">
+    <div class="col-sm-12">
+      <div class="float-md-right">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+                awaitable
+                [disabled]="userSearchForm.invalid">
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-primary ml-3"
+                routerLink="create">
+          <app-icon icon="person-fill"
+                    class="thicker-icon"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.newUser' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table search-table table-bordered mt-5">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 20%;">{{ 'user.tableUsers.names' | translate }}</th>
+      <th scope="col"
+          style="width: 15%">{{ 'user.repeatable.role' | translate }}</th>
+      <th scope="col"
+          style="width: 30%;">{{ 'user.tableUsers.orgranizationName' | translate }}</th>
+      <th scope="col"
+          style="width: 15%;">{{ 'user.tableUsers.contacts' | translate }}</th>
+      <th scope="col"
+          style="width: 7%;">{{ 'user.tableUsers.activeStatus' | translate }}</th>
+      <th scope="col"
+          style="width: 7%;">{{ 'user.repeatable.actions' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="!model.length">
+      <td colspan="6"
+          style="text-align: center">
+        {{ 'user.tableUsers.noResults' | translate }}
+      </td>
+    </tr>
+    <tr *ngFor="let user of model">
+      <td>{{ user.fullName }}</td>
+      <td>{{ user.role }}</td>
+      <td>{{ user.institutionName }}</td>
+      <td>{{ user.phone }}
+        <a href="mailto:{{ user.email }}">
+          {{ user.email }}
+        </a>
+      </td>
+      <td style="text-align: center;">
+        <p *ngIf="user.status == userStatus.deactivated || user.status == userStatus.inactive"
+           style="color: red">
+          {{ userStatusLocalization[user.status]}}
+        </p>
+        <p *ngIf="user.status == userStatus.active">
+          {{ userStatusLocalization[user.status]}}
+        </p>
+      </td>
+      <td class="preview"
+          style="text-align: center;">
+        <a class="btn btn-sm btn-outline-primary"
+           [routerLink]="[user.id]">
+          <app-icon icon="search"
+                    width="14"
+                    height="14"></app-icon>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

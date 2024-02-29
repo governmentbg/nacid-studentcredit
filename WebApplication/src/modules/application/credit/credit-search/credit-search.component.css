@@ -1,0 +1,30 @@
+.notification-box {
+  display: flex;
+  align-items: center;
+}
+
+.notification {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: red;
+  color: white;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  margin-left: 5px;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 1199px) {
+  .title-long {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .title-short {
+    display: none;
+  }
+}

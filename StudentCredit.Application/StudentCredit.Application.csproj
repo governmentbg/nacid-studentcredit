@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Applications\ApplicationsFive\Enum\**" />
+    <EmbeddedResource Remove="Applications\ApplicationsFive\Enum\**" />
+    <None Remove="Applications\ApplicationsFive\Enum\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Enums.NET" Version="4.0.1" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="itext7.pdfhtml" Version="2.1.2" />
+    <PackageReference Include="iTextSharp" Version="5.5.13" />
+    <PackageReference Include="PuppeteerSharp" Version="2.0.0" />
+    <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StudentCredit.Data\StudentCredit.Data.csproj" />
+    <ProjectReference Include="..\StudentCredit.Infrastructure\StudentCredit.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

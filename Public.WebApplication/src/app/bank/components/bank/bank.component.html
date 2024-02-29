@@ -1,0 +1,48 @@
+<ng-container>
+  <div class="custom-card white-box">
+    <div class="row justify-content-between mb-4">
+      <div class="col-sm-4 img-placeholder">
+        <img class="image"
+             [src]="src"
+             alt='image'>
+      </div>
+      <div class="col-sm-8">
+        <div class="custom-card-title">
+          {{ model?.name }}
+        </div>
+        <div class="custom-card-secondary-title">
+          {{ 'bank.bulstat' | translate }}: {{ model?.bulstat }}
+        </div>
+        <div class="custom-card-secondary-title">
+          {{ 'bank.address' | translate }}: {{ model?.address }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-end mb-4">
+      <div class="d-flex col-sm-8 justify-content-between">
+        <div class="doc-btn">
+          <app-icon icon="file-earmark-text"
+                    [width]="24"
+                    [height]="24">
+          </app-icon>
+          <div class="d-block bold">{{ 'bank.contract' | translate }}</div>
+          <div class="d-block doc-desc text-gray">N-23412341</div>
+        </div>
+
+        <div class="doc-btn">
+          <app-icon icon="file-earmark-text"
+                    [width]="24"
+                    [height]="24">
+          </app-icon>
+          <div class="d-block bold">{{ 'bank.contractRequirements' | translate }}</div>
+          <div class="d-block doc-desc text-gray"> {{ 'bank.details' | translate }} </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-sm-12">
+      Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,83 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.actionOnLoan.earlyDemandOfTheLoan' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="earlyDemandOfTheLoan"
+               ngbDatepicker
+               [ngStyle]="{'border': earlyDemandOfTheLoan.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #earlyDemandOfTheLoan="ngModel"
+               #earlyDemandOfTheLoanDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.earlyDemandOfTheLoan"
+               (keypress)="sharedService.filterDate($event)"
+               [required]="model.applicationOneType?.alias == 'earlyDellability' || model.applicationOneType?.alias == 'enforcementAction'"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="earlyDemandOfTheLoanDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.actionOnLoan.forcePaymentDate' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="forcePaymentDate"
+               ngbDatepicker
+               [ngStyle]="{'border': forcePaymentDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #forcePaymentDate="ngModel"
+               #forcePaymentDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.forcePaymentDate"
+               (keypress)="sharedService.filterDate($event)"
+               [required]="model.applicationOneType?.alias == 'earlyDellability' || model.applicationOneType?.alias == 'enforcementAction'"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="forcePaymentDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-12">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.actionOnLoan.forcePaymentInfo' | translate }}
+      </label>
+
+      <textarea #forcePaymentInfo="ngModel"
+                class="form-control form-control-sm"
+                type="text"
+                name="forcePaymentInfo"
+                rows="4"
+                [disabled]="!isEditMode"
+                [(ngModel)]="model.forcePaymentInfo"
+                maxlength="500"
+                [required]="model.applicationOneType?.alias == 'earlyDellability' || model.applicationOneType?.alias == 'enforcementAction'"></textarea>
+    </div>
+  </div>
+</ng-form>

@@ -1,0 +1,248 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label class="d-inline-flex align-items-center">
+        Банка
+      </label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="model.bank"
+                        [disabled]="isBankUser || !isEditMode">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Тип на приложение 5</label>
+
+      <select class="custom-select custom-select-sm form-control"
+              name="applicationFiveTypeEnum"
+              #applicationFiveTypeEnum="ngModel"
+              [(ngModel)]="model.applicationFiveType"
+              (ngModelChange)="clear()"
+              [required]="true"
+              [disabled]="!isEditMode">
+        <option [ngValue]="applicationFiveType.totalDebtExposure">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.totalDebtExposure] }}
+        </option>
+        <option [ngValue]="applicationFiveType.repaidCreditObligationsInTheRelevantYear">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.repaidCreditObligationsInTheRelevantYear] }}
+        </option>
+        <option [ngValue]="applicationFiveType.bankExpensesForTheEnforcementActions">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.bankExpensesForTheEnforcementActions] }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-3">
+      <label class="d-inline-flex align-items-center">
+        Дата на подаване
+      </label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="blankDate"
+               ngbDatepicker
+               [ngStyle]="{'border': blankDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #blankDate="ngModel"
+               #blankDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.blankDate"
+               (keypress)="sharedService.filterDate($event)"
+               validDate
+               required
+               maxlength="20"
+               [disabled]="!isEditMode">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="blankDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Искана сума
+      </label>
+
+      <input #amountRequested="ngModel"
+             type="number"
+             name="amountRequested"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.amountRequested"
+             (ngModelChange)="calculateAmountRequestedAfterCorrection()"
+             [required]="true"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Брой кредити
+      </label>
+
+      <input #creditCount="ngModel"
+             type="number"
+             name="creditCount"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.creditCount"
+             [required]="model.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions"
+             min="0"
+             max="100000"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex">
+        Прикачен файл
+      </label>
+      <app-file-upload #applicationFiveAttachedFile="ngModel"
+                       name="applicationFiveAttachedFile"
+                       [(ngModel)]="model.applicationFiveAttachedFile"
+                       [disabled]="!isEditMode"
+                       [required]="model.applicationFiveType == applicationFiveType.totalDebtExposure || model.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+                       [showFileUrl]="!isEditMode ? true : false"></app-file-upload>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <ng-container *ngIf="model.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions">
+      <div class="form-group col-sm-12 col-md-3">
+        <label>Година</label>
+        <app-async-select #year="ngModel"
+                          name="year"
+                          restUrl="Year/summaryReportYears"
+                          [(ngModel)]="model.year"
+                          [required]="model.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear || model.applicationFiveType == applicationFiveType.totalDebtExposure"
+                          [disabled]="!isEditMode">
+        </app-async-select>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label>Период</label>
+        <select class="custom-select custom-select-sm form-control"
+                [(ngModel)]="model.period"
+                name="periodEnum"
+                #periodEnum="ngModel"
+                [required]="model.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear || model.applicationFiveType == applicationFiveType.totalDebtExposure"
+                [disabled]="!isEditMode">
+          <option [ngValue]="period.first">
+            {{ periodEnumLocalization[period.first] }}
+          </option>
+          <option [ngValue]="period.second">
+            {{ periodEnumLocalization[period.second] }}
+          </option>
+        </select>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="model.applicationFiveType == applicationFiveType.totalDebtExposure">
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Корекция на исканата сума
+        </label>
+
+        <input #amountRequestedCorrection="ngModel"
+               type="number"
+               name="amountRequestedCorrection"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.amountRequestedCorrection"
+               (ngModelChange)="calculateAmountRequestedAfterCorrection()"
+               step=".01"
+               min="0"
+               [disabled]="!isEditMode">
+      </div>
+
+      <div *ngIf="model.amountRequestedCorrection"
+           class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Искана сума след корекция
+        </label>
+
+        <input #amountRequestedAfterCorrection="ngModel"
+               type="number"
+               name="amountRequestedAfterCorrection"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.amountRequestedAfterCorrection"
+               step=".01"
+               min="0"
+               [disabled]="true">
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="model.applicationFiveType == applicationFiveType.bankExpensesForTheEnforcementActions">
+      <div class="form-group col-sm-3">
+        <label class="d-inline-flex align-items-center">
+          От
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="fromDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': fromDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #fromDate="ngModel"
+                 #fromDateDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="model.from"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="!isEditMode">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="fromDateDatepicker.toggle()"
+                    type="button"
+                    [disabled]="!isEditMode">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-3">
+        <label class="d-inline-flex align-items-center">
+          До
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="toDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': toDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #toDate="ngModel"
+                 #toDateDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="model.to"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="!isEditMode">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="toDateDatepicker.toggle()"
+                    type="button"
+                    [disabled]="!isEditMode">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+</ng-form>

@@ -1,0 +1,43 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-8">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.bank.name' | translate }}
+      </label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="model.bank"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.bank.bulstat' | translate }}
+      </label>
+      <input #bulstat="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="bulstat"
+             [(ngModel)]="model.bulstat"
+             required
+             [disabled]="true">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-12">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.bank.bankAccount' | translate }}
+      </label>
+      <input #bankAccount="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="bankAccount"
+             [(ngModel)]="model.bankAccount"
+             required
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+</ng-form>

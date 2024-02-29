@@ -1,0 +1,84 @@
+<app-application-one-student-select *ngIf="!model.educationType"
+                                    (studentSelected)="setStudent($event)"
+                                    (applicationOneSelected)="setApplicationOne($event)"
+                                    (isFromXml)="setIsFromXml($event)">
+</app-application-one-student-select>
+
+<ng-container *ngIf="model.educationType">
+  <app-part-panel header="{{ 'applicationOne.new.about.header' | translate }}">
+    <app-credit-about-form [(model)]="model"
+                           (isValidForm)="changeFormValidStatus('creditAbout', $event)"
+                           [isEditMode]="true"
+                           [isNewApplicationOne]="true"
+                           [isNewCredit]="isNewCredit"></app-credit-about-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.bank.header' | translate }}">
+    <app-bank-form [(model)]="model"
+                   [isNewAppOne]="true"
+                   (isValidForm)="changeFormValidStatus('bank', $event)"
+                   [isEditMode]="true"></app-bank-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.studentInfo.header' | translate }}">
+    <app-student-info-form [(model)]="model"
+                           (isValidForm)="changeFormValidStatus('studentInfo', $event)"
+                           [isEditMode]="true"
+                           [importFromXml]="importFromXml"></app-student-info-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.contract.header' | translate }}">
+    <app-contract-form [(model)]="model"
+                       (isValidForm)="changeFormValidStatus('contract', $event)"
+                       [isEditMode]="true"
+                       [isNewApplicationOne]="true"></app-contract-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.gratisPeriod.header' | translate }}">
+    <app-gratis-period-form [(model)]="model"
+                            (isValidForm)="changeFormValidStatus('gratisPeriod', $event)"
+                            [isEditMode]="true"></app-gratis-period-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.repayment.header' | translate }}">
+    <app-repayment-form [(model)]="model"
+                        (isValidForm)="changeFormValidStatus('repayment', $event)"
+                        [isEditMode]="true"></app-repayment-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.pre-negoatiation.header' | translate }}">
+    <app-pre-negoatiation-form [(model)]="model"
+                               (isValidForm)="changeFormValidStatus('pre-negoatiation', $event)"
+                               [isEditMode]="true"></app-pre-negoatiation-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationOne.new.actionOnLoan.header' | translate }}">
+    <app-action-on-loan-form [(model)]="model"
+                             (isValidForm)="changeFormValidStatus('actionOnLoan', $event)"
+                             [isEditMode]="true"></app-action-on-loan-form>
+  </app-part-panel>
+
+  <div class="d-flex mt-3">
+    <div style="margin-left: auto;">
+      <button class="btn btn-sm btn-success mr-1"
+              style="display: inline-flex; align-items: center;"
+              (click)="createApplicationOne()"
+              [disabled]="!canSubmit">
+        <!-- <app-icon icon="pencil"
+                  class="mr-1"
+                  width="14"
+                  height="14"></app-icon> -->
+        {{ 'buttons.enter' | translate }}
+      </button>
+
+      <a class="btn btn-sm btn-danger"
+         style="display: inline-flex; align-items: center;"
+         (click)="cancel()">
+        <!-- <app-icon icon="x"
+                  width="20"
+                  height="20"></app-icon> -->
+        {{ 'buttons.cancel' | translate }}
+      </a>
+    </div>
+  </div>
+</ng-container>

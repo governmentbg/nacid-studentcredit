@@ -1,0 +1,522 @@
+<div class="search-panel">
+  <!-- <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'report.search.bankName' | translate }}</label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="filter.bank"
+                        (ngModelChange)="filter.bankId = $event.id"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'report.search.creditType.label' | translate }}</label>
+      <select class="custom-select custom-select-sm"
+              [(ngModel)]="filter.creditType">
+        <option selected
+                [ngValue]="null">{{ 'report.search.creditType.all' | translate }}</option>
+        <option [ngValue]="creditTypes.educationTaxes">
+          {{ 'report.search.creditType.educationTaxes' | translate }}
+        </option>
+        <option [ngValue]="creditTypes.maintenance">
+          {{ 'report.search.creditType.maintenance' | translate }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'report.search.contractDate' | translate }}</label>
+      <select aria-label="Select year"
+              class="custom-select custom-select-sm"
+              title="Select year"
+              [(ngModel)]="filter.contractYear">
+        <option *ngFor="let year of years"
+                [value]="year">{{year}}</option>
+      </select>
+    </div>
+  </div> -->
+  <form #reportForm="ngForm">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-6">
+        <label>{{ 'report.search.reportType.title' | translate }}</label>
+        <select class="custom-select custom-select-sm form-control"
+                name="reportType"
+                (ngModelChange)="clearSmallFilters($event)"
+                [(ngModel)]="currentReportType"
+                [required]="true">
+          <option [ngValue]="reportTypes.newContract">
+            {{ 'report.search.reportType.newContract' | translate }}
+          </option>
+          <option [ngValue]="reportTypes.deimbursed">
+            {{ 'report.search.reportType.deimbursed' | translate }}
+          </option>
+          <option [ngValue]="reportTypes.earlyDellability">
+            {{ 'report.search.reportType.earlyDellability' | translate }}
+          </option>
+          <option [ngValue]="reportTypes.renegotiation">
+            {{ 'report.search.reportType.renegotiation' | translate }}
+          </option>
+        </select>
+      </div>
+
+      <ng-container *ngIf="currentReportType == reportTypes.newContract">
+        <div class="form-group col-sm-12 col-md-3">
+          <label>{{ 'report.search.newContractFilterType.title' | translate }}</label>
+          <select class="custom-select custom-select-sm form-control"
+                  name="newContractFilterType"
+                  (ngModelChange)="clearSmallestFilter($event)"
+                  [(ngModel)]="currentNewContractFilterType"
+                  required="filter.reportType === reportTypes.newContract">
+            <option selected
+                    [ngValue]="newContractFilterTypes.studentAndDoctoral">{{
+              'report.search.newContractFilterType.studentAndDoctoral' | translate }}</option>
+            <option [ngValue]="newContractFilterTypes.bank">
+              {{ 'report.search.newContractFilterType.bank' | translate }}
+            </option>
+            <option [ngValue]="newContractFilterTypes.institution">
+              {{ 'report.search.newContractFilterType.institution' | translate }}
+            </option>
+            <option [ngValue]="newContractFilterTypes.institutionTypeByYear">
+              {{ 'report.search.newContractFilterType.institutionTypeByYear' | translate }}
+            </option>
+            <option [ngValue]="newContractFilterTypes.researchArea">
+              {{ 'report.search.newContractFilterType.researchArea' | translate }}
+            </option>
+            <option [ngValue]="newContractFilterTypes.nationality">
+              {{ 'report.search.newContractFilterType.nationality' | translate }}
+            </option>
+            <option [ngValue]="newContractFilterTypes.age">
+              {{ 'report.search.newContractFilterType.age' | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3"
+             *ngIf="currentNewContractFilterType == newContractFilterTypes.researchArea 
+             || currentNewContractFilterType == newContractFilterTypes.nationality
+             || currentNewContractFilterType == newContractFilterTypes.age">
+          <label>{{ 'report.search.learnerType.title' | translate }}</label>
+          <select class="custom-select custom-select-sm"
+                  name="learnerType"
+                  [(ngModel)]="currentLearnerType">
+            <option selected
+                    [ngValue]="null">
+              {{ 'report.search.learnerType.studentsAndDoctorals' | translate }}
+            </option>
+            <option [ngValue]="learnerTypes.student">
+              {{ 'report.search.learnerType.students' | translate }}
+            </option>
+            <option [ngValue]="learnerTypes.doctoral">
+              {{ 'report.search.learnerType.doctorals' | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3"
+             *ngIf="currentNewContractFilterType == newContractFilterTypes.institution">
+          <label>{{ 'report.search.ownershipType.title' | translate }}</label>
+          <select class="custom-select custom-select-sm"
+                  name="ownershipType"
+                  [(ngModel)]="currentInstitutionOwnershipType">
+            <option selected
+                    [ngValue]="null">
+              {{ 'report.search.ownershipType.all' | translate }}
+            </option>
+            <option [ngValue]="institutionOwnershipTypes.state">
+              {{ 'report.search.ownershipType.state' | translate }}
+            </option>
+            <option [ngValue]="institutionOwnershipTypes.private">
+              {{ 'report.search.ownershipType.private' | translate }}
+            </option>
+          </select>
+        </div>
+      </ng-container>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-3"
+           *ngIf="currentReportType">
+        <label class="d-inline-flex align-items-center">
+          {{ 'report.search.startDate' | translate }}
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="startDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': startDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #startDate="ngModel"
+                 #startDateDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="filter.startDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 maxlength="20"
+                 [allowClear]="true">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="startDateDatepicker.toggle()"
+                    type="button">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-3"
+           *ngIf="currentReportType">
+        <label class="d-inline-flex align-items-center">
+          {{ 'report.search.endDate' | translate }}
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="endDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': endDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #endDate="ngModel"
+                 #endDateDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="filter.endDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 maxlength="20"
+                 [allowClear]="true">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="endDateDatepicker.toggle()"
+                    type="button">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row utility-btns">
+
+    <div class="col-sm-12">
+      <div class="float-md-left d-flex">
+        <app-export *ngIf="reportForm.valid && model.length"
+                    restController="Report/Excel"
+                    filename="Reports.xlsx"
+                    [model]="filter"
+                    [contentType]="contentTypes.EXCEL">
+          <ng-template #exportBtnTemplate>
+            <button type="button"
+                    class="btn btn-sm btn-success">
+              <app-icon class="mr-1"
+                        icon="file-earmark-spreadsheet"
+                        width="16"
+                        height="16"></app-icon>
+              {{ 'buttons.excelExport' | translate }}
+            </button>
+          </ng-template>
+        </app-export>
+      </div>
+
+      <div class="float-md-right">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="beginSearch()"
+                awaitable
+                [disabled]="reportForm.invalid">
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <button *ngIf="currentReportType"
+                type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearDates()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="calendar2-x"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clearDates' | translate }}
+        </button>
+
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table search-table table-bordered mt-5"
+       *ngIf="filter.reportType === reportTypes.newContract">
+  <thead class="thead-light">
+    <tr>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.studentAndDoctoral">
+        {{ 'report.table.studentAndDoctoral' | translate }}</th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.bank">
+        {{ 'report.table.bank' | translate }}</th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.institution">
+        {{ 'report.table.institution' | translate }}
+        <span *ngIf="filter.institutionOwnershipType === institutionOwnershipTypes.state">
+          ({{ 'report.search.ownershipType.state' | translate }})</span>
+        <span *ngIf="filter.institutionOwnershipType === institutionOwnershipTypes.private">
+          ({{ 'report.search.ownershipType.private' | translate }})</span>
+      </th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.researchArea">
+        {{ 'report.table.researchArea' | translate }}
+        <span *ngIf="filter.learnerType === learnerTypes.student">
+          ({{ 'report.search.learnerType.students' | translate }})</span>
+        <span *ngIf="filter.learnerType === learnerTypes.doctoral">
+          ({{ 'report.search.learnerType.doctorals' | translate }})</span>
+      </th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.nationality">
+        {{ 'report.table.citizenship' | translate }}
+        <span *ngIf="filter.learnerType === learnerTypes.student">
+          ({{ 'report.search.learnerType.students' | translate }})</span>
+        <span *ngIf="filter.learnerType === learnerTypes.doctoral">
+          ({{ 'report.search.learnerType.doctorals' | translate }})</span>
+      </th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.age">
+        {{ 'report.table.age' | translate }}
+        <span *ngIf="filter.learnerType === learnerTypes.student"
+              class="me-1">
+          ({{ 'report.search.learnerType.students' | translate }})</span>
+        <span *ngIf="filter.learnerType === learnerTypes.doctoral"
+              class="me-1">
+          ({{ 'report.search.learnerType.doctorals' | translate }})</span>
+        <span class="d-inline-block">
+          <app-help-tooltip [tooltipText]="bulgarianCitizens">
+          </app-help-tooltip>
+        </span>
+      </th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.institutionTypeByYear">
+        {{ 'report.table.year' | translate }}
+      </th>
+      <th *ngIf="filter?.newContractFilterType !== newContractFilterTypes.institutionTypeByYear"
+          class="col-sm-2">{{ 'report.table.creditType' | translate }}</th>
+      <th *ngIf="filter?.newContractFilterType === newContractFilterTypes.institutionTypeByYear"
+          class="col-sm-2">{{ 'report.table.institutionType' | translate }}</th>
+      <th class="col-sm-3">{{ 'report.table.newContracts' | translate }}
+      </th>
+      <th class="col-sm-3">{{ 'report.table.sizes' | translate }}
+      </th>
+      <th class="col-sm-2"
+          *ngIf="filter?.newContractFilterType === newContractFilterTypes.bank">
+        {{ 'report.table.refused' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let report of model">
+      <tr>
+        <td *ngIf="report.isStudents"
+            rowspan="3">{{ 'report.table.students' | translate }}</td>
+        <td *ngIf="report.isDoctorals"
+            rowspan="3">{{'report.table.doctorals' | translate }}</td>
+        <td *ngIf="report.bankName"
+            rowspan="3">{{ report.bankName }}</td>
+        <ng-container *ngIf="report.newContractFilterType ===  newContractFilterTypes.institution">
+          <td *ngIf="report.institutionName"
+              rowspan="3">{{ report.institutionName }}</td>
+          <td *ngIf="!report.institutionName"
+              rowspan="3">{{ 'report.table.unknown' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="report.newContractFilterType ===  newContractFilterTypes.researchArea">
+          <td *ngIf="report.researchAreaName"
+              rowspan="3">{{ report.researchAreaName }}</td>
+          <td *ngIf="!report.researchAreaName"
+              rowspan="3">{{ 'report.table.unknown' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="report.newContractFilterType ===  newContractFilterTypes.nationality">
+          <td *ngIf="report.nationalityName"
+              rowspan="3">{{ report.nationalityName }}</td>
+          <td *ngIf="!report.nationalityName"
+              rowspan="3">{{ 'report.table.unknown' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="report.newContractFilterType ===  newContractFilterTypes.age">
+          <td *ngIf="report.ageAtContract"
+              rowspan="3">{{ report.ageAtContract }}-{{ 'report.table.aged' | translate }}</td>
+          <td *ngIf="report.ageAtContract === 0"
+              rowspan="3">{{ 'report.table.unknown' | translate }}</td>
+        </ng-container>
+        <td *ngIf="report.year"
+            rowspan="3">{{ report.year }}</td>
+
+        <ng-container *ngIf="report.newContractFilterType !== newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.educationTaxes.for' | translate }}
+          </td>
+          <td>{{ report.educationTaxesContractCount | number }}</td>
+          <td>{{ report.educationTaxesSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+
+        <ng-container *ngIf="report.newContractFilterType === newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.state' | translate }}
+          </td>
+          <td>{{ report.stateCount | number }}</td>
+          <td>{{ report.stateSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <td *ngIf="report.newContractFilterType === newContractFilterTypes.bank">{{
+          report.educationTaxesContractRefusedCount }}</td>
+      </tr>
+
+      <tr>
+        <ng-container *ngIf="report.newContractFilterType !== newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.maintenance.for' | translate }}</td>
+          <td>{{ report.maintenanceContractCount | number }}</td>
+          <td>{{ report.maintenanceSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="report.newContractFilterType === newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.private' | translate }}
+          </td>
+          <td>{{ report.privateCount | number }}</td>
+          <td>{{ report.privateSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <td *ngIf="report.newContractFilterType === newContractFilterTypes.bank">{{
+          report.maintenanceContractRefusedCount | number }}</td>
+      </tr>
+      <tr class="table-row">
+        <td class="text-right bold">{{ 'report.table.total' | translate }}</td>
+        <td class="text-right bold">{{ report.currentTotalCount | number }}</td>
+        <td class="text-right bold">{{ report.currentTotalSize | number : '1.2-2' }} {{ 'common.currency' | translate }}
+        </td>
+        <td class="text-right bold"
+            *ngIf="report.newContractFilterType === newContractFilterTypes.bank">
+          {{ report.currentTotalRefusedCount | number }}</td>
+      </tr>
+    </ng-container>
+    <tr *ngIf="model.length">
+      <td class="text-right bold"
+          colspan="2">{{ 'report.table.totalFull' | translate }}</td>
+      <td class="text-right bold bold">{{ result.totalCreditsCount | number }}</td>
+      <td class="text-right bold">{{ result.totalCreditsSize | number : '1.2-2' }} {{ 'common.currency' | translate }}
+      </td>
+      <td class="text-right bold"
+          *ngIf="model[0]?.newContractFilterType === newContractFilterTypes.bank">
+        {{ result.totalCreditsRefusedCount | number }}</td>
+    </tr>
+    <tr *ngIf="!model.length">
+      <td colspan="12"
+          style="text-align: center">
+        {{ 'report.table.noResults' | translate }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table search-table table-bordered mt-5"
+       *ngIf="filter.reportType === reportTypes.deimbursed">
+  <thead class="thead-light">
+    <tr>
+      <th class="col-sm-2">{{ 'report.table.creditStatus' | translate }}</th>
+      <th class="col-sm-2">{{ 'report.table.reason.title' | translate }}</th>
+      <th class="col-sm-3">{{ 'report.table.count' | translate }}</th>
+      <th class="col-sm-3">{{ 'report.table.sizes' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let report of model">
+      <tr *ngIf="report.isSelfRepaid"
+          class="table-row">
+        <td>{{'report.table.selfRepaid' | translate }}</td>
+        <td></td>
+        <td>{{ report.selfRepaidCount | number }}</td>
+        <td>{{ report.selfRepaidSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+      </tr>
+      <tr *ngIf="report.isStateRepaid">
+        <td rowspan="4">{{'report.table.stateRepaid' | translate }}</td>
+        <td>{{ 'report.table.reason.death' | translate }}</td>
+        <td>{{ report.deathCount | number }}</td>
+        <td>{{ report.deathSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+      </tr>
+      <tr *ngIf="report.isStateRepaid">
+        <td>{{ 'report.table.reason.birthOrFullAdoptation' | translate }}</td>
+        <td>{{ report.birthOrFullAdoptationCount | number }}</td>
+        <td>{{ report.birthOrFullAdoptationSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+
+      </tr>
+      <tr *ngIf="report.isStateRepaid">
+        <td>{{ 'report.table.reason.permanentIncapacity' | translate }}</td>
+        <td>{{ report.permanentIncapacityCount | number }}</td>
+        <td>{{ report.permanentIncapacitySize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+      </tr>
+      <tr *ngIf="report.isStateRepaid"
+          class="table-row">
+        <td>{{ 'report.table.reason.bankClaim' | translate }}</td>
+        <td>{{ report.bankClaimCount | number }}</td>
+        <td>{{ report.bankClaimSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+      </tr>
+    </ng-container>
+    <tr *ngIf="model.length">
+      <td class="text-right bold"
+          colspan="2">{{ 'report.table.totalFull' | translate }}</td>
+      <td class="text-right bold bold">{{ result.totalCreditsCount | number }}</td>
+      <td class="text-right bold">{{ result.totalCreditsSize | number : '1.2-2' }} {{ 'common.currency' | translate }}
+      </td>
+    </tr>
+    <tr *ngIf="!model.length">
+      <td colspan="12"
+          style="text-align: center">
+        {{ 'report.table.noResults' | translate }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table search-table table-bordered mt-5"
+       *ngIf="filter.reportType === reportTypes.earlyDellability || filter.reportType === reportTypes.renegotiation">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          class="col-sm-4">{{ 'report.table.creditStatus' | translate }}</th>
+      <th class="col-sm-3">{{ 'report.table.count' | translate }}</th>
+      <th class="col-sm-5">{{ 'report.table.sizes' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let report of model">
+      <tr>
+        <ng-container *ngIf="filter.reportType === reportTypes.earlyDellability">
+          <td>{{ 'report.table.earlyDellability' | translate }}</td>
+          <td>{{ report.earlyDellabilityCount | number }}</td>
+          <td>{{ report.earlyDellabilitySize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="filter.reportType === reportTypes.renegotiation">
+          <td>{{ 'report.table.renegotiation' | translate }}</td>
+          <td>{{ report.renegotiationCount | number }}</td>
+          <td>{{ report.renegotiationSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+      </tr>
+    </ng-container>
+    <tr *ngIf="!model.length">
+      <td colspan="12"
+          style="text-align: center">
+        {{ 'report.table.noResults' | translate }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-between">
+  <div>
+    <button *ngIf="canLoadMore && modelCounts < totalCounts"
+            type="button"
+            class="btn btn-sm btn-secondary"
+            (click)="loadMore()">
+      {{ 'buttons.moreResults' | translate }}
+    </button>
+  </div>
+</div>

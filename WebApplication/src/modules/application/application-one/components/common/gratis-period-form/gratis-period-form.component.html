@@ -1,0 +1,128 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.expirationGracePeriod' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="expirationDateOfGracePeriod"
+               ngbDatepicker
+               [ngStyle]="{'border': expirationDateOfGracePeriod.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #expirationDateOfGracePeriod="ngModel"
+               #expirationDateOfGracePeriodDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.expirationDateOfGracePeriod"
+               (keypress)="sharedService.filterDate($event)"
+               [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="expirationDateOfGracePeriodDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <h6 class="mt-3"
+      style="font-weight: bold;">Информация за договорения погасителен план
+  </h6>
+  <hr>
+  <div class="row mt-3">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.montlyPayment' | translate }} ({{ 'common.currency' | translate }})
+      </label>
+
+      <input #monthlyPayment="ngModel"
+             type="number"
+             name="monthlyPayment"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.monthlyPayment"
+             step=".01"
+             min="0"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-9">
+      <label class="d-inline-flex align-items-center">
+        Описание
+      </label>
+
+      <input #paymentDescription="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="paymentDescription"
+             [title]="model.paymentDescription || ''"
+             [(ngModel)]="model.paymentDescription"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+             maxlength="300"
+             [pattern]="cyrillicNumberRegExp"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+  <hr>
+  <h6 class="mt-3"
+      style="font-weight: bold;">Размер на кредитното задължение към датата на изтичане на гратисния период
+  </h6>
+  <hr>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Усвоена главница ({{ 'common.currency' | translate }})
+      </label>
+
+      <input #principalAbsorbed="ngModel"
+             type="number"
+             name="principalAbsorbed"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.principalAbsorbed"
+             [required]="model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Дължима лихва ({{ 'common.currency' | translate }})
+      </label>
+
+      <input #interestDue="ngModel"
+             type="number"
+             name="interestDue"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.interestDue"
+             [required]="model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Общ размер ({{ 'common.currency' | translate }})
+      </label>
+
+      <input #overallSize="ngModel"
+             type="number"
+             name="overallSize"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.overallSize"
+             [required]="model.applicationOneType?.alias == 'expirationOfFreePeriod'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+  <hr>
+</ng-form>

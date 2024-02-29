@@ -1,0 +1,503 @@
+<router-outlet></router-outlet>
+
+<div class="d-flex mb-1"
+     style="align-items: baseline;">
+
+  <ng-container *ngIf="model.paidByApplicationFour">
+    <h6 style="color: red; font-weight: bold;">
+      Активирана държавна гаранция
+    </h6>
+  </ng-container>
+</div>
+
+<app-part-panel header="{{ 'credit.info.studentInfoHeader' | translate }}">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label>{{ 'credit.info.educationType.label' | translate }}</label>
+      <select class="custom-select custom-select-sm"
+              name="educationType"
+              [(ngModel)]="model.educationType"
+              [disabled]="true">
+        <option [ngValue]="educationType.student">
+          {{ 'credit.info.educationType.student' | translate }}
+        </option>
+        <option [ngValue]="educationType.doctoral">
+          {{ 'credit.info.educationType.doctoral' | translate }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.uan' | translate }}
+      </label>
+
+      <input #uan="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uan"
+             [(ngModel)]="model.uan"
+             [disabled]="true">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.uin' | translate }}
+      </label>
+
+      <input #uin="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uin"
+             [(ngModel)]="model.uin"
+             [disabled]="true">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Дата на раждане
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="birthDate"
+               ngbDatepicker
+               [ngStyle]="{'border': birthDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #birthDate="ngModel"
+               #birthDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.birthDate"
+               (keypress)="sharedService.filterDate($event)"
+               required
+               [disabled]="true"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="birthDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="true">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.studentName' | translate }}
+      </label>
+
+      <input #studentFullName="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="studentFullName"
+             [(ngModel)]="model.studentFullName"
+             [disabled]="true">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.institution' | translate }}
+      </label>
+
+      <app-async-select #institution="ngModel"
+                        name="institution"
+                        restUrl="Institution/Select"
+                        [filter]="{level: 1}"
+                        [(ngModel)]="model.institution"
+                        [title]="model.institution?.name || ''"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.existing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.speciality' | translate }}
+      </label>
+
+      <app-async-select #speciality="ngModel"
+                        name="speciality"
+                        restUrl="Speciality/InstitutionSpecialities"
+                        [filter]="{RootInstitutionId: model.institution?.id}"
+                        [title]="model.speciality?.name || ''"
+                        [(ngModel)]="model.speciality"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.missing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.speciality' | translate }}
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="specialityMissing">
+        </app-help-tooltip>
+      </label>
+      <input #speciality="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="speciality"
+             [(ngModel)]="model.migrationSpecialityName"
+             disabled>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3"
+         *ngIf="model.researchAreaEnum == existingEnum.existing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.researchArea' | translate }}
+      </label>
+
+      <app-async-select #researchArea="ngModel"
+                        name="researchArea"
+                        restUrl="ResearchArea/Select"
+                        [(ngModel)]="model.researchArea"
+                        [title]="model.researchArea?.name || ''"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3"
+         *ngIf="model.researchAreaEnum == existingEnum.missing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.researchArea' | translate }}
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="researchAreaMissing">
+        </app-help-tooltip>
+      </label>
+      <input #researchArea="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="researchArea"
+             [(ngModel)]="model.migrationResearchAreaName"
+             disabled>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.educationalQualification' | translate }}
+      </label>
+
+      <app-async-select #educationalQualification="ngModel"
+                        name="educationalQualification"
+                        restUrl="EducationalQualification/Select"
+                        [filter]="{combineMasters: false}"
+                        [(ngModel)]="model.educationalQualification"
+                        [disabled]="true"></app-async-select>
+    </div>
+  </div>
+</app-part-panel>
+
+<app-part-panel header="{{ 'credit.info.creditLabel' | translate }}">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.creditType' | translate }}
+      </label>
+
+      <select class="custom-select custom-select-sm"
+              name="creditType"
+              [(ngModel)]="model.creditType"
+              [disabled]="true">
+        <option [ngValue]="creditType.educationTaxes">
+          {{ creditTypeEnumLocalization[creditType.educationTaxes]}}
+        </option>
+        <option [ngValue]="creditType.maintenance">
+          {{ creditTypeEnumLocalization[creditType.maintenance]}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        Дата на сключване/дата на отказ
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="contractDate"
+               ngbDatepicker
+               [ngStyle]="{'border': contractDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #contractDate="ngModel"
+               #contractDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.contractDate"
+               (keypress)="sharedService.filterDate($event)"
+               validDate
+               [disabled]="true"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="contractDateDatepicker.toggle()"
+                  type="button"
+                  disabled>
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.creditNumber' | translate }}
+      </label>
+
+      <input #creditNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="creditNumber"
+             [(ngModel)]="model.creditNumber"
+             [disabled]="true">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.bank' | translate }}
+      </label>
+
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="model.bank"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.expirationGracePeriod' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="expirationDateOfGracePeriod"
+               ngbDatepicker
+               [ngStyle]="{'border': expirationDateOfGracePeriod.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #expirationDateOfGracePeriod="ngModel"
+               #expirationDateOfGracePeriodDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.expirationDateOfGracePeriod"
+               (keypress)="sharedService.filterDate($event)"
+               validDate
+               [disabled]="true"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="expirationDateOfGracePeriodDatepicker.toggle()"
+                  type="button"
+                  disabled>
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.paymentPeriod' | translate }}
+        <app-help-tooltip class="ml-1"
+                          tooltipText="В месеци">
+        </app-help-tooltip>
+      </label>
+
+      <input #paymentPeriod="ngModel"
+             type="number"
+             name="paymentPeriod"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.paymentPeriod"
+             [disabled]="true">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'credit.info.creditSize' | translate }} ({{ 'common.currency' | translate }})
+      </label>
+
+      <input #creditSize="ngModel"
+             type="number"
+             name="creditSize"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.creditSize"
+             [disabled]="true">
+    </div>
+  </div>
+</app-part-panel>
+
+<ul class="nav nav-tabs mt-3 mb-3">
+  <li class="nav-item active">
+    <a class="nav-link active"
+       style="color: inherit"
+       href="#applicationOne"
+       data-toggle="tab">{{ 'credit.info.applicationOne' | translate }}</a>
+  </li>
+
+  <li class="nav-item active">
+    <a class="nav-link"
+       style="color: inherit"
+       href="#applicationTwo"
+       data-toggle="tab">{{ 'credit.info.applicationTwo' | translate }}</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link"
+       style="color: inherit"
+       data-toggle="tab"
+       href="#applicationFour">{{ 'credit.info.applicationFour' | translate }}</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div id="applicationOne"
+       class="tab-pane active">
+    <div *ngIf="!existRefuseContract && !model.paidByApplicationFour"
+         class="d-flex">
+      <div style="margin-right: auto;">
+        <button class="btn btn-sm btn-primary"
+                style="display: inline-flex; align-items: center;"
+                (click)="createApplicationOne()">
+          <app-icon icon="pencil"
+                    class="mr-1"
+                    width="14"
+                    height="14"></app-icon>
+          {{ 'credit.info.createApplicationOne' | translate }}
+        </button>
+
+        <!-- <button class="btn btn-sm btn-success ml-3"
+                style="display: inline-flex; align-items: center;"
+                id="btnFile"
+                onclick="upload.click();">
+          <app-icon icon="filetype-xml"
+                    class="mr-1"
+                    width="14"
+                    height="14"></app-icon> {{ 'credit.info.importXmlApplicationOne' | translate }}
+        </button>
+        <input style="display: none;"
+               type="file"
+               id="upload"
+               (change)="readFile($event)" /> -->
+      </div>
+    </div>
+
+    <table id="applicationOne"
+           class="table search-table table-bordered mt-3">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col"
+              style="width: 30%;">{{ 'credit.info.tableOne.blankDate' | translate }}</th>
+          <th scope="col"
+              style="width: 30%;">{{ 'credit.info.tableOne.type' | translate }}</th>
+          <th scope="col">{{ 'credit.info.tableOne.bank' | translate }}</th>
+          <th scope="col">Статус</th>
+          <th scope="col"
+              style="width: 7%;">{{ 'buttons.details' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let application of model.applicationsOne"
+            [ngStyle]="{'background-color': ((application.commitState == commitState.pending || application.commitState == commitState.approvedModification) && isAdmin) ||
+            (application.commitState == commitState.modification && isBankUser) ? 'lemonchiffon' : null}">
+          <td>{{ application.blankDate | date :'dd.MM.yyyy' }}</td>
+          <td>{{ application.applicationType?.name }}</td>
+          <td>{{ application.bank?.name }} <br> {{ application.bank?.bulstat}}</td>
+          <td>{{ commitStateEnumLocalization[application.commitState] }}</td>
+          <td style="text-align:center">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    awaitable
+                    [routerLink]="['/credit', model.id, 'one', application.id]">
+              <app-icon icon="search"
+                        width="13"
+                        height="13"></app-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="applicationTwo"
+       class="tab-pane fade">
+    <app-application-two-table [recordEntries]="model.applicationsTwo"
+                               [id]="'applicationTwo'"></app-application-two-table>
+  </div>
+
+  <div id="applicationFour"
+       class="tab-pane fade">
+    <div *ngIf="!existRefuseContract && !model.paidByApplicationFour"
+         class="d-flex">
+      <div style="margin-right: auto;">
+        <button class="btn btn-sm btn-primary mr-1"
+                style="display: inline-flex; align-items: center;"
+                (click)="createApplicationFour()">
+          <app-icon icon="pencil"
+                    class="mr-1"
+                    width="14"
+                    height="14"></app-icon>
+          {{ 'credit.info.createApplicationFour' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <table id="applicationFour"
+           class="table search-table table-bordered mt-3">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col"
+              style="width: 30%;">{{ 'credit.info.tableFour.blankDate' | translate }}</th>
+          <th scope="col"
+              style="width: 25%;">{{ 'credit.info.tableFour.type' | translate }}</th>
+          <th scope="col"
+              style="width: 25%;">{{ 'credit.info.tableFour.bank' | translate }}</th>
+          <th scope="col"
+              style="width: 13%;">{{ 'credit.info.tableFour.commitState' | translate }}</th>
+          <th scope="col"
+              style="width: 7%;">{{ 'buttons.details' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="model.applicationsFour.length === 0">
+          <td colspan="5"
+              style="text-align: center;">
+            Няма подадени приложения 4 към този кредит
+          </td>
+        </tr>
+        <tr *ngFor="let application of model.applicationsFour"
+            [ngStyle]="{'background-color': ((application.commitState == commitState.pending || application.commitState == commitState.approvedModification) && isAdmin) ||
+        (application.commitState == commitState.modification && isBankUser) ? 'lemonchiffon' : null}">
+          <td>{{ application.blankDate | date :'dd.MM.yyyy' }}</td>
+          <td>{{ application.applicationType?.name }}</td>
+          <td>{{ application.bank?.name }} <br> {{ application.bank?.bulstat}}</td>
+          <td>{{ commitStateEnumLocalization[application.commitState] }}</td>
+          <td style="text-align:center">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    awaitable
+                    [routerLink]="['/credit', model.id, 'four', application.id]">
+              <app-icon icon="search"
+                        width="13"
+                        height="13"></app-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

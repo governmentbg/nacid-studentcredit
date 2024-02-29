@@ -1,0 +1,139 @@
+<div class="d-flex mb-1"
+     style="align-items: baseline;">
+
+  <p style="font-weight: bold;">Текущ статус: &nbsp;</p>
+  <h6 style="color: red; font-weight: bold;">
+    {{ commitStatesEnumLocalization[model.commitState] }}
+  </h6>
+  <ng-container
+                *ngIf="model.changeStateDescription != null && model.changeStateDescription != '' && model.changeStateDescription != 'undefined'">
+    &nbsp;(<p
+       style="width:400px; max-width: fit-content; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: red;">
+      {{model.changeStateDescription}}</p><span class="d-flex">
+      <app-help-tooltip class="ml-1"
+                        [tooltipText]="model.changeStateDescription">
+      </app-help-tooltip>)
+    </span>
+  </ng-container>
+
+  <div *ngIf="model.commitState != commitStates.archived"
+       style="margin-left: auto;">
+
+    <app-export *ngIf="!isEditMode && model.commitState == commitStates.approved"
+                restController="ApplicationOne/Pdf"
+                filename="applicationOne.pdf"
+                [contentType]="contentTypes.PDF"
+                [model]="model">
+      <ng-template #exportBtnTemplate>
+        <button type="button"
+                class="btn btn-sm btn-secondary">
+          <app-icon class="mr-1"
+                    icon="file-earmark-richtext"
+                    width="16"
+                    height="16"></app-icon>
+          {{ 'buttons.pdfExport' | translate }}
+        </button>
+      </ng-template>
+    </app-export>
+
+    <ng-container *ngIf="isAdminUser">
+      <ng-container *ngIf="!isEditMode && model.commitState == commitStates.pending">
+        <button class="btn btn-sm btn-success"
+                (click)="approve()">
+          Одобри
+        </button>
+
+        <button class="btn btn-sm btn-primary ml-2"
+                (click)="returnForModification(applicationHistoryType.modification, commitStates.modification)">
+          Върни за редакция
+        </button>
+      </ng-container>
+
+      <button *ngIf="model.commitState == commitStates.approvedModification"
+              class="btn btn-sm btn-success"
+              (click)="finishModification(commitStates.approved)"
+              [disabled]="!canSubmit">
+        Завърши редакция
+      </button>
+
+      <button *ngIf="!isEditMode && model.commitState == commitStates.approved"
+              class="btn btn-sm btn-primary ml-2"
+              (click)="returnForModification(applicationHistoryType.edit, commitStates.approvedModification)">
+        {{ 'buttons.technicalModification' | translate }}
+      </button>
+    </ng-container>
+
+    <button *ngIf="model.commitState == commitStates.modification"
+            class="btn btn-sm btn-success"
+            (click)="finishModification(commitStates.pending)"
+            [disabled]="!canSubmit">
+      Изпрати за одобрение
+    </button>
+
+    <button *ngIf="!isEditMode && (model.commitState == commitStates.modification || model.commitState == commitStates.approvedModification)"
+            class="btn btn-sm btn-primary ml-2"
+            (click)="enableModification()">
+      Редактирай
+    </button>
+
+    <button *ngIf="isEditMode"
+            class="btn btn-sm btn-danger ml-2"
+            (click)="cancelEdit()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+
+    <button *ngIf="model.hasHistory == true && !isEditMode"
+            class="btn btn-sm btn-primary ml-2"
+            [routerLink]="['/credit', parentRouteId, 'one', routeId, 'history', model.rootId]">
+      {{ 'applications.history.tableOfHistory' | translate }}
+    </button>
+  </div>
+</div>
+
+<app-part-panel header="{{ 'applicationOne.new.about.header' | translate }}">
+  <app-credit-about-form [(model)]="model"
+                         (isValidForm)="changeFormValidStatus('creditAbout', $event)"
+                         [isEditMode]="isEditMode"></app-credit-about-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.bank.header' | translate }}">
+  <app-bank-form [(model)]="model"
+                 (isValidForm)="changeFormValidStatus('bank', $event)"
+                 [isEditMode]="isEditMode"></app-bank-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.studentInfo.header' | translate }}">
+  <app-student-info-form [(model)]="model"
+                         (isValidForm)="changeFormValidStatus('studentInfo', $event)"
+                         [isEditMode]="false"></app-student-info-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.contract.header' | translate }}">
+  <app-contract-form [(model)]="model"
+                     (isValidForm)="changeFormValidStatus('contract', $event)"
+                     [isEditMode]="isEditMode"></app-contract-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.gratisPeriod.header' | translate }}">
+  <app-gratis-period-form [(model)]="model"
+                          (isValidForm)="changeFormValidStatus('gratisPeriod', $event)"
+                          [isEditMode]="isEditMode"></app-gratis-period-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.repayment.header' | translate }}">
+  <app-repayment-form [(model)]="model"
+                      (isValidForm)="changeFormValidStatus('repayment', $event)"
+                      [isEditMode]="isEditMode"></app-repayment-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.pre-negoatiation.header' | translate }}">
+  <app-pre-negoatiation-form [(model)]="model"
+                             (isValidForm)="changeFormValidStatus('pre-negoatiation', $event)"
+                             [isEditMode]="isEditMode"></app-pre-negoatiation-form>
+</app-part-panel>
+
+<app-part-panel header="{{ 'applicationOne.new.actionOnLoan.header' | translate }}">
+  <app-action-on-loan-form [(model)]="model"
+                           (isValidForm)="changeFormValidStatus('actionOnLoan', $event)"
+                           [isEditMode]="isEditMode"></app-action-on-loan-form>
+</app-part-panel>

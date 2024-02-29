@@ -1,0 +1,181 @@
+<div class="modal-header justify-content-center">
+  <h5>Нов кредит</h5>
+</div>
+
+<div class="modal-body">
+  <form #resultForm="ngForm">
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="d-inline-flex align-items-center">№ на кредит</label>
+
+        <input class="form-control form-control-sm"
+               name="creditNumber"
+               #creditNumber="ngModel"
+               [(ngModel)]="model.creditNumber"
+               required>
+      </div>
+
+      <div class="form-group col-md-5">
+        <label class="d-inline-flex align-items-center">Кредитополучател</label>
+
+        <input class="form-control form-control-sm"
+               name="studentFullName"
+               #studentFullName="ngModel"
+               [(ngModel)]="model.studentFullName"
+               required>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">ЕГН/ЛНЧ</label>
+
+        <input class="form-control form-control-sm"
+               name="uin"
+               #uin="ngModel"
+               [(ngModel)]="model.uin"
+               required=>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Общ размер
+        </label>
+
+        <input #totalSum="ngModel"
+               type="number"
+               name="totalSum"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.totalSum"
+               required
+               step=".01"
+               min="0">
+      </div>
+
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Усвоена главница
+        </label>
+
+        <input #principalAbsorbed="ngModel"
+               type="number"
+               name="principalAbsorbed"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.principalAbsorbed"
+               required
+               step=".01"
+               min="0">
+      </div>
+
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Лихва
+        </label>
+
+        <input #interest="ngModel"
+               type="number"
+               name="interest"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.interest"
+               required
+               step=".01"
+               min="0">
+      </div>
+
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Капитализирана главница
+        </label>
+
+        <input #capitalizedPrincipal="ngModel"
+               type="number"
+               name="capitalizedPrincipal"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.capitalizedPrincipal"
+               required
+               step=".01"
+               min="0">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Месечна вноска
+        </label>
+
+        <input #monthlyPayment="ngModel"
+               type="number"
+               name="monthlyPayment"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.monthlyPayment"
+               required
+               step=".01"
+               min="0">
+      </div>
+
+      <div class="form-group col-md-5">
+        <label class="d-inline-flex align-items-center">
+          Погасена месечна вноска - главница
+        </label>
+
+        <input #repaidMonthlyPrincipal="ngModel"
+               type="number"
+               name="repaidMonthlyPrincipal"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.repaidMonthlyPrincipal"
+               required
+               step=".01">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Погасена месечна вноска - лихва
+        </label>
+
+        <input #repaidMonthlyInterest="ngModel"
+               type="number"
+               name="repaidMonthlyInterest"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.repaidMonthlyInterest"
+               required
+               step=".01">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-12">
+
+        <div class="form-check">
+          <input class="form-check-input"
+                 #isRepaid="ngModel"
+                 type="checkbox"
+                 name="isRepaid"
+                 [(ngModel)]="model.isRepaid">
+
+          <p style="width: 95; margin: 0;">
+            Погасен ли е кредита
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-sm btn-success"
+          (click)="save()"
+          [disabled]="!resultForm.form.valid">
+    Запази
+  </button>
+
+  <button type="button"
+          class="btn btn-sm btn-danger"
+          (click)="activeModal.close()">
+    {{ 'buttons.cancel' | translate }}
+  </button>
+</div>

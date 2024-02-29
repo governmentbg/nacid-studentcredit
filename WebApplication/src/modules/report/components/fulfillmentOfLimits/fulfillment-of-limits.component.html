@@ -1,0 +1,103 @@
+<table class="table search-table table-bordered">
+  <thead class="thead-light"
+         style="line-height: 1.25em !important;">
+    <tr>
+      <th style="width: 8%">Година</th>
+      <th style="width: 14%">Пределен размер на държавната гаранция</th>
+      <th style="width: 14%">Банки, сключили типови договори за кредитиране на студентите и докторантите</th>
+      <th style="width: 12%">Размер на държавната гаранция съгласно сключените споразумения с банките</th>
+      <th style="width: 12%">Размер на договорените кредити (поет ангажимент)</th>
+      <th style="width: 12%">Остатък от одобрения размер на държавната гаранция на база договорени кредити</th>
+      <th style="width: 12%">Изпълнение на лимита</th>
+      <th style="width: 12%">Брой кредити</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let fulfillment of fulfillmentOfLimits">
+      <td style="text-align: center;"
+          [attr.rowspan]="fulfillment.fulfillmentOfLimits.length">{{ fulfillment.year?.name }}</td>
+      <td style="text-align: center;"
+          [attr.rowspan]="fulfillment.fulfillmentOfLimits.length">{{ fulfillment.yearLimit | number : '1.2-2' }} {{
+        'common.currency' | translate }}</td>
+      <ng-container *ngFor="let fulfillmentOfLimitInfo of fulfillment.fulfillmentOfLimits">
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+        <td>{{fulfillmentOfLimitInfo.bankName}}</td>
+      </ng-container>
+    </tr>
+
+    <!-- <td>
+        <ng-container *ngFor="let fulfillmentOfLimitInfo of fulfillment.fulfillmentOfLimits">
+          <span>{{ fulfillmentOfLimitInfo.bankName}}<br></span>
+        </ng-container>
+      </td> -->
+
+    <!-- <ng-container>
+    <tr *ngFor="let fulfillmentOfLimitInfo of fulfillment.fulfillmentOfLimits">
+      <td>{{ fulfillmentOfLimitInfo.bankName }}</td>
+      <td>{{ fulfillmentOfLimitInfo.bankLimit }}</td>
+      <td>{{ fulfillmentOfLimitInfo.bankCreditsSize }}</td>
+      <td>{{ fulfillmentOfLimitInfo.bankRemainderOfTheApprovedAmount }}</td>
+      <td>{{ fulfillmentOfLimitInfo.fulfillmentOfLimit }}</td>
+      <td>{{ fulfillmentOfLimitInfo.creditsCount }}</td>
+    </tr>
+    </ng-container> -->
+
+
+    <!-- <ng-container *ngIf="report.newContractFilterType !== newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.educationTaxes.for' | translate }}
+          </td>
+          <td>{{ report.educationTaxesContractCount | number }}</td>
+          <td>{{ report.educationTaxesSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container> -->
+
+    <!-- <td *ngIf="report.newContractFilterType === newContractFilterTypes.bank">{{
+          report.educationTaxesContractRefusedCount }}</td> -->
+
+    <!-- <tr>
+        <ng-container *ngIf="report.newContractFilterType !== newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.maintenance.for' | translate }}</td>
+          <td>{{ report.maintenanceContractCount | number }}</td>
+          <td>{{ report.maintenanceSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <ng-container *ngIf="report.newContractFilterType === newContractFilterTypes.institutionTypeByYear">
+          <td>{{ 'report.table.private' | translate }}
+          </td>
+          <td>{{ report.privateCount | number }}</td>
+          <td>{{ report.privateSize | number : '1.2-2' }} {{ 'common.currency' | translate }}</td>
+        </ng-container>
+        <td *ngIf="report.newContractFilterType === newContractFilterTypes.bank">{{
+          report.maintenanceContractRefusedCount | number }}</td>
+      </tr> -->
+
+    <!-- <tr class="table-row">
+        <td class="text-right bold">{{ 'report.table.total' | translate }}</td>
+        <td class="text-right bold">{{ report.currentTotalCount | number }}</td>
+        <td class="text-right bold">{{ report.currentTotalSize | number : '1.2-2' }} {{ 'common.currency' | translate }}
+        </td>
+        <td class="text-right bold"
+            *ngIf="report.newContractFilterType === newContractFilterTypes.bank">
+          {{ report.currentTotalRefusedCount | number }}</td>
+      </tr> -->
+
+    <!-- <tr *ngIf="model.length">
+      <td class="text-right bold"
+          colspan="2">{{ 'report.table.totalFull' | translate }}</td>
+      <td class="text-right bold bold">{{ result.totalCreditsCount | number }}</td>
+      <td class="text-right bold">{{ result.totalCreditsSize | number : '1.2-2' }} {{ 'common.currency' | translate }}
+      </td>
+      <td class="text-right bold"
+          *ngIf="model[0]?.newContractFilterType === newContractFilterTypes.bank">
+        {{ result.totalCreditsRefusedCount | number }}</td>
+    </tr>
+    <tr *ngIf="!model.length">
+      <td colspan="12"
+          style="text-align: center">
+        {{ 'report.table.noResults' | translate }}
+      </td>
+    </tr> -->
+  </tbody>
+</table>

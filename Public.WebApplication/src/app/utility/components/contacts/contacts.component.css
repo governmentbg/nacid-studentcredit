@@ -1,0 +1,13 @@
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.link {
+  color: black;
+  width: fit-content;
+}
+
+.link:hover {
+  color: #FF9800;
+}

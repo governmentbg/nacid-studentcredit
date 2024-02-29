@@ -1,0 +1,304 @@
+<div class="search-panel">
+
+  <div class="row">
+
+    <div *ngIf="isAdmin"
+         class="form-group col-sm-12 col-md-3">
+      <label>Тип на справката</label>
+      <select class="custom-select custom-select-sm form-control"
+              [(ngModel)]="summaryReportType"
+              #type="ngModel"
+              name="type"
+              (ngModelChange)="clearFilter(); searchDto.summaryReportType = summaryReportType"
+              [required]="true">
+        <option [ngValue]="summaryReportTypes.bank">
+          По банка
+        </option>
+        <option [ngValue]="summaryReportTypes.summary">
+          Обща
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Година</label>
+      <app-async-select #yearReport="ngModel"
+                        name="yearReport"
+                        restUrl="Year/summaryReportYears"
+                        [(ngModel)]="year"
+                        (ngModelChange)="showTable = false; showLimitHint = false"
+                        [required]="true">
+      </app-async-select>
+    </div>
+
+    <div *ngIf="isAdmin"
+         class="form-group col-sm-12 col-md-6">
+      <label>{{ 'credit.search.bankName' | translate }}</label>
+      <app-async-select #bankName="ngModel"
+                        name="bankName"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="bank"
+                        (ngModelChange)="searchDto.bankId = bank.id"
+                        [required]="summaryReportType == summaryReportTypes.bank"
+                        [disabled]="summaryReportType != summaryReportTypes.bank"></app-async-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div *ngIf="showLimitHint"
+           style="color: red;">
+        Моля, попълнете годишният лимит
+
+      </div>
+    </div>
+    <div class="col-sm-8">
+
+      <div class="float-md-right d-flex">
+
+        <app-export *ngIf="sheet.sheetList.length > 0 && showTable"
+                    restController="SummaryReport/SummaryReportExcel"
+                    filename="Обобщена справка.xlsx"
+                    [contentType]="contentTypes.EXCEL"
+                    [model]="searchDto">
+          <ng-template #exportBtnTemplate>
+            <button type="button"
+                    class="btn btn-sm btn-success">
+              <app-icon class="mr-1"
+                        icon="file-earmark-spreadsheet"
+                        width="16"
+                        height="16"></app-icon>
+              {{ 'buttons.excelExport' | translate }}
+            </button>
+          </ng-template>
+        </app-export>
+
+        <button type="button"
+                class="btn btn-primary btn-sm ml-2"
+                (click)="search()"
+                [disabled]="summaryReportType == summaryReportTypes.bank ? !summaryReportType || !year || !bank : !summaryReportType || !year"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <!-- <button *ngIf="isAdmin"
+                type="button"
+                class="btn btn-success btn-sm ml-3"
+                id="btnFile"
+                onclick="upload.click();"
+                awaitable>
+
+          Импортирай прил. №2
+        </button>
+        <input style="display: none;"
+               type="file"
+               id="upload"
+               accept=".xlsx"
+               (change)="importExcel($event)" /> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<table *ngIf="showTable"
+       class="table search-table table-bordered mt-5 table-hover full-width">
+  <thead class="thead-light">
+    <tr>
+      <th rowspan="2"
+          style="width: 3%;"></th>
+      <th colspan="4">Кредити (главници) по ЗКСД</th>
+      <th rowspan="2">Начислена по време на гратисния период лихва върху усвоената част от кредита, която се
+        капитализира годишно</th>
+      <th colspan="2">Извършени плащания</th>
+      <th rowspan="2"
+          style="width: 7%;">Отписан дълг - главници</th>
+      <th colspan="2"
+          style="width: 12%;">Опростен дълг</th>
+      <th colspan="2"
+          style="width: 13%;">Активирани гаранции</th>
+      <th rowspan="2"
+          style="width: 7%;">Лимит <a *ngIf="year && +year.name == currentYear"
+           style="cursor: pointer;"
+           (click)="changeLimit()"><app-icon class="ml-1"
+                    icon="pencil-fill"
+                    width="12"
+                    height="12"></app-icon></a></th>
+      <th rowspan="2"
+          style="width: 6%;">Изпълнение на лимита</th>
+      <th rowspan="2"
+          style="width: 4%;">Брой кредити</th>
+    </tr>
+    <tr>
+      <th>Договорен размер на кредитите, сключени през {{ year?.name}}</th>
+      <th>Предоговорени (+) увеличение (-) намаление</th>
+      <th>Усвоени за такси за обучение или за издръжка средства (главници)</th>
+      <th>Остатък за усвояване</th>
+      <th>Главници</th>
+      <th>Лихви</th>
+      <th>Главници</th>
+      <th>Лихви</th>
+      <th>Главници</th>
+      <th>Лихви</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="!sheet">
+      <td [attr.colspan]="isAdmin ? '16' : '14'"
+          style="text-align: center;">
+        Няма намерени резултати
+      </td>
+    </tr>
+    <ng-container *ngIf="sheet">
+
+      <tr>
+        <td></td>
+        <td>"a"</td>
+        <td>"b"</td>
+        <td>"c"</td>
+        <td>"d"="a"+"b"-"c"</td>
+        <td>"e"</td>
+        <td>"f"</td>
+        <td>"g"</td>
+        <td>"h"</td>
+        <td>"i"</td>
+        <td>"j"</td>
+        <td>"k"</td>
+        <td>"l"</td>
+        <td>"m"</td>
+        <td style="line-height: 10px;">"n=(a+b)/m,%"</td>
+        <td>"o"</td>
+      </tr>
+
+      <tr>
+        <td style="font-weight: bold;">Общо</td>
+        <td>{{ sheet.totalSum | number : '1.2-2' }}<span *ngIf="sheet.totalSum != null">{{ 'common.currency' | translate
+            }}</span></td>
+        <td>{{ sheet.renegotiatedSum | number : '1.2-2' }}<span *ngIf="sheet.renegotiatedSum != null">{{
+            'common.currency' | translate }}</span></td>
+        <td>{{ sheet.principalAbsorbed | number : '1.2-2' }}<span *ngIf="sheet.principalAbsorbed != null">{{
+            'common.currency' | translate }}</span>
+        </td>
+        <td>{{ sheet.remainderToDigest | number : '1.2-2' }}<span *ngIf="sheet.remainderToDigest != null">{{
+            'common.currency' | translate }}</span>
+        </td>
+        <td>{{ sheet.interestOverPrincipal | number : '1.2-2' }}<span *ngIf="sheet.interestOverPrincipal != null">{{
+            'common.currency' | translate }}</span></td>
+        <td>{{ sheet.principalPaid | number : '1.2-2' }}<span *ngIf="sheet.principalPaid != null">{{ 'common.currency' |
+            translate }}</span></td>
+        <td>{{ sheet.interestPaid | number : '1.2-2' }}<span *ngIf="sheet.interestPaid != null">{{ 'common.currency' |
+            translate }}</span></td>
+        <td>{{ sheet.debtWrittenOff | number : '1.2-2' }}<span *ngIf="sheet.debtWrittenOff != null">{{ 'common.currency'
+            | translate }}</span></td>
+        <td>{{ sheet.simpleDebtPrincipal | number : '1.2-2' }}<span *ngIf="sheet.simpleDebtPrincipal != null">{{
+            'common.currency' | translate }}</span>
+        </td>
+        <td>{{ sheet.simpleDebtInterest | number : '1.2-2' }}<span *ngIf="sheet.simpleDebtInterest != null">{{
+            'common.currency' | translate }}</span>
+        </td>
+        <td>{{ sheet.warrantiesActivatedPrincipal | number : '1.2-2' }}<span
+                *ngIf="sheet.warrantiesActivatedPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+        <td>{{ sheet.warrantiesActivatedInterest | number : '1.2-2' }}<span
+                *ngIf="sheet.warrantiesActivatedInterest != null">{{ 'common.currency' | translate }}</span></td>
+        <td>{{ sheet.limit | number : '1.2-2' }}<span *ngIf="sheet.limit != null">{{ 'common.currency' | translate
+            }}</span></td>
+        <td>{{ sheet.fulfillmentOfTheLimit | number : '1.2-2' }}</td>
+        <td>{{ sheet.creditCount }}</td>
+      </tr>
+
+      <ng-container *ngFor="let sheetYear of sheet.sheetList | orderBy: 'year.id ', let lastYear = last">
+
+        <tr style="background-color: DarkSeaGreen; cursor: pointer;"
+            (click)="sheetYear.isExpand = !sheetYear.isExpand">
+          <td style="font-weight: bold;"> {{ sheetYear.year.name }}</td>
+          <td>{{ sheetYear.totalSum | number : '1.2-2' }}<span *ngIf="sheetYear.totalSum != null">{{ 'common.currency' |
+              translate }}</span></td>
+          <td>{{ sheetYear.renegotiatedSum | number : '1.2-2' }}<span *ngIf="sheetYear.renegotiatedSum != null">{{
+              'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.principalAbsorbed | number : '1.2-2' }}<span *ngIf="sheetYear.principalAbsorbed != null">{{
+              'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.remainderToDigest | number : '1.2-2' }}<span *ngIf="sheetYear.remainderToDigest != null">{{
+              'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.interestOverPrincipal | number : '1.2-2' }}<span
+                  *ngIf="sheetYear.interestOverPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.principalPaid | number : '1.2-2' }}<span *ngIf="sheetYear.principalPaid != null">{{
+              'common.currency' | translate }}</span>
+          </td>
+          <td>{{ sheetYear.interestPaid | number : '1.2-2' }}<span *ngIf="sheetYear.interestPaid != null">{{
+              'common.currency' | translate }}</span>
+          </td>
+          <td>{{ sheetYear.debtWrittenOff | number : '1.2-2' }}<span *ngIf="sheetYear.debtWrittenOff != null">{{
+              'common.currency' | translate }}</span>
+          </td>
+          <td>{{ sheetYear.simpleDebtPrincipal | number : '1.2-2' }}<span
+                  *ngIf="sheetYear.simpleDebtPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.simpleDebtInterest | number : '1.2-2' }}<span *ngIf="sheetYear.simpleDebtInterest != null">{{
+              'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.warrantiesActivatedPrincipal | number : '1.2-2' }}<span
+                  *ngIf="sheetYear.warrantiesActivatedPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+          <td>{{ sheetYear.warrantiesActivatedInterest | number : '1.2-2' }}<span
+                  *ngIf="sheetYear.warrantiesActivatedInterest != null">{{ 'common.currency' | translate }}</span></td>
+          <td></td>
+          <td></td>
+          <td>{{ sheetYear.creditCount }}</td>
+        </tr>
+
+        <ng-container *ngIf="sheetYear.isExpand">
+
+          <tr *ngFor="let monthData of sheetYear.sheetList | orderBy: 'month', let i = index, let lastMonth = last">
+            <td style="font-weight: bold; text-wrap: nowrap;"> {{ monthData.month }}
+              <a *ngIf="lastYear && !isAdmin && (lastMonth || (i + 1 == sheetYear.sheetList.length - 1 && currentDay < 11))"
+                 style="cursor: pointer;"
+                 (click)="edit(monthData)"><app-icon class="ml-1"
+                          icon="pencil-fill"
+                          width="12"
+                          height="12"></app-icon></a>
+            </td>
+            <td>{{ monthData.totalSum | number : '1.2-2' }}<span *ngIf="monthData.totalSum != null">{{ 'common.currency'
+                | translate }}</span></td>
+            <td>{{ monthData.renegotiatedSum | number : '1.2-2' }}<span *ngIf="monthData.renegotiatedSum != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.principalAbsorbed | number : '1.2-2' }}<span *ngIf="monthData.principalAbsorbed != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.remainderToDigest | number : '1.2-2' }}<span *ngIf="monthData.remainderToDigest != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.interestOverPrincipal | number : '1.2-2' }}<span
+                    *ngIf="monthData.interestOverPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+            <td>{{ monthData.principalPaid | number : '1.2-2' }}<span *ngIf="monthData.principalPaid != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.interestPaid | number : '1.2-2' }}<span *ngIf="monthData.interestPaid != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.debtWrittenOff | number : '1.2-2' }}<span *ngIf="monthData.debtWrittenOff != null">{{
+                'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.simpleDebtPrincipal | number : '1.2-2' }}<span
+                    *ngIf="monthData.simpleDebtPrincipal != null">{{ 'common.currency' | translate }}</span></td>
+            <td>{{ monthData.simpleDebtInterest | number : '1.2-2' }}<span
+                    *ngIf="monthData.simpleDebtInterest != null">{{ 'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.warrantiesActivatedPrincipal | number : '1.2-2' }}<span
+                    *ngIf="monthData.warrantiesActivatedPrincipal != null">{{ 'common.currency' | translate }}</span>
+            </td>
+            <td>{{ monthData.warrantiesActivatedInterest | number : '1.2-2' }}<span
+                    *ngIf="monthData.warrantiesActivatedInterest != null">{{ 'common.currency' | translate }}</span>
+            </td>
+            <td></td>
+            <td></td>
+            <td>{{ monthData.creditCount }}</td>
+          </tr>
+
+        </ng-container>
+
+      </ng-container>
+
+    </ng-container>
+  </tbody>
+</table>

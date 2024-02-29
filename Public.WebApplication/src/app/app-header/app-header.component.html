@@ -1,0 +1,42 @@
+<header>
+  <div class="container d-flex align-items-center"
+       style="color: #ffffff;">
+    <a [routerLink]="['/home']"
+       class="logo-link">
+      <img src="./../assets/apple-touch-icon.png"
+           (click)="scrollToTop()"
+           style="margin-right: 5px;">
+    </a>
+
+    <div class="title">
+      <h5>{{ 'common.nacid' | translate }}</h5>
+      <h6>{{ 'common.studentCreditPortal' | translate }}</h6>
+    </div>
+
+
+    <ul class="ml-auto d-flex align-items-right nav custom-nav">
+      <li class="nav-item ml-3">
+        <div class="scrollspy-btn"
+             (click)="scrollToTop()"
+             [routerLink]="['/home']">{{ 'common.bankRegister' | translate }}</div>
+      </li>
+      <li class="nav-item ml-3">
+        <div class="scrollspy-btn"
+             (click)="scrollToSection('about')"
+             [routerLink]="['/home']"
+             [state]="{ section: 'about' }">{{ 'common.usefulInformation' | translate }}</div>
+      </li>
+      <li class="nav-item ml-3">
+        <div class="scrollspy-btn"
+             (click)="scrollToSection('contacts')"
+             [routerLink]="['/home']"
+             [state]="{ section: 'contacts' }">{{ 'common.contacts' | translate }}</div>
+      </li>
+    </ul>
+
+    <app-change-language [isLoggedIn]="false"
+                         class="d-flex align-items-right"
+                         style="cursor: auto"
+                         [isMobile]="false"></app-change-language>
+  </div>
+</header>

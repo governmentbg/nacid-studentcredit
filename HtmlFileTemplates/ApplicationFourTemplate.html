@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Use some dev server for development of css and images. They must be hosted! -->
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: 'Times New Roman';
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			position: relative;
+			padding: 2em;
+		}
+
+		.header {
+			text-align: center;
+			margin-bottom: 2em;
+			display: flex;
+			align-items: center;
+		}
+
+		.uppercase {
+			text-transform: uppercase;
+		}
+
+		.bold {
+			font-weight: bold;
+		}
+
+		.footer {
+			position: absolute;
+			bottom: 0;
+			padding: .5em;
+			border: 1px solid #ccc;
+		}
+
+		.card {
+			margin-bottom: 2em;
+		}
+
+		.card-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-weight: bold;
+			text-transform: uppercase;
+			background-color: rgb(247, 247, 247);
+			border: 1px solid #D2D2D2;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			padding: 0.5em 1em 0.5em 1em;
+		}
+
+		.card-body {
+			border-bottom: 1px solid #D2D2D2;
+			border-right: 1px solid #D2D2D2;
+			border-left: 1px solid #D2D2D2;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			padding: 0.5em 0em 0.5em 0em;
+		}
+		
+		.sign {
+			margin: 3em 5em 0em 0em;
+			font-weight:bold;
+			font-size: 22px;
+		}
+
+		.w-100 {
+			width: 100%;
+		}
+
+		.w-75 {
+			width: 75%;
+		}
+		
+		.w-70 {
+			width:70%;
+		}
+		
+		.w-65 {
+			width: 65%;
+		}
+		
+		.w-60 {
+			width: 60%;
+		}
+
+		.w-50 {
+			width: 50%;
+		}
+
+		.w-42 {
+			width: 42%;
+		}
+		
+		.w-35 {
+			width: 35%;
+		}
+
+		.w-33 {
+			width: 33%;
+		}
+
+		.w-25 {
+			width: 25%;
+		}
+		
+		.w-20 {
+			width: 20%;
+		}
+		
+		.w-15 {
+			width: 15%;
+		}
+
+		.input-box {
+			padding: 0px 12px;
+		}
+
+		.input {
+			display: flex;
+			height: 32px;
+			font-size: 16px;
+			background-color: #e9ecef;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			padding: 3px 5px 3px 5px;
+			align-items: center;
+		}
+
+		.input-label {
+			display: block;
+			margin-bottom: 2px;
+			font-size: 16px;
+		}
+
+		.row {
+			display: flex;
+			flex-wrap: wrap;
+			padding: 0.5em 0.2em 0.5em 0.2em;
+		}
+		
+		.type-textarea {
+			resize: none;
+			font-size: 18px;
+			background-color: #e9ecef;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			padding: 3px 5px 3px 5px;
+		}
+		
+		.text-align-left {
+			text-align: left;
+		}
+		
+		.text-align-right {
+			text-align: right;
+		}
+		
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		
+		th, td {
+			border: 1px solid #D2D2D2;;
+		}
+		
+		th {
+			border-bottom: 2px solid #D2D2D2;;
+		}
+		
+		th, td {
+			padding: 3px 5px 3px 5px;
+		}
+		
+	</style>
+
+	<div class="header">
+		<img src="data:image/png;base64,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"
+				 width="110"
+				 height="96"
+				 style="padding-right: 1em;">
+		<div style="text-align: left; border-left: 1px solid #000000; padding-left: 1em;">
+			<div>
+				<h2 class="uppercase"
+						style="margin-bottom: .25em;">НАЦИД</h2>
+			</div>
+			<div>
+				<p style="font-size: 1.5em;">Регистър Студентски кредити</p>
+			</div>
+			<div>
+				<p style="font-size:1em">Приложение 4</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			ИСКАНЕ ЗА ЗАПЛАЩАНЕ НА НЕПОГАСЕНА ЧАСТ ОТ ЗАДЪЛЖЕНИЕТО НА КРЕДИТОПОЛУЧАТЕЛ СЪС СРЕДСТВА ОТ ДЪРЖАВНАТА ГАРАНЦИЯ
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="input-box w-100">
+					<div class="input-label">
+						Основание за искането
+					</div>
+					<textarea class="type-textarea w-100">{{ Type.Name }}</textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-50">
+					<div class="input-label">
+						Дата на подаване на Приложение № 4
+					</div>
+					<div class="input">
+						{{ BlankDateString }}
+					</div>
+				</div>
+					<div class="input-box w-50">
+						<div class="input-label">
+							Сума на държавните разноски (лв.)
+						</div>
+					<div class="input">
+						{{ BankExpenses }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			ДАННИ ЗА БАНКАТА
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="input-box w-75">
+					<div class="input-label">
+						Наименование
+					</div>
+					<div class="input">
+						{{ Bank.Name }}
+					</div>
+				</div>
+				<div class="input-box w-25">
+					<div class="input-label">
+						ЕИК на банката
+					</div>
+					<div class="input">
+						{{ BULSTAT }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-100">
+					<div class="input-label">
+						Банкова сметка за превеждане на сумата за заплащане на непогасената част от задължението
+					</div>
+					<div class="input">
+						{{ BankAccount }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			ДАННИ ЗА КРЕДИТОПОЛУЧАТЕЛЯ
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="input-box w-60">
+						<div class="input-label">
+							Имена
+						</div>
+						<div class="input">
+							{{ StudentFullName }}
+						</div>
+				</div>
+				<div class="input-box w-20">
+					<div class="input-label">
+						ЕГН/ЛНЧ
+					</div>
+					<div class="input">
+						{{ Uin }}
+					</div>
+				</div>
+				<div class="input-box w-20">
+					<div class="input-label">
+						ЕАН
+					</div>
+					<div class="input">
+						{{ UAN }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-100">
+					<div class="input-label">
+						Висше училище
+					</div>
+					<div class="input">
+						{{ Institution.Name }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-100">
+					<div class="input-label">
+						Специалност
+					</div>
+					<div class="input">
+						{{ SpecialityName }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-100">
+					<div class="input-label">
+						Факултетен номер/заповед за зачисляване на докторант
+					</div>
+					<div class="input">
+						{{ FacultyNumber }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="page-break-after: always; visibility: hidden">
+		\pagebreak
+	</div>
+
+	<div class="card"
+			 style="margin-top: 2em;">
+		<div class="card-header">
+			ДАННИ ЗА КРЕДИТА
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="input-box w-50">
+					<div class="input-label">
+						Вид кредит
+					</div>
+					<div class="input">
+						{{ CreditTypeString }}
+					</div>
+				</div>
+				<div class="input-box w-50">
+					<div class="input-label">
+						Дата на сключване на договора за кредит
+					</div>
+					<div class="input">
+						{{ ContractDateString }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-50">
+					<div class="input-label">
+						Оставащ срок на обучение
+					</div>
+					<div class="input">
+						{{ SchoolRemaining }}
+					</div>
+				</div>
+				<div class="input-box w-50">
+					<div class="input-label">
+						Срок на издължаване
+					</div>
+					<div class="input">
+						{{ PaymentPeriod }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-50">
+					<div class="input-label">
+						Размер на дължимата лихва (%)
+					</div>
+					<div class="input">
+						{{ Interest }}
+					</div>
+				</div>
+				<div class="input-box w-50">
+					<div class="input-label">
+						Размер на непогасената част (лв.)
+					</div>
+					<div class="input">
+						{{ OutstandingDebtAmount }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-box w-25">
+					<div class="input-label">
+						Номер на кредита
+					</div>
+					<div class="input">
+						{{ CreditNumber }}
+					</div>
+				</div>
+				<div class="input-box w-75">
+					<div class="input-label">
+						Начин за определяне на размера на кредита
+					</div>
+					<div class="input">
+						{{ Description }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<table>
+		<thead>
+			<th class="w-65 text-align-left">
+				Вид документ
+			</th>
+			<th class="w-35 text-align-left">
+				Прикачен файл
+			</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					Извлечение от сметка по партидата на кредитополучателя с посочване на главницата и дължимите лихви към датата на съставяне на извлечението
+				</td>
+				<td>
+				  {{ DebtStatementDocumentFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Договор за кредит и анекс/и към него
+				</td>
+				<td>
+				{{ CreditContractAndAnnexesFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Изпълнителен лист срещу кредитополучателя, издаден в полза на банката
+				</td>
+				<td>
+				{{ DocumentInFavorOfTheBankFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Документи, удостоверяващи частично погасяване на задължението, ако е извършено такова
+				</td>
+				<td>
+				{{ DocumentPartialRepaymentFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Копие от акта за смърт на длъжника
+				</td>
+				<td>
+				{{ DeathCertificateFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Копие от експертните решения на ТЕЛК или НЕЛК, удостоверяващи трайна неработоспособност 70 или над 70 на сто на длъжника
+				</td>
+				<td>
+				{{ PermanentIncapacityFileName }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Копие от актовете за раждане/ от влезли в сила съдебни решения, с които е уважено искането за осиновяване, за две или повече деца
+				</td>
+				<td>
+				{{ BirthCertificatesOrCourtDecisionsForAdoptionsFileName }}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div class="sign text-align-right">
+		Подпис:
+	</div>
+	
+</body>
+
+</html>

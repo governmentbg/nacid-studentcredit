@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-header">
+    {{ 'user.userInfo.title' | translate }}
+  </div>
+  <div class="card-body">
+    <user-common [model]="model"
+                 (isValidForm)="changeFormValidStatus('user-common', $event)"
+                 [isEditMode]="true"></user-common>
+
+    <div class="row utility-btns">
+      <div class="col-sm-12">
+        <div class="float-md-right">
+          <button type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="create()"
+                  [disabled]="!canSubmit">
+            {{ 'buttons.create' | translate }}
+          </button>
+          <button type="button"
+                  class="btn btn-secondary btn-sm ml-2"
+                  (click)="cancel()">
+            {{ 'buttons.cancel' | translate }}
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

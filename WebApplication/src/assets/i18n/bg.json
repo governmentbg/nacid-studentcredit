@@ -1,0 +1,618 @@
+{
+  "loadingIndicator": "Моля, изчакайте...",
+  "common": {
+    "nacid": "НАЦИД",
+    "studentCredit": "Регистър Студентски кредити",
+    "studentCreditShort": "Студ, кредити",
+    "fileUpload": "Няма прикачен документ",
+    "currency": "лв."
+  },
+  "nomenclature": {
+    "title": "Наименование",
+    "alias": "Системно наименование",
+    "file": "Файл",
+    "isActive": "Активен",
+    "add": "Добави"
+  },
+  "applications": {
+    "history": {
+      "archived": "Архивирано",
+      "tableOfHistory": "История на промените",
+      "archivedDate": "Дата на редакция",
+      "archivedBy": "Архивирано от",
+      "archivedReason": "Основание за редакция",
+      "type": "Тип на редакцията"
+    }
+  },
+  "applicationFour": {
+    "search": {
+      "studentFullName": "Име на студента",
+      "uin": "ЕГН/ЛНЧ",
+      "bankName": "Име на търговската банка",
+      "newApplication": "Добави нов запис"
+    },
+    "table": {
+      "id": "ID",
+      "studentFullName": "Име на студента",
+      "uin": "ЕГН/ЛНЧ",
+      "bankName": "Банка",
+      "amount": "Сума",
+      "date": "Дата",
+      "details": "Детайли"
+    },
+    "new": {
+      "about": {
+        "header": "ИСКАНЕ ЗА ЗАПЛАЩАНЕ НА НЕПОГАСЕНА ЧАСТ ОТ ЗАДЪЛЖЕНИЕТО НА КРЕДИТОПОЛУЧАТЕЛ СЪС СРЕДСТВА ОТ ДЪРЖАВНАТА ГАРАНЦИЯ",
+        "applicationType": "Основание за искането",
+        "blankDate": "Дата на подаване на Приложение № 4",
+        "commitState": "Статус"
+      },
+      "bank": {
+        "header": "ДАННИ ЗА БАНКАТА",
+        "name": "Наименование",
+        "bulstat": "ЕИК на банката",
+        "bankAccount": "Банкова сметка за превеждане на сумата за заплащане на непогасената част от задължението"
+      },
+      "studentInfo": {
+        "header": "ДАННИ ЗА КРЕДИТОПОЛУЧАТЕЛЯ",
+        "name": "Имена",
+        "uin": "ЕГН/ЛНЧ",
+        "uan": "ЕАН",
+        "institution": "Висше училище",
+        "speciality": "Специалност",
+        "facultyNumber": "Факултетен номер/заповед за зачисляване на докторант"
+      },
+      "creditInfo": {
+        "header": "ДАННИ ЗА КРЕДИТА",
+        "creditType": "Вид кредит",
+        "creditNumber": "Номер на кредита",
+        "contractDate": "Дата на сключване на договора за кредит",
+        "schoolRemaining": "Оставащ срок на обучение",
+        "paymentPeriod": "Срок на издължаване",
+        "interest": "Размер на дължимата лихва (%)",
+        "outstandingDebtAmount": "Размер на непогасената част (лв.)",
+        "description": "Начин за определяне на размера на кредита"
+      }
+    },
+    "creditSelect": {
+      "header": "Моля, въведете номер на кредит",
+      "creditNumber": "Номер на кредит"
+    }
+  },
+  "applicationOne": {
+    "search": {
+      "studentFullName": "Име на студента",
+      "uin": "ЕГН/ЛНЧ",
+      "bankName": "Име на търговската банка",
+      "institution": "Висше училище",
+      "creditType": {
+        "label": "Вид на кредита",
+        "all": "Всички",
+        "educationTaxes": "За заплащане на таксите за обучение",
+        "maintenance": "За издръжка"
+      },
+      "newApplication": "Добави нов кредит"
+    },
+    "table": {
+      "studentFullName": "Кредитополучател",
+      "bankName": "Банка",
+      "institution": "Висше училище"
+    },
+    "studentSelect": {
+      "uan": "ЕАН",
+      "header": "Моля, въведете ЕАН на студента",
+      "studentFullName": "Име на студента",
+      "uin": "ЕГН/ЛНЧ",
+      "institution": "Висше училище",
+      "details": "Избери",
+      "noResult": "Не е намерен студент с ЕАН ",
+      "educationType": {
+        "student": "Студент",
+        "doctoral": "Докторант",
+        "label": "Тип на обучение"
+      },
+      "speciality": "Специалност"
+    },
+    "new": {
+      "about": {
+        "header": "ВПИСВАНЕ НА ДАННИ ОТНОСНО",
+        "applicationType": "Тип на приложение 1",
+        "blankDate": "Дата на подаване на Приложение № 1"
+      },
+      "bank": {
+        "header": "ДАННИ ЗА БАНКАТА",
+        "name": "Наименование",
+        "bulstat": "ЕИК на банката",
+        "contact": "Лице за контакт"
+      },
+      "studentInfo": {
+        "header": "ДАННИ ЗА КРЕДИТОПОЛУЧАТЕЛЯ",
+        "educationType": "Тип на обучение",
+        "student": "Студент",
+        "doctoral": "Докторант",
+        "name": "Имена",
+        "uin": "ЕГН/ЛНЧ",
+        "nationality": "Гражданство",
+        "id": "Номер на документ за самоличност",
+        "institution": "Висше училище",
+        "researchArea": "Направление",
+        "speciality": "Специалност",
+        "course": "Курс",
+        "facultyNumber": "Факултетен №/№ заповед за зачисляване"
+      },
+      "contract": {
+        "header": "ДАННИ ЗА СКЛЮЧВАНЕ ИЛИ ОТКАЗ ЗА СКЛЮЧВАНЕ НА ДОГОВОР ЗА КРЕДИТ",
+        "creditType": "Вид кредит",
+        "contractDate": "Дата на сключване на договора/дата на отказ",
+        "cancelCondition": "Причини за отказ(в случай на отказ)",
+        "schoolRemaining": "Оставащ срок на обучение",
+        "expirationGracePeriod": "Дата на изтичане на гратисния период",
+        "paymentDescription": "Информация за договорения погасителен план",
+        "montlyPayment": "Месечна вноска",
+        "paymentPeriod": "Срок на издължаване",
+        "creditSize": "Максимален размер на кредита",
+        "semsterTax": "Семестриална такса/издръжка",
+        "interest": "Дължима лихва",
+        "description": "Описание"
+      },
+      "gratisPeriod": {
+        "header": "ДАННИ ЗА ГРАТИСНИЯ ПЕРИОД"
+      },
+      "repayment": {
+        "header": "ДАННИ ЗА ПОГАСЯВАНЕ НА КРЕДИТА",
+        "paymentDate": "Дата на погасяване на кредита",
+        "earlyPaymentDate": "Дата на предсрочно погасяване"
+      },
+      "pre-negoatiation": {
+        "header": "ДАННИ ЗА ПРЕДОГОВАРЯНЕ НА КРЕДИТА",
+        "recontractionInfo": "Информация за предоговаряне условията по кредита",
+        "recontractionDate": "Дата на предоговаряне",
+        "adjournType": "Отсрочване",
+        "adjournDate": "Дата на настъпване на обстоятелствата за отсрочване",
+        "adjournPeriod": "Срок на отсрочване на кредита"
+      },
+      "actionOnLoan": {
+        "header": "НАСТЪПВАНЕ НА ПРЕДСРОЧНА ИЗИСКУЕМОСТ И ПРЕДПРИЕМАНЕ НА ДЕЙСТВИЯ ПО ПРИНУДИТЕЛНО ИЗПЪЛНЕНИЕ ПО КРЕДИТА",
+        "earlyDemandOfTheLoan": "Дата на настъпване на предсрочна изискуемост на кредита",
+        "forcePaymentInfo": "Предприети действия по принудително изпълнение срещу кредитополучателя",
+        "forcePaymentDate": "Дата на иницииране на принудителното изпълнение"
+      }
+    }
+  },
+  "applicationFive": {
+    "typeOne": "От справката за МФ - по години и сбор – от таблицата (c+e)-(f+i+k). Гледа се общата сума.",
+    "typeOneForAdmin": "От справката за МФ ( за всяка банка) - по години и сбор – от таблицата (c+e)-(f+i+k). Гледа се общата сума.",
+    "typeTwo": "От справката за МФ – по години и сбор -  извършените плащания (главница + лихва) за съответното шестмесечие ( от 01.01 до 30.06 и от 01.07 до 31.12). Информацията е само за извършените плащания през текущата година (ако премията е за 2023 г. – извършените плащания през 2023 г. по шийтове)",
+    "typeTwoForAdmin": "От справката за МФ (за всяка банка) – по години и сбор -  извършените плащания (главница + лихва) за съответното шестмесечие ( от 01.01 до 30.06 и от 01.07 до 31.12). Информацията е само за извършените плащания през текущата година (ако премията е за 2023 г. – извършените плащания през 2023 г. по шийтове)",
+    "typeThree": "Извършените разходи за държавни такси по активирани гаранции за определен период"
+  },
+  "report": {
+    "search": {
+      "bankName": "Име на търговската банка",
+      "startDate": "Начало на период",
+      "endDate": "Край на период",
+      "creditType": {
+        "all": "Всички",
+        "label": "Вид на кредита",
+        "maintenance": "За издръжка",
+        "educationTaxes": "За заплащане на таксите за обучение"
+      },
+      "reportType": {
+        "title": "Тип на справката",
+        "newContract": "Сключени договори",
+        "deimbursed": "Погасени кредити",
+        "earlyDellability": "Предсрочно изискуеми кредити",
+        "renegotiation": "Предговаряне на условията",
+        "fulfillmentOfLimit": "Изпълнение на лимита"
+      },
+      "newContractFilterType": {
+        "title": "Филтриране спрямо",
+        "studentAndDoctoral": "Студенти и докторанти",
+        "bank": "Банка",
+        "institution": " ВУ/НО",
+        "researchArea": "Професионално направление",
+        "nationality": "Гражданство",
+        "age": "Възраст",
+        "institutionTypeByYear": " ВУ/НО (по години)"
+      },
+      "learnerType": {
+        "title": "Вид на обучаеми",
+        "students": "Студенти",
+        "doctorals": "Докторанти",
+        "studentsAndDoctorals": "Всички"
+      },
+      "ownershipType": {
+        "title": "Вид на ВУ",
+        "all": "Всички",
+        "state": "Държавни",
+        "private": "Частни"
+      },
+      "contractDate": "Година на сключване на договора/година на отказ"
+    },
+    "table": {
+      "noResults": "Няма намерени резултати",
+      "creditStatus": "Статус на кредита",
+      "earlyDellability": "Предсрочно изискуем",
+      "renegotiation": "Предговорени условия",
+      "studentAndDoctoral": "Кредитопополучатели",
+      "institutionType": "Вид на ВУ/НО",
+      "state": "Държавни",
+      "private": "Частни",
+      "year": "Година",
+      "bank": "Банка",
+      "institution": " ВУ/НО",
+      "researchArea": "ПН",
+      "citizenship": "Гражданство",
+      "age": "Възраст",
+      "aged": "годишни",
+      "unknown": "Неизвестно",
+      "students": "Студенти",
+      "doctorals": "Докторанти",
+      "bulgarians": "Българско",
+      "total": "ОБЩО:",
+      "totalFull": "Общо всички:",
+      "refused": "Брой откази",
+      "educationTaxes": {
+        "for": "За обучение",
+        "number": "Брой кредити за семетриални такси",
+        "sum": "Размер на кредитите за семетриални такси"
+      },
+      "maintenance": {
+        "for": "За издръжка",
+        "number": "Брой кредити за издръжка",
+        "sum": "Размер на кредитите за издръжка"
+      },
+      "creditType": "Вид кредит",
+      "newContracts": "Брой на сключени договори",
+      "newContractsStudents": "Брой за студенти",
+      "newContractsDoctorals": "Брой за докторанти",
+      "sizesStudents": "Размер за студенти",
+      "sizesDoctorals": "Размер за докторанти",
+      "reason": {
+        "title": "Основание",
+        "death": "Поради смърт",
+        "birthOrFullAdoptation": "Раждане на второ дете",
+        "permanentIncapacity": "Трайна неработоспособност",
+        "bankClaim": "Предсрочна изискуемост"
+      },
+      "sizes": "Размер на кредитите",
+      "count": "Брой",
+      "selfRepaid": "Погасен от кредитополучателя",
+      "stateRepaid": "Погасен от държавата"
+    }
+  },
+  "credit": {
+    "search": {
+      "uin": "ЕГН/ЛНЧ на кредитополучателя",
+      "uan": "ЕАН",
+      "studentFullName": "Кредитополучател",
+      "creditNumber": "Номер на кредит",
+      "contractDate": "Дата на сключване/отказ",
+      "bankName": "Име на търговската банка",
+      "creditType": {
+        "all": "Всички",
+        "label": "Вид на кредита",
+        "maintenance": "За издръжка",
+        "educationTaxes": "За заплащане на таксите за обучение"
+      },
+      "institution": "Висше училище",
+      "newCredit": "Създай кредит",
+      "creditInfo": "№ на кредит и Дата",
+      "creditTypeHeader": "Вид кредит",
+      "creditReceiver": "Кредитополучател",
+      "bank": "Банка",
+      "createApplicationOne": "Вписване на данни (Пр. №1)",
+      "createApplicationFour": "Искане за плащане (Пр. №4)"
+    },
+    "info": {
+      "studentInfoHeader": "ДАННИ ЗА КРЕДИТОПОЛУЧАТЕЛЯ",
+      "educationType": {
+        "label": "Тип на обучение",
+        "student": "Студент",
+        "doctoral": "Докторант"
+      },
+      "uan": "ЕАН",
+      "uin": "ЕГН/ЛНЧ",
+      "studentName": "Имена",
+      "institution": "Висше училище",
+      "speciality": "Специалност",
+      "researchArea": "Направление",
+      "educationalQualification": "ОКС/ОНС",
+      "creditLabel": "ДАННИ ЗА КРЕДИТА",
+      "creditNumber": "Номер на кредит",
+      "creditType": "Вид кредит",
+      "contractDate": "Дата на сключване на договора/дата на отказ",
+      "expirationGracePeriod": "Дата на изтичане на гратисния период",
+      "bank": "Банка",
+      "paymentPeriod": "Срок на издължаване",
+      "creditSize": "Максимален размер на кредита",
+      "applicationOne": "Приложение 1",
+      "applicationTwo": "Приложение 2",
+      "applicationFour": "Приложение 4",
+      "createApplicationOne": "Вписване на данни (Пр. №1)",
+      "importXmlApplicationOne": "Импортирай приложение 1 от Xml",
+      "tableOne": {
+        "blankDate": "Дата на подаване на Приложение № 1",
+        "type": "Относно",
+        "bank": "Банка"
+      },
+      "createApplicationFour": "Искане за плащане (Пр. №4)",
+      "tableFour": {
+        "type": "Относно",
+        "blankDate": "Дата на подаване на Приложение № 4",
+        "bank": "Банка",
+        "commitState": "Статус"
+      }
+    }
+  },
+  "buttons": {
+    "clear": "Изчисти филтъра",
+    "clearDates": "Изчисти дати",
+    "search": "Търсене",
+    "choose": "Избери",
+    "enter": "Изпрати за одобрение",
+    "cancel": "Откажи",
+    "continue": "Да, искам",
+    "exit": "Изход",
+    "details": "Детайли",
+    "new": "Създай",
+    "clearData": "Изчисти",
+    "action": "Действия",
+    "review": "Преглед",
+    "edit": "Редактирай",
+    "save": "Запиши",
+    "deactivate": "Деактивирай",
+    "activate": "Активирай",
+    "moreResults": "Покажи още",
+    "excelExport": "Експорт Excel",
+    "pdfExport": "Експорт PDF",
+    "nomenclatures": "Номенклатури",
+    "approve": "Одобри",
+    "modification": "Върни за редакция",
+    "enableModification": "Започни редакция",
+    "saveModification": "Завърши редакция",
+    "deny": "Отхвърли",
+    "users": "Потребители",
+    "newUser": "Нов потребител",
+    "create": "Запази",
+    "technicalModification": "Техническа редакция",
+    "back": "Назад",
+    "send": "Изпрати",
+    "change": "Промяна",
+    "changePassword": "Промяна на парола"
+  },
+  "toastrError": {
+    "StudentNoActiveEducation": "В Регистъра на всички действащи, прекъснали и завършили студенти и докторанти не са открити данни за действащ студент с посочения идентификатор",
+    "forbidden": "Вие нямате достъп до тази страница",
+    "CreditExist": "Студентът вече има този вид кредит!",
+    "CreditDoesntExist": "Не е намерен кредит с този номер",
+    "CreditNumberMissmatch": "Има разминаване в кредитните номера",
+    "ImportXmlError": "Възникна грешка при импортирането. Моля, прегледайте отново xml-файлът. Ако продължава да Ви излиза грешка, моля свържете се с администратор!",
+    "User_InvalidCredentials": "Невалидно потребителско име или парола!",
+    "User_CannotRestoreUserPassword": "Несъществуващ или деактивиран потребител!",
+    "User_InvalidEmail": "Не е намерен потребител с дадения имейл!",
+    "User_ChangePasswordNewPasswordMismatch": "Паролите се различават!",
+    "System_IncorrectParameters": "Невалидни параметри на заявката!",
+    "CreditExistWithRefuseContract": "Не може да се добави приложение към отказан кредит!",
+    "CreditExistWithNewContract": "Не може да сключите нов договор към вече съществуващ кредит!",
+    "CannotAddRefuseCreditToExistingCredit": "Не може да се добави отказ за сключване на кредит към вече съществуващ кредит!",
+    "MissingNewOrRefusedCredit": "Няма сключен или отказан кредит с този номер!",
+    "StudentNotFoundWithGivenIdentificator": "Не е намерен студент с дадения идентификатор!",
+    "User_NotEnoughPermission": "Нямате достатъчно права!",
+    "StartDateCannotBeGreaterThanEndDate": "Началният период не може да бъде преди крайния период!",
+    "ApplicationTwoExcelWorkSheetIsNull": "Работният лист на подадения Excel е празен!",
+    "Nomenclature_CannotDelete": "Номенклатурата не може да бъде изтрита!",
+    "CreditExistWithRefuseContractCannotCreateAppFour": "Не може да се добави приложение 4 към отказан кредит!",
+    "ApplicationFourAlreadyInProcess": "Към този кредит в момента съществува Приложение 4, което е в процес на обработка или вече е одобрено!",
+    "StudentNotFoundWithGivenUan": "Не е намерен студент с този ЕАН!",
+    "ApplicationOneNotApproved": "Не може да се добави приложение към кредит, който не е одобрен от Администратор!",
+    "ApplicationOnePaidByApplicationFour": "Не може да се добави приложение към кредит, на който е активирана държавна гаранция!",
+    "System_ExportProblem": "Възникна проблем с експортирането. Моля, свържете се с администратор!",
+    "NoDataForBank": "Няма подадени данни за тази банка!",
+    "User_EmailTaken": "Съществува потребител с този имейл адрес!",
+    "SendingFailed": "Изпращането на имейл за активиране на профил е неуспешно!",
+    "User_InvalidToken": "Невалиден код!",
+    "User_PasswordsMissmatch": "Паролите не са еднакви!",
+    "User_ActivationTokenAlreadyUsed": "Кодът вече е използван!",
+    "User_TokenExpired": "Кодът е с изтекъл срок!",
+    "ApplicationOneTypeEmpty": "Трябва да се избере тип на приложение 1!",
+    "BankEmpty": "Трябва да се избере банка!",
+    "BulstatEmpty": "Булстатът не може да бъде празен!",
+    "InvalidStudentName": "Невалидно име на студент!",
+    "CreditNumberEmpty": "Трябва да се напише кредитен номер!",
+    "CancelConditionEmpty": "Трябва да се напишат причини за отказ!",
+    "PaymentPeriodEmpty": "Трябва да се зададе срок на издължаване",
+    "CreditSizeEmpty": "Трябва да се зададе максимален размер на кредита!",
+    "SemesterTaxesEmpty": "Трябва да се напише семестриалната такса/издръжка!",
+    "InterestEmpty": "Трябва да се напише дължимата лихва в проценти!",
+    "ExpirationOfGracePeriodEmpty": "Трябва да се подаде дата на изтичане на гратисния период!",
+    "InvalidCyrillic": "Полетата трябва да са само на кирилица!",
+    "ValueMustBeGreaterThanZero": "Стойността на полето не може да бъде отрицателна!",
+    "PrincipalAbsorbedEmpty": "Трябва да се въведе усвоената главница!",
+    "InterestDueEmpty": "Трябва да се въведе дължимата лихва!",
+    "OverallSizeEmpty": "Трябва да се въведе общия размер на задължението!",
+    "EarlyDemandOfTheLoanEmpty": "Трябва да се въведе дата на настъпване на предсрочна изискуемост!",
+    "ForcePaymentDateEmpty": "Трябва да се въведе дата на иницииране на принудително изпълнение!",
+    "ForcePaymentInfoEmpty": "Трябва да се въведе информация за предприето действия по принудително изпълнение!",
+    "RecontractionDateEmpty": "Трябва да се въведе дата на предоговаряне!",
+    "InvalidLength": "Дължината на някое от полетата не отговаря на изискванията!",
+    "CreditCountEmpty": "Трябва да въведете брой кредити!",
+    "YearEmpty": "Трябва да въведете година!",
+    "PeriodEmpty": "Трябва да въведете период!",
+    "FromDateEmpty": "Трябва да въведете от дата!",
+    "ToDateEmpty": "Трябва да въведете до дата!",
+    "AttachedFileEmpty": "Трябва да прикачите файл!",
+    "AmountRequestedMustBePositive": "Исканата сума трябва да е положително число!",
+    "CreditCountMustBePositive": "Бройката на кредитите трябва да е положително число!",
+    "ApplicationFourTypeEmpty": "Трябва да се избере тип на приложение 4!",
+    "BankAccountEmpty": "Банковата сметка не може да бъде празна!",
+    "InvalidFourDescription": "Невалиден начин за определяне на размера на кредита!",
+    "MissingRequiredAttachedFile": "Липсва задължителен прикачен файл!",
+    "DoctoralNoActiveEducation": "В Регистъра на всички действащи, прекъснали и завършили студенти и докторанти не са открити данни за действащ докторант с посочения идентификатор",
+    "DesyncedUanBetweenSystems": "Не е намерен студент/докторант с дадения ЕАН! Моля свържете се с администратор.",
+    "CannotAddNewCreditToInActiveBank": "Не може да се създаде нов кредит към неактивна банка!"
+  },
+  "toastr": {
+    "userEditSuccess": "Успешно редактирахте потребител!",
+    "userActivationLinkSent": "Линкът за активиране е изпратен успешно!",
+    "userCreatedLinkSent": "Успешно създаден нов потребител, изпратен активационен линк!",
+    "userActivateProfile": "Успешно активиран потребител!",
+    "userLinkForActivation": "Успешно изпратен линк за смяна на забравена парола",
+    "userChangePassword": "Успешно променена парола!"
+  },
+  "user": {
+    "repeatable": {
+      "username": "Потребителско име",
+      "usernameLong": "Потребителско име (имейл адрес)",
+      "email": "Електронна поща",
+      "phone": "Телефон",
+      "role": "Вид потребител",
+      "password": "Парола",
+      "passwordAgain": "Въведете парола повторно",
+      "actions": "Детайли",
+      "firstName": "Първо име",
+      "middleName": "Презиме",
+      "lastName": "Фамилия",
+      "status": "Статус"
+    },
+    "login": {
+      "title": "Вход",
+      "loginButton": "Вход",
+      "forgottenPassword": "Забравена парола"
+    },
+    "changePassword": {
+      "title": "Промяна на парола",
+      "oldPassword": "Стара парола",
+      "newPassword": "Нова парола",
+      "newPasswordAgain": "Нова парола отново",
+      "changeButton": "Промяна"
+    },
+    "activation": {
+      "title": "Активиране на потребител",
+      "activateButton": "Активирай"
+    },
+    "userStatus": {
+      "active": "Активен",
+      "inactive": "Неактивиран",
+      "deactivated": "Деактивиран",
+      "all": "Всички"
+    },
+    "bank": " Банка",
+    "tableUsers": {
+      "names": "Имена",
+      "orgranizationName": "Организация",
+      "contacts": "Телефон и имейл",
+      "activeStatus": "Статус",
+      "noResults": "Няма намерени резултати"
+    },
+    "userInfo": {
+      "title": "Данни на потребител",
+      "firstName": "Първо име",
+      "middleName": "Презиме",
+      "lastName": "Фамилия",
+      "email": "Електронна поща",
+      "institutionName": "Организация",
+      "role": "Вид потребител",
+      "inactive": "Генериране на нов линк",
+      "password": "Парола"
+    },
+    "forgottenPassword": {
+      "title": "Забравена парола"
+    },
+    "recoveryPassword": {
+      "title": "Смяна на забравена парола"
+    }
+  },
+  "bank": {
+    "table": {
+      "name": "Търговска банка",
+      "address": "Адрес",
+      "contacts": "Данни за контакт",
+      "contracts": "Типов договор",
+      "noResults": "Няма намерени резултати",
+      "bulstat": "ЕИК",
+      "concluded": "Сключен на",
+      "changed": "Изменен на",
+      "terminated": "Прекратен на",
+      "addNew": "Добавяне на банка",
+      "actions": "Действия",
+      "actionsTooltip": "Детайли и редакция на запис",
+      "inactive": "(деактивирана)"
+    },
+    "create": {
+      "title": "Добавяне на нова банка",
+      "name": "Търговска банка",
+      "bulstat": "ЕИК",
+      "address": "Адрес",
+      "email": "Електронна поща",
+      "phone": "Телефон",
+      "concluded": "Номер и дата на сключване",
+      "changed": "Изменен на",
+      "terminated": "Прекратен на",
+      "concludedFile": "Документ за сключен договор",
+      "changedFile": "Документ за изменен договор",
+      "terminatedFile": "Документ за прекратен договор",
+      "concludedDate": "Сключен на",
+      "changedDate": "Изменен на",
+      "terminatedDate": "Прекратен на",
+      "number": "Номер на договор",
+      "terms": "Описание на условия",
+      "termsFile": "Прикачен файл с условия"
+    },
+    "buttons": {
+      "changeContract": "Добавяне на изменение",
+      "terminateContract": "Прекратяване на договор",
+      "edit": "Редактирай",
+      "cancel": "Откажи",
+      "save": "Запази"
+    },
+    "search": {
+      "name": "Търговска банка",
+      "bulstat": "ЕИК"
+    },
+    "change": {
+      "title": "Изменения по договор"
+    },
+    "terminate": {
+      "title": "Прекратяване на договор"
+    }
+  },
+  "student": {
+    "uan": "ЕАН",
+    "fullName": "Имена",
+    "uin": "ЕГН",
+    "foreignerNumber": "ЛНЧ",
+    "idnNumber": "Идентификационен номер",
+    "educationalQualification": "ОКС/ОНС",
+    "educationalForm": "Форма на обучение",
+    "search": {
+      "identificationType": "Тип на идентификатора",
+      "identificator": "Идентификатор"
+    },
+    "view": {
+      "studentInfo": "Студентска информация",
+      "universityInfo": "Данни за висше обучение",
+      "doctoralInfo": "Данни за докторантско обучение",
+      "creditInfo": "Данни за кредити",
+      "institution": "Висше училище",
+      "speciality": "Специалност",
+      "researchArea": "Професионално направление",
+      "status": "Статус",
+      "duration": "Срок на обучение (години)",
+      "course": "Курс",
+      "yearType": "Година на обучение",
+      "startDate": "Дата на зачисляване",
+      "finishDate": "Дата на отчисляване",
+      "startPeriod": "Период на зачисляване",
+      "finishPeriod": "Период на отчисляване",
+      "graduationDate": "Дата на дипломиране",
+      "creditType": "Вид кредит",
+      "bankName": "Име на търговската банка",
+      "contractDate": "Дата на сключване на договора за кредит",
+      "noDataFound": "Няма намерени данни",
+      "graduatedCourse": "Семестриално завършил",
+      "interruptionReason": "Основание за прекъсване",
+      "creditStatus": "Статус на кредита"
+    }
+  }
+}

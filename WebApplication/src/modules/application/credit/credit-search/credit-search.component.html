@@ -1,0 +1,265 @@
+<router-outlet></router-outlet>
+
+<div class="search-panel">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.studentFullName' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="studentFullName"
+             [(ngModel)]="filter.studentFullName">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.uin' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="number"
+             name="uin"
+             [(ngModel)]="filter.uin">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.uan' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="uan"
+             [(ngModel)]="filter.uan">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.creditNumber' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="creditNumber"
+             [(ngModel)]="filter.creditNumber">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.contractDate' | translate }}</label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="contractDate"
+               [ngStyle]="{'border': contractDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               ngbDatepicker
+               #contractDate="ngModel"
+               #contractDatepickerFrom="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="filter.contractDate"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="contractDatepickerFrom.toggle()"
+                  type="button">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'credit.search.creditType.label' | translate }}</label>
+      <select class="custom-select custom-select-sm"
+              [(ngModel)]="filter.type">
+        <option selected
+                [ngValue]="null">{{ 'credit.search.creditType.all' | translate }}</option>
+        <option [ngValue]="creditTypes.educationTaxes">
+          {{ 'credit.search.creditType.educationTaxes' | translate }}
+        </option>
+        <option [ngValue]="creditTypes.maintenance">
+          {{ 'credit.search.creditType.maintenance' | translate }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label>{{ 'credit.search.bankName' | translate }}</label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="filter.bank"
+                        (ngModelChange)="filter.bankId = $event?.id"
+                        [disabled]="isBankUser"
+                        [allowClear]="true"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label>{{ 'credit.search.institution' | translate }}</label>
+      <app-async-select #institution="ngModel"
+                        name="institution"
+                        restUrl="Institution/Select"
+                        [filter]="{level: 1}"
+                        [(ngModel)]="filter.institution"
+                        (ngModelChange)="filter.institutionId = $event?.id"
+                        [allowClear]="true"></app-async-select>
+    </div>
+  </div>
+
+  <div class="row utility-btns">
+    <div class="col-sm-12">
+
+      <div *ngIf="isBankActive || isAdmin"
+           class="btn-group float-md-left">
+        <button type="button"
+                class="btn btn-outline-primary btn-sm"
+                routerLink="/credit/one/new"
+                awaitable>
+
+          {{ 'credit.search.newCredit' | translate }}
+        </button>
+      </div>
+
+      <div class="float-md-right d-flex">
+        <button type="button"
+                class="btn btn-primary btn-sm "
+                (click)="search()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs mt-3">
+  <li class="nav-item active">
+    <a class="nav-link active"
+       style="color: inherit"
+       href="#аpproved"
+       data-toggle="tab">Кредити</a>
+  </li>
+
+  <li class="nav-item active">
+    <a class="nav-link d-flex"
+       style="color: inherit"
+       href="#pending"
+       data-toggle="tab">Изпратени за одобрение
+      <span class="notification"
+            *ngIf="pendingCredits.length">{{ pendingCredits.length }}</span></a>
+  </li>
+
+  <ng-container *ngIf="isAdmin">
+    <li class="nav-item active">
+      <a class="nav-link notification-box"
+         style="color: inherit"
+         href="#modification"
+         data-toggle="tab">Техническа редакция
+        <span class="notification"
+              *ngIf="modificationCredits.length">{{ modificationCredits.length }}</span>
+      </a>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="isBankUser">
+    <li class="nav-item active">
+      <a class="nav-link d-flex"
+         style="color: inherit"
+         href="#modification"
+         data-toggle="tab">
+        <span class="title-long">Върнати за редакция (Прил. №1)</span>
+        <span class="title-short">Върнати (Прил. №1)</span>
+        <span class="notification"
+              *ngIf="modificationCredits.length">{{ modificationCredits.length }}</span>
+      </a>
+    </li>
+  </ng-container>
+
+  <li class="nav-item active">
+    <a class="nav-link d-flex"
+       style="color: inherit"
+       href="#applicationFour"
+       data-toggle="tab">Искане за плащане
+      <span class="notification"
+            *ngIf="applicationsFour.length">{{ applicationsFour.length }}</span></a>
+  </li>
+
+  <ng-container *ngIf="isBankUser">
+    <li class="nav-item active">
+      <a class="nav-link d-flex"
+         style="color: inherit"
+         href="#modificationApplicationFour"
+         data-toggle="tab">
+        <span class="title-long">Върнати за редакция (Прил. №4)</span>
+        <span class="title-short">Върнати (Прил. №4)</span>
+        <span class="notification"
+              *ngIf="modificationApplicationFours.length">{{ modificationApplicationFours.length }}</span></a>
+    </li>
+  </ng-container>
+</ul>
+
+<div class="tab-content">
+  <div id="аpproved"
+       #approved
+       class="tab-pane active">
+
+    <app-credit-search-table [credits]="model"
+                             [isAdmin]="isAdmin"
+                             [hasActions]="true"></app-credit-search-table>
+
+    <div class="d-flex justify-content-between">
+      <div>
+        <button *ngIf="canLoadMore && modelCounts < totalCounts"
+                type="button"
+                class="btn btn-sm btn-secondary"
+                (click)="loadMore()">
+          {{ 'buttons.moreResults' | translate }}
+        </button>
+      </div>
+
+      <div>
+        <p *ngIf="modelCounts > 0">Показани {{ modelCounts }} от общо {{ totalCounts }} записа</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="pending"
+       #pending
+       class="tab-pane fade">
+    <app-credit-search-table [credits]="pendingCredits"
+                             [isAdmin]="isAdmin"></app-credit-search-table>
+  </div>
+
+  <div id="modification"
+       #modification
+       class="tab-pane fade">
+    <app-credit-search-table [credits]="modificationCredits"
+                             [isAdmin]="isAdmin"></app-credit-search-table>
+  </div>
+
+  <div id="applicationFour"
+       #applicationFour
+       class="tab-pane fade">
+    <app-credit-search-table [credits]="applicationsFour"
+                             [isAdmin]="isAdmin"
+                             [isApplicationFour]="true"></app-credit-search-table>
+  </div>
+
+  <div id="modificationApplicationFour"
+       #modificationApplicationFour
+       class="tab-pane fade">
+    <app-credit-search-table [credits]="modificationApplicationFours"
+                             [isAdmin]="isAdmin"
+                             [isApplicationFour]="true"></app-credit-search-table>
+  </div>
+</div>

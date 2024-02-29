@@ -1,0 +1,193 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'applicationOne.new.contract.creditType' | translate }}</label>
+      <select class="custom-select custom-select-sm form-control"
+              name="credit"
+              #credit="ngModel"
+              [(ngModel)]="model.creditType"
+              [required]="true"
+              [disabled]="!isNewApplicationOne">
+        <option [ngValue]="creditType.educationTaxes">
+          {{ creditTypeEnumLocalization[creditType.educationTaxes]}}
+        </option>
+        <option [ngValue]="creditType.maintenance">
+          {{ creditTypeEnumLocalization[creditType.maintenance]}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        Дата на сключване/дата на отказ
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="contractDate"
+               ngbDatepicker
+               [ngStyle]="{'border': contractDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #contractDate="ngModel"
+               #contractDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.contractDate"
+               (keypress)="sharedService.filterDate($event)"
+               required
+               [disabled]="!isNewApplicationOne"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="contractDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isNewApplicationOne">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        Номер на кредит
+      </label>
+
+      <input #creditNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="creditNumber"
+             [(ngModel)]="model.creditNumber"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'renegotiation' || model.applicationOneType?.alias == 'expirationOfFreePeriod' || model.applicationOneType?.alias == 'earlyDellability' || model.applicationOneType?.alias == 'enforcementAction' || model.applicationOneType?.alias == 'expirationOfFreePeriod' || model.applicationOneType?.alias == 'repaymentOfCreditObligation'"
+             [pattern]="lettersAndNumbersRegExp"
+             [disabled]="!isNewApplicationOne">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.schoolRemaining' | translate }}
+
+        <app-help-tooltip class="ml-1"
+                          tooltipText="В месеци">
+        </app-help-tooltip>
+      </label>
+
+      <input #schoolRemaining="ngModel"
+             type="number"
+             name="schoolRemaining"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.schoolRemaining"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             maxlength="2"
+             min="0"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'refuseContract'"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-9">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.cancelCondition' | translate }}
+      </label>
+
+      <input #cancelCondition="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="cancelCondition"
+             [(ngModel)]="model.cancelCondition"
+             [title]="model.cancelCondition || ''"
+             [required]="model.applicationOneType?.alias == 'refuseContract'"
+             [pattern]="cyrillicNumberRegExp"
+             maxlength="300"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.paymentPeriod' | translate }}
+        <app-help-tooltip class="ml-1"
+                          tooltipText="В месеци">
+        </app-help-tooltip>
+      </label>
+
+      <input #paymentPeriod="ngModel"
+             type="number"
+             name="paymentPeriod"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.paymentPeriod"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             maxlength="3"
+             min="0"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'expirationOfFreePeriod' || model.applicationOneType?.alias == 'earlyDellability' || model.applicationOneType?.alias == 'enforcementAction' || model.applicationOneType?.alias == 'repaymentOfCreditObligation'"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.creditSize' | translate }}
+      </label>
+
+      <input #creditSize="ngModel"
+             type="number"
+             name="creditSize"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.creditSize"
+             [required]="model.applicationOneType?.alias == 'newContract'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.semsterTax' | translate }}
+      </label>
+
+      <input #semesterTax="ngModel"
+             type="number"
+             name="semesterTax"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.semesterTax"
+             [required]="model.applicationOneType?.alias == 'newContract'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.interest' | translate }} (%)
+      </label>
+
+      <input #interest="ngModel"
+             type="number"
+             name="interest"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.interest"
+             [required]="model.applicationOneType?.alias == 'newContract'"
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-12">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.contract.description' | translate }}
+      </label>
+
+      <textarea #description="ngModel"
+                class="form-control form-control-sm"
+                type="text"
+                name="description"
+                rows="3"
+                [(ngModel)]="model.description"
+                maxlength="500"
+                [disabled]="!isEditMode"></textarea>
+    </div>
+  </div>
+</ng-form>

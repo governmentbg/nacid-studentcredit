@@ -1,0 +1,51 @@
+.cards {}
+
+.custom-card {
+  color: #000000;
+  border-radius: 5px;
+  font-size: 20px;
+  text-align: center;
+  margin: auto;
+  padding: 2em;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  background: #fff;
+}
+
+.custom-card:hover {
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.30);
+}
+
+.custom-card-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 2em;
+}
+
+.titles {
+  color: #000000;
+  font-size: 20px;
+  text-align: center;
+  margin: auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 3em;
+}
+
+.title-secondary {
+  margin: auto;
+  margin-bottom: 2em;
+}
+
+.search-bar {
+  margin: auto;
+  margin-bottom: 2em;
+}
+
+.no-result {
+  font-size: 24px;
+  color: red;
+  text-align: center;
+}

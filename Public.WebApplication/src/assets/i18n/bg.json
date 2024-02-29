@@ -1,0 +1,56 @@
+{
+  "loadingIndicator": "Моля, изчакайте...",
+  "common": {
+    "nacid": "НАЦИД",
+    "studentCreditPortal": "Портал Студентски кредити",
+    "bankRegister": "Регистър на банките",
+    "usefulInformation": "Полезна информация",
+    "contacts": "Контакти"
+  },
+  "footer": {
+    "rights_reserved": "\u00a0Всички\u00a0права\u00a0запазени"
+  },
+  "search": {
+    "bankRegister": "Регистър на банките",
+    "description": "Регистърът съдържа информация за банките, сключили типов договор с министъра на образованието и науката, които имат право да отпускат кредити на студенти и докторанти с държавна финансова подкрепа.",
+    "placeholder": "Търсене...",
+    "noResult": "Няма намерени резултати"
+  },
+  "buttons": {
+    "search": "Търсене"
+  },
+  "usefulInformation": {
+    "title": "Полезна информация",
+    "description": " Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.",
+    "questionOne": {
+      "title": "На какви условия трябва да отговарям за да получва кредит?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    },
+    "questionTwo": {
+      "title": "В какво се изразява държавната финансова подкрепа?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    },
+    "questionThree": {
+      "title": "Кога трябва да започна да връщам кредита?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    }
+  },
+  "bank": {
+    "bulstat": "ЕИК",
+    "address": "Адрес",
+    "contract": "Типов договор",
+    "contractRequirements": "Условия за кредитиране",
+    "details": "Виж детайли"
+  },
+  "contacts": {
+    "about": "За нас",
+    "connections": "Връзки",
+    "information": "Информация",
+    "links": {
+      "studentCredit": "Студентски кредити",
+      "NACID": "НАЦИД",
+      "generalRules": "Общи правила",
+      "privacyPolicy": "Политика за поверителност"
+    }
+  }
+}

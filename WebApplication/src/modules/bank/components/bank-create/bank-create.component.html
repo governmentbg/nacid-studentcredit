@@ -1,0 +1,145 @@
+<div class="card">
+  <div class="card-header"
+       style="display: flex; align-items: center; justify-content: space-between;">
+    {{ 'bank.create.title' | translate}}
+
+    <div style="margin-left: auto;">
+      <button class="btn btn-primary mr-3 pl-4 pr-4"
+              style="display: inline-flex; align-items: center;"
+              [disabled]="!creationForm.valid"
+              (click)="create()">
+        {{ 'buttons.new' | translate}}
+      </button>
+
+      <button class="btn btn-secondary pl-4 pr-4"
+              style="display: inline-flex; align-items: center;"
+              [routerLink]="'../../bank'">
+        {{ 'buttons.cancel' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form #creationForm="ngForm">
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-9">
+          <label class="d-inline-flex">
+            {{ 'bank.create.name' | translate}}
+          </label>
+          <input #name="ngModel"
+                 type="text"
+                 name="name"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.name"
+                 required>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3">
+          <label>{{ 'bank.create.bulstat' | translate}}</label>
+          <input #bulstat="ngModel"
+                 type="text"
+                 name="bulstat"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.bulstat"
+                 required="">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="d-inline-flex">
+            {{ 'bank.create.address' | translate}}
+          </label>
+          <input #address="ngModel"
+                 type="text"
+                 name="address"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.address"
+                 required>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let contract of model.contracts; let i = index">
+        <div *ngIf="contract.type === contractTypes.concluded"
+             class="row">
+          <div class="form-group col-sm-12 col-md-8">
+            <label class="d-inline-flex">
+              {{ 'bank.create.concludedFile' | translate}}
+            </label>
+            <app-file-upload #concludedFile="ngModel"
+                             name="concludedFile"
+                             [(ngModel)]="contract.file"
+                             [required]="false"></app-file-upload>
+          </div>
+
+          <div class="form-group col-sm-12 col-md-2">
+            <label class="d-inline-flex">
+              {{ 'bank.create.number' | translate}}
+            </label>
+            <input #concludednumber="ngModel"
+                   type="text"
+                   name="concludedNumber"
+                   class="form-control form-control-sm"
+                   [(ngModel)]="contract.number"
+                   required>
+          </div>
+
+          <div class="form-group col-sm-12 col-md-2">
+            <label class="d-inline-flex align-items-center">
+              {{ 'bank.create.concludedDate' | translate }}
+            </label>
+            <div class="input-group input-group-sm">
+              <input class="form-control"
+                     name="concludedDate"
+                     ngbDatepicker
+                     [ngStyle]="{'border': concludedDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                     #concludedDate="ngModel"
+                     #concludedDateDatepicker="ngbDatepicker"
+                     placeholder="дд/мм/гггг"
+                     [(ngModel)]="contract.date"
+                     (keypress)="sharedService.filterDate($event)"
+                     validDate
+                     required
+                     maxlength="10">
+              <div class="input-group-append">
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="concludedDateDatepicker.toggle()"
+                        type="button">
+                  <app-icon icon="calendar2-event"
+                            width="12"
+                            height="12"></app-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="d-inline-flex">
+            {{ 'bank.create.terms' | translate}}
+          </label>
+          <textarea name="description"
+                    class="form-control form-control-sm"
+                    maxlength="1024"
+                    [(ngModel)]="model.description"
+                    rows="3"
+                    [autofocus]="true"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-8">
+          <label class="d-inline-flex">
+            {{ 'bank.create.termsFile' | translate}}
+          </label>
+          <app-file-upload #termsFile="ngModel"
+                           name="termsFile"
+                           [(ngModel)]="model.terms.file"
+                           [required]="false"></app-file-upload>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

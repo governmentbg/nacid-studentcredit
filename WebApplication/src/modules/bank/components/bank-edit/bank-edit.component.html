@@ -1,0 +1,337 @@
+<div class="card">
+  <div class="card-header"
+       style="display: flex; align-items: center; justify-content: space-between;">
+    {{ 'bank.table.name' | translate}}
+
+    <div style="margin-left: auto;">
+
+      <button *ngIf="!model.isActive && !isEditMode && !isBankUser"
+              class="btn btn-sm btn-success mr-3 pl-4 pr-4"
+              style="display: inline-flex; align-items: center;"
+              (click)="changeStatus()">
+        {{ 'buttons.activate' | translate}}
+      </button>
+
+      <ng-container *ngIf="!isEditMode && model.isActive">
+        <button class="btn btn-sm btn-primary mr-3 pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="edit()">
+          {{ 'buttons.edit' | translate}}
+        </button>
+
+        <button *ngIf="!isBankUser"
+                class="btn btn-sm btn-danger mr-3 pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="changeStatus()">
+          {{ 'buttons.deactivate' | translate}}
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="isEditMode && model.isActive">
+        <button class="btn btn-sm btn-primary mr-3 pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="save()">
+          {{ 'buttons.save' | translate}}
+        </button>
+
+        <button class="btn btn-sm btn-secondary pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="cancelEdit()">
+          {{ 'buttons.cancel' | translate}}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form #creationForm="ngForm">
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-9">
+          <label class="d-inline-flex">
+            {{ 'bank.create.name' | translate}}
+          </label>
+          <input #name="ngModel"
+                 type="text"
+                 name="name"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.name"
+                 [disabled]="!isEditMode || isBankUser"
+                 required>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3">
+          <label>{{ 'bank.create.bulstat' | translate}}</label>
+          <input #bulstat="ngModel"
+                 type="text"
+                 name="bulstat"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.bulstat"
+                 [disabled]="!isEditMode || isBankUser"
+                 required="">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="d-inline-flex">
+            {{ 'bank.create.address' | translate}}
+          </label>
+          <input #address="ngModel"
+                 type="text"
+                 name="address"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.address"
+                 [disabled]="!isEditMode || isBankUser"
+                 required>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let contract of model.contracts; let i = index">
+        <div *ngIf="contract.type === contractTypes.concluded"
+             class="row">
+          <div class="form-group col-sm-12 col-md-8">
+            <label class="d-inline-flex">
+              {{ 'bank.create.concludedFile' | translate}}
+            </label>
+            <app-file-upload #concludedFile="ngModel"
+                             name="concludedFile"
+                             [(ngModel)]="contract.file"
+                             [disabled]="!isEditMode || isBankUser"
+                             [required]="false"></app-file-upload>
+          </div>
+
+          <div class="form-group col-sm-12 col-md-2">
+            <label class="d-inline-flex">
+              {{ 'bank.create.number' | translate}}
+            </label>
+            <input #concludednumber="ngModel"
+                   type="text"
+                   name="concludedNumber"
+                   class="form-control form-control-sm"
+                   [(ngModel)]="contract.number"
+                   [disabled]="!isEditMode || isBankUser"
+                   required>
+          </div>
+
+          <div class="form-group col-sm-12 col-md-2">
+            <label class="d-inline-flex align-items-center">
+              {{ 'bank.create.concludedDate' | translate }}
+            </label>
+            <div class="input-group input-group-sm">
+              <input class="form-control"
+                     name="concludedDate"
+                     ngbDatepicker
+                     [ngStyle]="{'border': concludedDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                     #concludedDate="ngModel"
+                     #concludedDateDatepicker="ngbDatepicker"
+                     placeholder="дд/мм/гггг"
+                     [(ngModel)]="contract.date"
+                     (keypress)="sharedService.filterDate($event)"
+                     validDate
+                     [disabled]="!isEditMode || isBankUser"
+                     required
+                     maxlength="10">
+              <div class="input-group-append">
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="concludedDateDatepicker.toggle()"
+                        [disabled]="!isEditMode"
+                        type="button">
+                  <app-icon icon="calendar2-event"
+                            width="12"
+                            height="12"></app-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="d-inline-flex">
+            {{ 'bank.create.terms' | translate}}
+          </label>
+          <textarea name="description"
+                    class="form-control form-control-sm"
+                    maxlength="1024"
+                    [(ngModel)]="model.description"
+                    rows="4"
+                    [autofocus]="true"
+                    [disabled]="!isEditMode"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-8">
+          <label class="d-inline-flex">
+            {{ 'bank.create.termsFile' | translate}}
+          </label>
+          <app-file-upload #termsFile="ngModel"
+                           name="termsFile"
+                           [(ngModel)]="model.terms.file"
+                           [disabled]="!isEditMode"
+                           [required]="false"></app-file-upload>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-header"
+       style="display: flex; align-items: center; justify-content: space-between;">
+    {{ 'bank.change.title' | translate}}
+
+    <div *ngIf="!isTerminated"
+         style="margin-left: auto;">
+      <button *ngIf="!newContractChange && !contractTerminate && model.isActive && !isBankUser"
+              class="btn btn-sm btn-outline-primary mr-3 pl-4 pr-4"
+              style="display: inline-flex; align-items: center;"
+              (click)="addContract(contractTypes.changed)">
+        {{ 'bank.buttons.changeContract' | translate}}
+      </button>
+
+      <ng-container *ngIf="newContractChange && model.isActive">
+        <button class="btn btn-sm btn-primary mr-3 pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="save()">
+          {{ 'buttons.save' | translate}}
+        </button>
+
+        <button class="btn btn-sm btn-secondary pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="cancelChange()">
+          {{ 'buttons.cancel' | translate}}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <ng-container *ngFor="let contract of model.contracts; let i = index">
+      <div *ngIf="contract.type === contractTypes.changed"
+           class="row">
+        <div class="form-group col-sm-12 col-md-8">
+          <label class="d-inline-flex">
+            {{ 'bank.create.changedFile' | translate}}
+          </label>
+          <app-file-upload #changedFile="ngModel"
+                           name="changedFile"
+                           [(ngModel)]="contract.file"
+                           [disabled]="!newContractChange"
+                           [required]="false"></app-file-upload>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-2">
+          <label class="d-inline-flex align-items-center">
+            {{ 'bank.create.changedDate' | translate }}
+          </label>
+          <div class="input-group input-group-sm">
+            <input class="form-control"
+                   name="changedDate"
+                   ngbDatepicker
+                   [ngStyle]="{'border': changedDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                   #changedDate="ngModel"
+                   #changedDateDatepicker="ngbDatepicker"
+                   placeholder="дд/мм/гггг"
+                   [(ngModel)]="contract.date"
+                   (keypress)="sharedService.filterDate($event)"
+                   [disabled]="!newContractChange"
+                   required
+                   validDate
+                   maxlength="10">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="changedDateDatepicker.toggle()"
+                      [disabled]="!newContractChange"
+                      type="button">
+                <app-icon icon="calendar2-event"
+                          width="12"
+                          height="12"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-header"
+       style="display: flex; align-items: center; justify-content: space-between;">
+    {{ 'bank.terminate.title' | translate}}
+
+    <div *ngIf="!isTerminated"
+         style="margin-left: auto;">
+      <button *ngIf="!contractTerminate && !newContractChange && model.isActive && !isBankUser"
+              class="btn btn-sm btn-outline-danger mr-3 pl-4 pr-4"
+              style="display: inline-flex; align-items: center;"
+              (click)="addContract(contractTypes.terminated)">
+        {{ 'bank.buttons.terminateContract' | translate}}
+      </button>
+
+      <ng-container *ngIf="contractTerminate && model.isActive">
+        <button class="btn btn-sm btn-primary mr-3 pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="save()">
+          {{ 'buttons.save' | translate}}
+        </button>
+
+        <button class="btn btn-sm btn-secondary pl-4 pr-4"
+                style="display: inline-flex; align-items: center;"
+                (click)="cancelTerminate()">
+          {{ 'buttons.cancel' | translate}}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="card-body">
+    <ng-container *ngFor="let contract of model.contracts; let i = index">
+      <div *ngIf="contract.type === contractTypes.terminated"
+           class="row">
+        <div class="form-group col-sm-12 col-md-8">
+          <label class="d-inline-flex">
+            {{ 'bank.create.terminatedFile' | translate}}
+          </label>
+          <app-file-upload #terminatedFile="ngModel"
+                           name="terminatedFile"
+                           [(ngModel)]="contract.file"
+                           [disabled]="!contractTerminate"
+                           [required]="false"></app-file-upload>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-2">
+          <label class="d-inline-flex align-items-center">
+            {{ 'bank.create.terminatedDate' | translate }}
+          </label>
+          <div class="input-group input-group-sm">
+            <input class="form-control"
+                   name="terminatedDate"
+                   ngbDatepicker
+                   [ngStyle]="{'border': terminatedDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                   #terminatedDate="ngModel"
+                   #terminatedDateDatepicker="ngbDatepicker"
+                   placeholder="дд/мм/гггг"
+                   [(ngModel)]="contract.date"
+                   (keypress)="sharedService.filterDate($event)"
+                   [disabled]="!contractTerminate"
+                   required
+                   validDate
+                   maxlength="10">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="terminatedDateDatepicker.toggle()"
+                      [disabled]="!contractTerminate"
+                      type="button">
+                <app-icon icon="calendar2-event"
+                          width="12"
+                          height="12"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

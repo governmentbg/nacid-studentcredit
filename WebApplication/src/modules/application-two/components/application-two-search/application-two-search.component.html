@@ -1,0 +1,151 @@
+<div class="search-panel">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label>{{ 'credit.search.bankName' | translate }}</label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="filter.bank"
+                        (ngModelChange)="filter.bankId = $event?.id"
+                        [disabled]="isBankUser"
+                        [allowClear]="true"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>От</label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="fromDate"
+               [ngStyle]="{'border': fromDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               ngbDatepicker
+               #fromDate="ngModel"
+               #fromDatepickerFrom="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="filter.fromDate"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="fromDatepickerFrom.toggle()"
+                  type="button">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>До</label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="toDate"
+               [ngStyle]="{'border': toDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               ngbDatepicker
+               #toDate="ngModel"
+               #toDatepickerFrom="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="filter.toDate"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="toDatepickerFrom.toggle()"
+                  type="button">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row utility-btns">
+    <div class="col-sm-12">
+
+      <div *ngIf="isBankUser"
+           class="float-md-left">
+        <button type="button"
+                class="btn btn-outline-primary btn-sm"
+                routerLink="/application-two/new"
+                awaitable>
+
+          Създай прил. №2
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-success btn-sm ml-3"
+                id="btnFile"
+                onclick="upload.click();"
+                awaitable>
+
+          Импортирай прил. №2
+        </button>
+        <input style="display: none;"
+               type="file"
+               id="upload"
+               accept=".xlsx"
+               (change)="importExcel($event)" />
+      </div>
+
+      <div class="float-md-right d-flex">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table search-table table-bordered mt-5">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 12%;">Дата на подаване</th>
+      <th scope="col"
+          style="width: 23%;">Банка</th>
+      <th scope="col"
+          style="width: 16%;">Общ размер</th>
+      <th scope="col"
+          style="width: 14%;">Сключени договори</th>
+      <th scope="col"
+          style="width: 10%;">Към дата</th>
+      <th scope="col"
+          style="width: 8%;">Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let application of model">
+      <td>{{ application.creationDate | date :'dd.MM.yyyy' }}</td>
+      <td>{{ application.bank?.name }} <br> {{ application.bank?.bulstat }}</td>
+      <td>{{ application.totalSum | number : '1.2-2' }}</td>
+      <td>{{ application.creditCount }}</td>
+      <td>{{ application.recordDate | date :'dd.MM.yyyy' }}</td>
+      <td>
+        <a class="table-action-btn"
+           awaitable
+           [routerLink]="['/application-two', application.id]">
+          {{ 'buttons.review' | translate }}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,76 @@
+<table class="table search-table table-bordered mt-4">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 15%;">{{ 'credit.search.creditInfo' | translate }}</th>
+      <th *ngIf="!isApplicationFour"
+          scope="col"
+          style="width: 15%;">{{ 'credit.search.creditTypeHeader' | translate }}</th>
+      <th *ngIf="isApplicationFour"
+          scope="col"
+          style="width: 20%;">Относно</th>
+      <th *ngIf="!isApplicationFour"
+          scope="col">{{ 'credit.search.creditReceiver' | translate }}</th>
+      <th scope="col">{{ 'credit.search.bank' | translate }}</th>
+      <th scope="col">Статус</th>
+      <th *ngIf="!hasActions"
+          scope="col"
+          style="width: 7%;">{{ 'buttons.details' | translate }}</th>
+      <th *ngIf="hasActions"
+          scope="col"
+          style="width: 19%;">{{ 'buttons.action' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="!credits.length">
+      <td colspan="6"
+          style="text-align: center">
+        Няма намерени резултати.
+      </td>
+    </tr>
+    <tr *ngFor="let credit of credits">
+      <td>№{{ credit.creditNumber }} <br> {{ credit.contractDate | date :'dd.MM.yyyy' }}</td>
+      <td *ngIf="!isApplicationFour">{{ creditTypeEnumLocalization[credit.creditType] }}</td>
+      <td *ngIf="isApplicationFour">{{ credit.applicationType?.name }}</td>
+      <td *ngIf="!isApplicationFour">{{ credit.studentFullName }} <br> ЕГН: {{ credit.uin }} <br> ЕАН: {{ credit.uan }}
+        <br> {{ educationTypeEnumLocalization[credit.educationType] }}, {{ credit.educationalQualification?.name }}
+        <br> {{ credit.institution }}
+      </td>
+      <td>{{ credit.bank?.name }}</td>
+      <td>{{ commitStateEnumLocalization[credit.commitState] }}</td>
+      <td *ngIf="!hasActions"
+          style="text-align:center; vertical-align: middle;">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary"
+                awaitable
+                [routerLink]="isApplicationFour == true 
+                ? ['/credit', credit.applicationOneId, 'four', credit.id]
+                : ['/credit', credit.rootId, 'one', credit.id]">
+          <app-icon icon="search"
+                    width="13"
+                    height="13"></app-icon>
+        </button>
+      </td>
+      <td *ngIf="hasActions"
+          class="credit-search-action">
+        <a class="table-action-btn"
+           awaitable
+           [routerLink]="['/credit', credit.id]">
+          {{ 'buttons.review' | translate }}
+        </a>
+        <hr class="horizontal-line">
+        <a class="table-action-btn"
+           awaitable
+           (click)="createApplicationOne(credit.uin, credit.creditType, credit.creditNumber, credit.bank.id, credit.id)">
+          {{ 'credit.search.createApplicationOne' | translate }}
+        </a>
+        <hr class="horizontal-line">
+        <a class="table-action-btn"
+           awaitable
+           (click)="createApplicationFour(credit.uin, credit.creditType, credit.creditNumber, credit.bank.id, credit.id)">
+          {{ 'credit.search.createApplicationFour' | translate }}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,221 @@
+<div class="modal-header justify-content-center">
+  <h5>Данни за месец {{ months[model.month]}}</h5>
+</div>
+
+<div class="modal-body">
+  <form #resultForm="ngForm">
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Договорен размер на кредитите
+        </label>
+
+        <input #totalSum="ngModel"
+               type="number"
+               name="totalSum"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.totalSum"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Предоговорени (+) увеличение (-) намаление
+        </label>
+
+        <input #renegotiatedSum="ngModel"
+               type="number"
+               name="renegotiatedSum"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.renegotiatedSum"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-5">
+        <label class="d-inline-flex align-items-center">
+          Усвоени за такси за обучение или за издръжка средства (главници)
+        </label>
+
+        <input #principalAbsorbed="ngModel"
+               type="number"
+               name="principalAbsorbed"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.principalAbsorbed"
+               [required]="true"
+               step=".01">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Остатък за усвояване
+        </label>
+
+        <input #remainderToDigest="ngModel"
+               type="number"
+               name="remainderToDigest"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.remainderToDigest"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-9">
+        <label class="d-inline-flex align-items-center">
+          Начислена по време на гратисния период лихва
+          <app-help-tooltip class="ml-1"
+                            tooltipText="Начислена по време на гратисния период лихва върху усвоената част от кредита, която се капитализира годишно">
+          </app-help-tooltip>
+        </label>
+
+        <input #interestOverPrincipal="ngModel"
+               type="number"
+               name="interestOverPrincipal"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.interestOverPrincipal"
+               [required]="true"
+               step=".01">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-6">
+        <label class="d-inline-flex align-items-center">
+          Извършени плащания - главници
+        </label>
+
+        <input #principalPaid="ngModel"
+               type="number"
+               name="principalPaid"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.principalPaid"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-6">
+        <label class="d-inline-flex align-items-center">
+          Извършени плащания - лихви
+        </label>
+
+        <input #interestPaid="ngModel"
+               type="number"
+               name="interestPaid"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.interestPaid"
+               [required]="true"
+               step=".01">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Отписан дълг - главници
+        </label>
+
+        <input #debtWrittenOff="ngModel"
+               type="number"
+               name="debtWrittenOff"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.debtWrittenOff"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Опростен дълг - главници
+        </label>
+
+        <input #simpleDebtPrincipal="ngModel"
+               type="number"
+               name="simpleDebtPrincipal"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.simpleDebtPrincipal"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Опростен дълг - лихви
+        </label>
+
+        <input #simpleDebtInterest="ngModel"
+               type="number"
+               name="simpleDebtInterest"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.simpleDebtInterest"
+               [required]="true"
+               step=".01">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Активирани гаранции - главници
+        </label>
+
+        <input #warrantiesActivatedPrincipal="ngModel"
+               type="number"
+               name="warrantiesActivatedPrincipal"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.warrantiesActivatedPrincipal"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Активирани гаранции - лихви
+        </label>
+
+        <input #warrantiesActivatedInterest="ngModel"
+               type="number"
+               name="warrantiesActivatedInterest"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.warrantiesActivatedInterest"
+               [required]="true"
+               step=".01">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Брой кредити
+        </label>
+
+        <input #creditCount="ngModel"
+               type="number"
+               name="creditCount"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.creditCount">
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-sm btn-success"
+          (click)="save()"
+          [disabled]="!resultForm.form.valid">
+    Запази
+  </button>
+
+  <button type="button"
+          class="btn btn-sm btn-danger"
+          (click)="modal.close()">
+    Затвори
+  </button>
+</div>

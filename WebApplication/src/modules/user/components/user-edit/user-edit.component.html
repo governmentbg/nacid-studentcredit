@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-header"
+       style="display: flex; align-items: center; justify-content: space-between;">
+    {{ 'user.userInfo.title' | translate }}
+    <div style="margin-left:auto">
+      <ng-container *ngIf="!isEditMode">
+        <button *ngIf="model.status == userStatus.active"
+                class="btn btn-sm btn-danger mr-1"
+                (click)="changeUserActiveStatus()">
+          {{ 'buttons.deactivate' | translate }}
+        </button>
+
+        <button *ngIf="model.status == userStatus.deactivated"
+                class="btn btn-sm btn-primary mr-1"
+                (click)="changeUserActiveStatus()">
+          {{ 'buttons.activate' | translate }}
+        </button>
+
+        <button *ngIf="model.status == userStatus.inactive"
+                class="btn btn-sm btn-primary mr-1"
+                (click)="sendActivationLink(model.id)">
+          {{ 'user.userInfo.inactive' | translate }}
+        </button>
+      </ng-container>
+      <ng-container>
+        <button *ngIf="!isEditMode"
+                class="btn btn-sm btn-primary"
+                (click)="edit()">
+          {{ 'buttons.edit' | translate }}
+        </button>
+
+        <ng-container *ngIf="isEditMode">
+          <button class="btn btn-sm btn-primary mr-1"
+                  (click)="save()"
+                  [disabled]="!canSubmit">
+            {{ 'buttons.save' | translate }}
+          </button>
+
+          <button class="btn btn-sm btn-secondary"
+                  (click)="cancelEdit()">
+            {{ 'buttons.cancel' | translate }}
+          </button>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <user-common [model]="model"
+                 (isValidForm)="changeFormValidStatus('user-common', $event)"
+                 [isEditMode]="isEditMode"></user-common>
+  </div>
+</div>

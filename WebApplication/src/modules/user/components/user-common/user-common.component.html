@@ -1,0 +1,119 @@
+<form #userForm="ngForm">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.firstName' | translate }}
+      </label>
+      <input #firstName="ngModel"
+             type="text"
+             name="firstName"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.firstName"
+             [disabled]="!isEditMode"
+             required
+             [pattern]="cyrillicRegExp"
+             minlength="2"
+             maxlength="20">
+    </div>
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.middleName' | translate }}
+      </label>
+      <input #middleName="ngModel"
+             type="text"
+             name="middleName"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.middleName"
+             [disabled]="!isEditMode"
+             [pattern]="cyrillicRegExp"
+             minlength="2"
+             maxlength="20">
+    </div>
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.lastName' | translate }}
+      </label>
+      <input #firstName="ngModel"
+             type="text"
+             name="lastName"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.lastName"
+             [disabled]="!isEditMode"
+             required
+             [pattern]="cyrillicRegExp"
+             minlength="2"
+             maxlength="20">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.email' | translate }}
+      </label>
+      <input #email="ngModel"
+             type="text"
+             name="mail"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.email"
+             [disabled]="!isEditMode"
+             (keypress)="sharedService.filterMail($event)"
+             required
+             pattern="{{emailRegex}}"
+             maxlength="40">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.repeatable.phone' | translate }}
+      </label>
+      <input #phone="ngModel"
+             type="text"
+             name="phone"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.phone"
+             [disabled]="!isEditMode"
+             required
+             (keypress)="sharedService.filterPhone($event, model.phone)"
+             minlength="9"
+             maxlength="14">
+    </div>
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.role' | translate }}
+      </label>
+      <app-async-select #role="ngModel"
+                        name="role"
+                        restUrl="Role/Select"
+                        [(ngModel)]="model.role"
+                        (ngModelChange)="model.roleId = $event.id; selectRole($event)"
+                        [disabled]="!isEditMode"
+                        [required]="true"></app-async-select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-8"
+         *ngIf="model.role">
+      <label class="d-inline-flex">
+        {{ 'user.userInfo.institutionName' | translate }}
+      </label>
+      <app-async-select *ngIf="model.role.alias === userRoleAliases.BANK_ACTIVE || model.role.alias === userRoleAliases.BANK_PASSIVE"
+                        #institutionType="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="model.bank"
+                        (ngModelChange)="model.bankId = $event.id"
+                        [disabled]="!isEditMode"
+                        [required]="true"></app-async-select>
+      <input *ngIf="model.role.alias === userRoleAliases.ADMINISTRATOR"
+             #institutionName="ngModel"
+             type="text"
+             name="institutionName"
+             class="form-control form-control-sm"
+             [ngModel]="monName"
+             [disabled]="true"
+             required
+             minlength="9"
+             maxlength="14">
+    </div>
+  </div>
+</form>

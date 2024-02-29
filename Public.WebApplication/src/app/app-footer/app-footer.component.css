@@ -1,0 +1,12 @@
+.disclaimer {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  background: #eee;
+}
+
+footer {
+  margin-top: 50px;
+}

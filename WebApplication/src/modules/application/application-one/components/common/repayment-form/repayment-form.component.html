@@ -1,0 +1,63 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.repayment.paymentDate' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="paymentDate"
+               ngbDatepicker
+               [ngStyle]="{'border': paymentDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #paymentDate="ngModel"
+               #paymentDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.paymentDate"
+               (keypress)="sharedService.filterDate($event)"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="paymentDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.repayment.earlyPaymentDate' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="earlyPaymentDate"
+               ngbDatepicker
+               [ngStyle]="{'border': earlyPaymentDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #earlyPaymentDate="ngModel"
+               #earlyPaymentDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.earlyPaymentDate"
+               (keypress)="sharedService.filterDate($event)"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="earlyPaymentDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

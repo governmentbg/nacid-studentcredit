@@ -1,0 +1,132 @@
+<div class="d-flex mb-1"
+     style="align-items: baseline;">
+
+  <div style="display: contents;">
+    <p style="font-weight: bold;">Текущ статус: &nbsp;</p>
+
+    <h6 style="color: red; font-weight: bold;">
+      {{ commitStateEnumLocalization[model.commitState] }}
+    </h6>
+    <ng-container
+                  *ngIf="model.changeStateDescription != null && model.changeStateDescription != '' && model.changeStateDescription != 'undefined'">
+      &nbsp;(<p
+         style="width:400px; max-width: fit-content; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: red;">
+        {{model.changeStateDescription}}</p><span class="d-flex">
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="model.changeStateDescription">
+        </app-help-tooltip>)
+      </span>
+    </ng-container>
+
+    <div style="margin-left: auto;">
+      <app-export *ngIf="!isEditMode && model.commitState == commitState.approved"
+                  restController="ApplicationFour/Pdf"
+                  filename="applicationFour.pdf"
+                  [contentType]="contentTypes.PDF"
+                  [model]="model">
+        <ng-template #exportBtnTemplate>
+          <button type="button"
+                  class="btn btn-sm btn-secondary">
+            <app-icon class="mr-1"
+                      icon="file-earmark-richtext"
+                      width="16"
+                      height="16"></app-icon>
+            {{ 'buttons.pdfExport' | translate }}
+          </button>
+        </ng-template>
+      </app-export>
+
+      <ng-container *ngIf="isAdminUser">
+        <ng-container *ngIf="!isEditMode && model.commitState == commitState.pending">
+          <button class="btn btn-sm btn-success ml-2"
+                  (click)="approve()">
+            {{ 'buttons.approve' | translate }}
+          </button>
+
+          <button class="btn btn-sm btn-primary ml-2"
+                  (click)="returnForModification(applicationHistoryType.modification, commitState.modification)">
+            {{ 'buttons.modification' | translate }}
+          </button>
+
+          <button class="btn btn-sm btn-danger ml-2"
+                  (click)="deny()">
+            {{ 'buttons.deny' | translate }}
+          </button>
+        </ng-container>
+
+        <button *ngIf="!isEditMode && model.commitState == commitState.approved"
+                class="btn btn-sm btn-primary ml-2"
+                (click)="returnForModification(applicationHistoryType.edit, commitState.approvedModification)">
+          {{ 'buttons.technicalModification' | translate }}
+        </button>
+      </ng-container>
+
+      <button *ngIf="isEditMode && model.commitState == commitState.modification"
+              class="btn btn-sm btn-success"
+              (click)="finishModification(commitState.pending)"
+              [disabled]="!canSubmit">
+        Запази
+      </button>
+
+      <button *ngIf="isEditMode && model.commitState == commitState.approvedModification"
+              class="btn btn-sm btn-success"
+              (click)="finishModification(commitState.approved)"
+              [disabled]="!canSubmit">
+        Запази
+      </button>
+
+      <ng-container
+                    *ngIf="(model.commitState == commitState.modification || model.commitState == commitState.approvedModification)">
+        <button *ngIf="!isEditMode"
+                class="btn btn-sm btn-primary"
+                (click)="enableModification()">
+          Редактирай
+        </button>
+
+        <button *ngIf="isEditMode"
+                class="btn btn-sm btn-danger ml-2"
+                (click)="cancelModification()">
+          {{ 'buttons.cancel' | translate }}
+        </button>
+      </ng-container>
+
+      <button *ngIf="model.hasHistory == true && !isEditMode"
+              class="btn btn-sm btn-primary ml-2"
+              [routerLink]="['/credit', parentRouteId, 'four', applicationFourId, 'history', model.rootId]">
+        {{ 'applications.history.tableOfHistory' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-container>
+  <app-part-panel header="{{ 'applicationFour.new.about.header' | translate }}">
+    <app-application-four-about-form [(model)]="model"
+                                     (isValidForm)="changeFormValidStatus('applicationFourAbout', $event)"
+                                     [isEditMode]="isEditMode"
+                                     [isViewMode]="true"></app-application-four-about-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationFour.new.bank.header' | translate }}">
+    <app-bank-with-account-form [(model)]="model"
+                                (isValidForm)="changeFormValidStatus('bank', $event)"
+                                [isEditMode]="isEditMode"></app-bank-with-account-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationFour.new.studentInfo.header' | translate }}">
+    <app-student-info-short-form [(model)]="model"
+                                 (isValidForm)="changeFormValidStatus('studentInfo', $event)"
+                                 [isEditMode]="false"></app-student-info-short-form>
+  </app-part-panel>
+
+  <app-part-panel header="{{ 'applicationFour.new.creditInfo.header' | translate }}">
+    <app-credit-info-short-form [(model)]="model"
+                                (isValidForm)="changeFormValidStatus('creditInfo', $event)"
+                                [isEditMode]="isEditMode"></app-credit-info-short-form>
+  </app-part-panel>
+
+  <app-application-four-attached-files [(model)]="model"
+                                       (isValidForm)="changeFormValidStatus('files', $event)"
+                                       [isEditMode]="isEditMode"></app-application-four-attached-files>
+
+</ng-container>

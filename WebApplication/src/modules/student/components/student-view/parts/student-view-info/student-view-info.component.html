@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="form-group col-sm-9">
+    <label>{{ 'student.fullName' | translate }}</label>
+    <input class="form-control form-control-sm"
+           type="text"
+           name="fullName"
+           #fullName="ngModel"
+           disabled
+           [(ngModel)]="model.fullName">
+  </div>
+
+  <div class="form-group col-sm-12 col-md-3">
+    <label class="d-inline-flex align-items-center">
+      Дата на раждане
+    </label>
+
+    <div class="input-group input-group-sm">
+      <input class="form-control"
+             name="birthDate"
+             ngbDatepicker
+             [ngStyle]="{'border': birthDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+             #birthDate="ngModel"
+             #birthDateDatepicker="ngbDatepicker"
+             placeholder="дд/мм/гггг"
+             [(ngModel)]="model.birthDate"
+             (keypress)="sharedService.filterDate($event)"
+             required
+             [disabled]="true"
+             maxlength="20">
+      <div class="input-group-append">
+        <button class="btn btn-sm btn-outline-primary"
+                (click)="birthDateDatepicker.toggle()"
+                type="button"
+                [disabled]="true">
+          <app-icon icon="calendar2-event"
+                    width="12"
+                    height="12"></app-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="form-group col-sm-3">
+    <label>{{ 'student.uan' | translate }}</label>
+    <input class="form-control form-control-sm"
+           type="text"
+           name="uan"
+           #uan="ngModel"
+           disabled
+           [(ngModel)]="model.uan">
+  </div>
+
+  <div class="form-group col-sm-3"
+       *ngIf="model.uin">
+    <label>{{ 'student.uin' | translate }}</label>
+    <input class="form-control form-control-sm"
+           type="text"
+           name="uin"
+           #uin="ngModel"
+           disabled
+           [(ngModel)]="model.uin">
+  </div>
+  <div class="form-group col-sm-3">
+    <label>{{ 'student.foreignerNumber' | translate }}</label>
+    <input class="form-control form-control-sm"
+           type="text"
+           name="foreignerNumber"
+           #foreignerNumber="ngModel"
+           disabled
+           [(ngModel)]="model.foreignerNumber">
+  </div>
+  <div class="form-group col-sm-3">
+    <label>{{ 'student.idnNumber' | translate }}</label>
+    <input class="form-control form-control-sm"
+           type="text"
+           name="idnNumber"
+           #idnNumber="ngModel"
+           disabled
+           [(ngModel)]="model.idnNumber">
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<app-part-panel header="Данни за приложение 5">
+  <app-application-five-info [(model)]="model"
+                             (isValidForm)="changeFormValidStatus('applicationFive', $event)"
+                             [isEditMode]="true"
+                             [isBankUser]="isBankUser"></app-application-five-info>
+</app-part-panel>
+
+<div class="d-flex mt-3">
+  <div style="margin-left: auto;">
+    <button class="btn btn-sm btn-success mr-1"
+            style="display: inline-flex; align-items: center;"
+            (click)="createApplicationFive()"
+            [disabled]="!canSubmit">
+
+      {{ 'buttons.enter' | translate }}
+    </button>
+
+    <a class="btn btn-sm btn-danger"
+       style="display: inline-flex; align-items: center;"
+       (click)="cancel()">
+
+      {{ 'buttons.cancel' | translate }}
+    </a>
+  </div>
+</div>

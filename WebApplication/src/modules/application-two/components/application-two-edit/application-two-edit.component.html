@@ -1,0 +1,48 @@
+<div class="d-flex mb-1"
+     style="align-items: baseline;">
+
+  <div style="margin-left: auto;">
+    <ng-container *ngIf="!isEditMode">
+      <app-export restController="ApplicationTwo/Excel"
+                  filename="ApplicationTwo.xlsx"
+                  [contentType]="contentTypes.EXCEL"
+                  [model]="model">
+        <ng-template #exportBtnTemplate>
+          <button type="button"
+                  class="btn btn-sm btn-success">
+            <app-icon class="mr-1"
+                      icon="file-earmark-spreadsheet"
+                      width="16"
+                      height="16"></app-icon>
+            {{ 'buttons.excelExport' | translate }}
+          </button>
+        </ng-template>
+      </app-export>
+    </ng-container>
+
+    <ng-container *ngIf="isBankUser">
+      <button *ngIf="!isEditMode"
+              class="btn btn-sm btn-primary ml-2"
+              (click)="edit()">
+        Редактирай прил. № 2
+      </button>
+
+      <ng-container *ngIf="isEditMode">
+        <button class="btn btn-sm btn-success ml-2"
+                (click)="save()"
+                [disabled]="!canSubmit">
+          Запази
+        </button>
+
+        <button class="btn btn-sm btn-danger ml-2"
+                (click)="cancelEdit()">
+          Откажи
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<app-application-two [(model)]="model"
+                     [isEditMode]="isEditMode"
+                     (isValidForm)="changeFormValidStatus('applicationTwo', $event)"></app-application-two>

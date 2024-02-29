@@ -1,0 +1,79 @@
+<div *ngFor="let personStudent of model?.universities; let i = index">
+  <div class="data-tab">
+    <div class="data-tab-header">
+      <span style="font-weight: bold"
+            [ngClass]="{
+            'text-red': personStudent.status?.alias === 'interrupted',
+            'text-green': personStudent.status?.alias === 'active',
+            'text-black': personStudent.status?.alias !== 'active' && personStudent.status?.alias !== 'interrupted'}">
+        {{ personStudent.status?.name }}</span> -
+      {{ personStudent.institution?.name }} -
+      {{ personStudent.speciality?.name }},
+      <div class="mt-2">
+        {{ personStudent.educationalQualification?.name }},
+        {{ personStudent.educationalForm?.name }},
+        {{ personStudent.researchArea?.name }},
+        {{ courseTypeEnumLocalization[personStudent?.course]}} {{ 'student.view.course' | translate }},
+        {{ personStudent?.duration }} г.
+      </div>
+    </div>
+    <div class="data-tab-body"
+         *ngIf="personStudent.status?.alias !== 'completed'">
+      <div class="form-group col-sm-3"
+           *ngIf="personStudent.status.alias === 'active'">
+        <label>{{ 'student.view.startPeriod' | translate }}</label>
+        <input class="form-control form-control-sm"
+               type="text"
+               name="startPeriod"
+               #startPeriod="ngModel"
+               disabled
+               [(ngModel)]="personStudent.startPeriod">
+      </div>
+      <div class="form-group col-sm-3"
+           *ngIf="personStudent?.finishPeriod">
+        <label class="d-inline-flex align-items-center">
+          {{ 'student.view.finishPeriod' | translate }}
+          <app-help-tooltip class="ml-1"
+                            tooltipText="{{ 'student.view.graduatedCourse' | translate }}">
+          </app-help-tooltip>
+        </label>
+        <input class="form-control form-control-sm"
+               type="text"
+               name="finishPeriod"
+               #finishPeriod="ngModel"
+               disabled
+               [(ngModel)]="personStudent.finishPeriod">
+      </div>
+      <div class="form-group col-sm-3"
+           *ngIf="personStudent.graduationDate">
+        <label class="d-inline-flex align-items-center">
+          {{ 'student.view.graduationDate' | translate }}
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="graduationDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': graduationDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #graduationDate="ngModel"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="personStudent.graduationDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="true">
+        </div>
+      </div>
+      <div class="form-group col-sm-6"
+           *ngIf="personStudent.status.alias === 'interrupted'">
+        <label>{{ 'student.view.interruptionReason' | translate }}</label>
+        <input class="form-control form-control-sm"
+               type="text"
+               name="interruptionReason"
+               #interruptionReason="ngModel"
+               disabled
+               [(ngModel)]="personStudent.interruptionReason">
+      </div>
+    </div>
+  </div>
+</div>

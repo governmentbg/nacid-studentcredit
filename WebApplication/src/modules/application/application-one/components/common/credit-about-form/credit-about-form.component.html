@@ -1,0 +1,48 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-7">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.about.applicationType' | translate }}
+      </label>
+
+      <app-async-select #applicationOneType="ngModel"
+                        name="applicationOneType"
+                        restUrl="ApplicationOneType/Select"
+                        [filter]="{isNewCredit: isNewCredit}"
+                        [(ngModel)]="model.applicationOneType"
+                        [required]="true"
+                        [disabled]="!isNewApplicationOne"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-5">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.about.blankDate' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="blankDate"
+               ngbDatepicker
+               [ngStyle]="{'border': blankDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #blankDate="ngModel"
+               #blankDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.blankDate"
+               (keypress)="sharedService.filterDate($event)"
+               required
+               [disabled]="!isNewApplicationOne"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="blankDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isNewApplicationOne">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

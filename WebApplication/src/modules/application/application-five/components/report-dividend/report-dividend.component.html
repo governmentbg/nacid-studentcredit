@@ -1,0 +1,208 @@
+<div class="search-panel">
+
+  <form #resultForm="ngForm">
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">Тип на приложение 5
+          <ng-container *ngIf="searchDto.applicationFiveType">
+            <app-help-tooltip *ngIf="searchDto.applicationFiveType == applicationFiveType.totalDebtExposure"
+                              class="ml-1"
+                              tooltipText="{{ 'applicationFive.typeOneForAdmin' | translate }}">
+            </app-help-tooltip>
+            <app-help-tooltip *ngIf="searchDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+                              class="ml-1"
+                              tooltipText="{{ 'applicationFive.typeTwoForAdmin' | translate }}">
+            </app-help-tooltip>
+            <app-help-tooltip *ngIf="searchDto.applicationFiveType == applicationFiveType.bankExpensesForTheEnforcementActions"
+                              class="ml-1"
+                              tooltipText="{{ 'applicationFive.typeThree' | translate }}">
+            </app-help-tooltip>
+          </ng-container>
+        </label>
+        <select class="custom-select custom-select-sm form-control"
+                [(ngModel)]="searchDto.applicationFiveType"
+                name="applicationFiveTypeEnum"
+                #applicationFiveTypeEnum="ngModel"
+                [required]="true"
+                (ngModelChange)="changeApplicationFiveType()">
+          <option [ngValue]="applicationFiveType.totalDebtExposure">
+            {{ applicationFiveTypeEnumLocalization[applicationFiveType.totalDebtExposure] }}
+          </option>
+          <option [ngValue]="applicationFiveType.repaidCreditObligationsInTheRelevantYear">
+            {{ applicationFiveTypeEnumLocalization[applicationFiveType.repaidCreditObligationsInTheRelevantYear] }}
+          </option>
+          <option [ngValue]="applicationFiveType.bankExpensesForTheEnforcementActions">
+            {{ applicationFiveTypeEnumLocalization[applicationFiveType.bankExpensesForTheEnforcementActions] }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-6">
+        <label>{{ 'credit.search.bankName' | translate }}</label>
+        <app-async-select #bank="ngModel"
+                          name="bank"
+                          restUrl="BankNomenclature/Select"
+                          [(ngModel)]="searchDto.bank"
+                          [allowClear]="true"
+                          (ngModelChange)="result = false"
+                          [required]="true"></app-async-select>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label>Година</label>
+        <app-async-select #yearReport="ngModel"
+                          name="yearReport"
+                          restUrl="Year/summaryReportYears"
+                          [(ngModel)]="searchDto.year"
+                          (ngModelChange)="result = false"
+                          [required]="searchDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+                          [disabled]="searchDto.applicationFiveType != applicationFiveType.repaidCreditObligationsInTheRelevantYear">
+        </app-async-select>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label>От</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="fromDate"
+                 [ngStyle]="{'border': fromDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 ngbDatepicker
+                 #fromDate="ngModel"
+                 #fromDatepickerFrom="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="searchDto.from"
+                 (ngModelChange)="result = false"
+                 [disabled]="searchDto.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions"
+                 maxlength="20">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="fromDatepickerFrom.toggle()"
+                    type="button"
+                    [disabled]="searchDto.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label>До</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="toDate"
+                 [ngStyle]="{'border': toDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 ngbDatepicker
+                 #toDate="ngModel"
+                 #toDatepickerFrom="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="searchDto.to"
+                 (ngModelChange)="result = false"
+                 [disabled]="searchDto.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions"
+                 maxlength="20">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="toDatepickerFrom.toggle()"
+                    type="button"
+                    [disabled]="searchDto.applicationFiveType != applicationFiveType.bankExpensesForTheEnforcementActions">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label>Период</label>
+        <select class="custom-select custom-select-sm form-control"
+                [(ngModel)]="searchDto.period"
+                name="periodEnum"
+                #periodEnum="ngModel"
+                (ngModelChange)="result = false"
+                [required]="searchDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+                [disabled]="searchDto.applicationFiveType != applicationFiveType.repaidCreditObligationsInTheRelevantYear">
+          <option [ngValue]="period.first">
+            {{ periodEnumLocalization[period.first] }}
+          </option>
+          <option [ngValue]="period.second">
+            {{ periodEnumLocalization[period.second] }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row utility-btns">
+      <div class="col-sm-12">
+        <div class="float-md-right d-flex">
+          <button type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="generateReport()"
+                  [disabled]="!resultForm?.form.valid"
+                  awaitable>
+            <app-icon class="thicker-icon"
+                      icon="clipboard-data"
+                      width="12"
+                      height="12"></app-icon>
+            Генерирай
+          </button>
+
+          <button type="button"
+                  class="btn btn-sm btn-secondary ml-3"
+                  (click)="clear()"
+                  awaitable>
+            <app-icon class="thicker-icon"
+                      icon="trash"
+                      width="13"
+                      height="13"></app-icon>
+            {{ 'buttons.clear' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<table *ngIf="result"
+       class="table search-table table-bordered mt-5">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 19%;">Тип на приложение 5</th>
+      <th scope="col"
+          style="width: 24%;">Банка</th>
+      <th *ngIf="resultDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+          scope="col"
+          style="width: 14%;">Година</th>
+      <th *ngIf="resultDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear"
+          scope="col"
+          style="width: 14%;">Период</th>
+      <th scope="col"
+          style="width: 14%;">Сума</th>
+      <th *ngIf="resultDto.applicationFiveType == applicationFiveType.totalDebtExposure && resultDto.amountRequestedCorrection"
+          scope="col"
+          style="width: 14%;">Сума след корекция</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ applicationFiveTypeEnumLocalization[resultDto.applicationFiveType] }}</td>
+      <td>{{ resultDto.bank?.name }}</td>
+      <td *ngIf="resultDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear">{{
+        resultDto.year?.name }}г.</td>
+      <td *ngIf="resultDto.applicationFiveType == applicationFiveType.repaidCreditObligationsInTheRelevantYear">{{
+        periodEnumLocalization[searchDto.period] }}</td>
+      <td>{{ resultDto.totalSum | number : '1.2-2' }}{{ 'common.currency' | translate }}</td>
+      <td
+          *ngIf="resultDto.applicationFiveType == applicationFiveType.totalDebtExposure && resultDto.amountRequestedCorrection">
+        {{ resultDto.totalSum - resultDto.amountRequestedCorrection | number : '1.2-2' }}{{ 'common.currency' |
+        translate }}</td>
+    </tr>
+  </tbody>
+</table>

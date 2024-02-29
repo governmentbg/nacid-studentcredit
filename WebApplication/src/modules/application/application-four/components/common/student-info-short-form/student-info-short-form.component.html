@@ -1,0 +1,106 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.studentInfo.name' | translate }}
+      </label>
+      <input #studentFullName="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="studentFullName"
+             [(ngModel)]="model.studentFullName"
+             required
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.studentInfo.uin' | translate }}
+      </label>
+      <input #uin="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uin"
+             [(ngModel)]="model.uin"
+             required
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.studentInfo.uan' | translate }}
+      </label>
+      <input #uan="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uan"
+             [(ngModel)]="model.uan"
+             required
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.studentInfo.institution' | translate }}
+      </label>
+      <app-async-select #institution="ngModel"
+                        name="institution"
+                        restUrl="Institution/Select"
+                        [filter]="{level: 1}"
+                        [(ngModel)]="model.institution"
+                        [allowClear]="true"
+                        [required]="true"
+                        [disabled]="!isEditMode">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.existing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.studentInfo.speciality' | translate }}
+      </label>
+
+      <app-async-select #speciality="ngModel"
+                        name="speciality"
+                        restUrl="Speciality/InstitutionSpecialities"
+                        [filter]="{RootInstitutionId: model.institution?.id}"
+                        [(ngModel)]="model.speciality"
+                        [allowClear]="true"
+                        [required]="true"
+                        [disabled]="!isEditMode">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.missing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.speciality' | translate }}
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="specialityMissing">
+        </app-help-tooltip>
+      </label>
+      <input #speciality="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="speciality"
+             [(ngModel)]="model.migrationSpecialityName"
+             disabled>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        Факултетен №/№ заповед за зачисляване
+      </label>
+      <input #facultyNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="facultyNumber"
+             [(ngModel)]="model.facultyNumber"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+</ng-form>

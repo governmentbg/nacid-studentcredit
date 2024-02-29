@@ -1,0 +1,57 @@
+<table [id]="id"
+       class="table search-table table-bordered">
+  <thead class="thead-light"
+         style="line-height: 1.25em !important;">
+    <tr>
+      <th scope="col">№ на кредит</th>
+      <th scope="col"
+          style="width: 19%;">Кредитополучател</th>
+      <th scope="col">Общ размер</th>
+      <th scope="col">Усвоена главница</th>
+      <th scope="col">Лихва</th>
+      <th scope="col">Капитализирана главница</th>
+      <th scope="col">Погасен</th>
+      <th scope="col">Месечна вноска</th>
+      <th scope="col">Погасена месечна вноска - главница</th>
+      <th scope="col">Погасена месечна вноска - лихва</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="isNewApplicationTwo">
+      <td colspan="10"
+          style="text-align: center;">
+        <span>Трябва първо да създадете прил. № 2, след това да добавите кредити!</span>
+      </td>
+    </tr>
+    <tr *ngIf="!isNewApplicationTwo && recordEntries.length < 1">
+      <td colspan="10"
+          style="text-align: center;">
+        <span>Няма подадени записи по прил. № 2</span>
+      </td>
+    </tr>
+    <tr *ngFor="let record of recordEntries">
+      <td>{{ record.creditNumber }}</td>
+      <td>{{ record.studentFullName }} <br> {{ record.uin }}</td>
+      <td>{{ record.totalSum | number : '1.2-2' }}</td>
+      <td>{{ record.principalAbsorbed | number : '1.2-2' }}</td>
+      <td>{{ record.interest | number : '1.2-2' }}</td>
+      <td>{{ record.capitalizedPrincipal | number : '1.2-2' }}
+      </td>
+      <td>
+        <span *ngIf="!record.isRepaid"
+              style="color: red; font-size: large">X</span>
+        <app-icon *ngIf="record.isRepaid"
+                  class="thicker-icon"
+                  icon="check-lg"
+                  width="27"
+                  height="27"
+                  color="green"></app-icon>
+      </td>
+      <td>{{ record.monthlyPayment | number : '1.2-2' }}</td>
+      <td>{{ record.repaidMonthlyPrincipal | number : '1.2-2' }}
+      </td>
+      <td>{{ record.repaidMonthlyInterest | number : '1.2-2' }}
+      </td>
+    </tr>
+  </tbody>
+</table>

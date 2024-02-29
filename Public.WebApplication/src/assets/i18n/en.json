@@ -1,0 +1,56 @@
+{
+  "loadingIndicator": "Loading, please wait...",
+  "common": {
+    "nacid": "NACID",
+    "studentCreditPortal": "Portal Student Credit",
+    "bankRegister": "Bank Register",
+    "usefulInformation": "Frequently asked questions",
+    "contacts": "Contacts"
+  },
+  "footer": {
+    "rights_reserved": "\u00a0All\u00a0rights\u00a0reserved"
+  },
+  "search": {
+    "bankRegister": "Bank Register",
+    "description": "The register contains information about the banks that have concluded a contract with the Minister of Education and Science, which have the right to grant loans to students and doctoral students with state financial support.",
+    "placeholder": "Searching...",
+    "noResult": "No results found"
+  },
+  "buttons": {
+    "search": "Search"
+  },
+  "usefulInformation": {
+    "title": "Frequently asked questions",
+    "description": " Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.",
+    "questionOne": {
+      "title": "What conditions do I have to meet in order to get a loan?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    },
+    "questionTwo": {
+      "title": "What is state financial support?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    },
+    "questionThree": {
+      "title": "When should I start repaying the loan?",
+      "answer": "Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.Voluptatem dignissimos provident quasi corporis voluptates sit assumenda."
+    }
+  },
+  "bank": {
+    "bulstat": "UIN",
+    "address": "Address",
+    "contract": "Contract",
+    "contractRequirements": "Lending conditions",
+    "details": "View details"
+  },
+  "contacts": {
+    "about": "About",
+    "connections": "Connections",
+    "information": "Information",
+    "links": {
+      "studentCredit": "Student Credit",
+      "NACID": "NACID",
+      "generalRules": "General rules",
+      "privacyPolicy": "Privacy policy"
+    }
+  }
+}

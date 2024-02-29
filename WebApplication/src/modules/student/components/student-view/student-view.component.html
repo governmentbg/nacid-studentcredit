@@ -1,0 +1,25 @@
+<app-part-panel header="{{ 'student.view.studentInfo' | translate }}">
+  <app-student-view-info [(model)]="model"></app-student-view-info>
+</app-part-panel>
+
+<app-part-panel header="{{ 'student.view.universityInfo' | translate }}">
+  <ng-container *ngIf="model.universities?.length !== 0; else noDataFound">
+    <app-student-view-person-student [(model)]="model"></app-student-view-person-student>
+  </ng-container>
+</app-part-panel>
+
+<app-part-panel header="{{ 'student.view.doctoralInfo' | translate }}">
+  <ng-container *ngIf="model.doctorals?.length !== 0; else noDataFound">
+    <app-student-view-person-doctoral [(model)]="model"></app-student-view-person-doctoral>
+  </ng-container>
+</app-part-panel>
+
+<app-part-panel header="{{ 'student.view.creditInfo' | translate }}">
+  <ng-container *ngIf="model.credits?.length !== 0; else noDataFound">
+    <app-student-view-credit [(model)]="model"></app-student-view-credit>
+  </ng-container>
+</app-part-panel>
+
+<ng-template #noDataFound>
+  <div style="font-style: italic; text-align: center;">{{ 'student.view.noDataFound' | translate }}</div>
+</ng-template>

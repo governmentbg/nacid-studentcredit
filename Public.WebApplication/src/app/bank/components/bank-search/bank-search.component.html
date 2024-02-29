@@ -1,0 +1,55 @@
+<ng-container>
+  <div style="padding: 2em 0 2em 0;">
+    <div class="titles">
+      <div class="title col-sm-12">
+        {{'search.bankRegister' | translate }}
+      </div>
+      <div class="title-secondary col-sm-8">
+        {{'search.description' | translate }}
+      </div>
+    </div>
+
+    <div class="search-bar col-sm-4">
+      <div class="input-group">
+        <input class="form-group form-control"
+               style="border-color:#6c757d;"
+               type="text"
+               name="bankName"
+               placeholder="{{ 'search.placeholder' | translate}}"
+               [(ngModel)]="filter.name"
+               maxlength="80">
+
+        <button class="btn btn-outline-secondary"
+                style="z-index: 0;"
+                type="button"
+                (click)="search()"
+                id="button-addon1">
+          <app-icon class="thicker-icon"
+                    icon="search"></app-icon>
+        </button>
+
+      </div>
+    </div>
+
+
+    <div class="cards">
+      <div class="row">
+        <div *ngFor="let bank of model; let i = index"
+             class="custom-card col-sm-5 mb-4"
+             (click)="routeToBank(bank.id)">
+          <div class="custom-card-title">
+            {{bank.name}}
+          </div>
+          <div class="custom-card-body">
+            Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="model?.length === 0"
+         class="no-result">
+      {{ 'search.noResult' | translate }}
+    </div>
+  </div>
+</ng-container>

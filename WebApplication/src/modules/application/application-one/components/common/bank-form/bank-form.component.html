@@ -1,0 +1,51 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-8">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.bank.name' | translate }}
+      </label>
+
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="model.bank"
+                        [required]="true"
+                        [disabled]="!isEditMode || isBankUser"
+                        (ngModelChange)="setBankBulsat($event)">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.bank.bulstat' | translate }}
+      </label>
+
+      <input #bulstat="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="bulstat"
+             [(ngModel)]="model.bulstat"
+             [required]="true"
+             [pattern]="numberRegExp"
+             [disabled]="!isEditMode || isBankUser">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-12">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.bank.contact' | translate }}
+      </label>
+
+      <input #contactPerson="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="contactPerson"
+             [(ngModel)]="model.contactPerson"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'refuseContract'"
+             [pattern]="cyrillicNumberRegExp"
+             maxlength="50"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+</ng-form>

@@ -1,0 +1,319 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label>{{ 'applicationOne.new.studentInfo.educationType' | translate }}</label>
+      <select class="custom-select custom-select-sm form-control"
+              name="type"
+              #type="ngModel"
+              [(ngModel)]="model.educationType"
+              [required]="true"
+              [disabled]="!importFromXml">
+        <option [ngValue]="educationType.student">
+          {{ 'applicationOne.new.studentInfo.student' | translate }}
+        </option>
+        <option [ngValue]="educationType.doctoral">
+          {{ 'applicationOne.new.studentInfo.doctoral' | translate }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        ЕАН
+      </label>
+
+      <input #uan="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uan"
+             [(ngModel)]="model.uan"
+             required
+             [disabled]="!importFromXml">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-2">
+      <label class="d-inline-flex align-items-center">
+        Дата на раждане
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="birthDate"
+               ngbDatepicker
+               [ngStyle]="{'border': birthDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #birthDate="ngModel"
+               #birthDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.birthDate"
+               (keypress)="sharedService.filterDate($event)"
+               required
+               [disabled]="!importFromXml"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="birthDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!importFromXml">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.facultyNumber' | translate }}
+      </label>
+
+      <input #facultyNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="facultyNumber"
+             [(ngModel)]="model.facultyNumber"
+             [disabled]="!importFromXml">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-8">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.name' | translate }}
+      </label>
+
+      <input #studentFullName="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="studentFullName"
+             [(ngModel)]="model.studentFullName"
+             required
+             [disabled]="!importFromXml">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.id' | translate }}
+      </label>
+
+      <input #idNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="idNumber"
+             [(ngModel)]="model.idNumber"
+             [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'refuseContract'"
+             [disabled]="!importFromXml">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.uin' | translate }}
+      </label>
+
+      <input #uin="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="uin"
+             [(ngModel)]="model.uin"
+             required
+             [disabled]="!importFromXml">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.nationality' | translate }}
+      </label>
+
+      <app-async-select #nationality="ngModel"
+                        name="nationality"
+                        restUrl="Country/Select"
+                        [(ngModel)]="model.nationality"
+                        [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'refuseContract'"
+                        [disabled]="!importFromXml">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        Второ гражданство
+      </label>
+
+      <app-async-select #secondNationality="ngModel"
+                        name="secondNationality"
+                        restUrl="Country/Select"
+                        [(ngModel)]="model.secondNationality"
+                        [disabled]="true">
+      </app-async-select>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-6">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.institution' | translate }}
+      </label>
+
+      <app-async-select #institution="ngModel"
+                        name="institution"
+                        restUrl="Institution/Select"
+                        [filter]="{level: 1}"
+                        [(ngModel)]="model.institution"
+                        (ngModelChange)="onInstitutionChange()"
+                        [title]="model.institution?.name || ''"
+                        [required]="true"
+                        [disabled]="!importFromXml">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.existing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.speciality' | translate }}
+      </label>
+
+      <app-async-select #speciality="ngModel"
+                        name="speciality"
+                        restUrl="Speciality/InstitutionSpecialities"
+                        [filter]="{RootInstitutionId: model.institution?.id}"
+                        [title]="model.speciality?.name || ''"
+                        [(ngModel)]="model.speciality"
+                        (ngModelChange)="setSpecialityInformation($event)"
+                        [required]="model.applicationOneType?.alias == 'newContract' || model.applicationOneType?.alias == 'refuseContract'"
+                        [disabled]="!importFromXml">
+      </app-async-select>
+    </div>
+    <div class="form-group col-sm-12 col-md-6"
+         *ngIf="model.specialityEnum == existingEnum.missing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.speciality' | translate }}
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="specialityMissing">
+        </app-help-tooltip>
+      </label>
+      <input #speciality="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="speciality"
+             [(ngModel)]="model.migrationSpecialityName"
+             disabled>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4"
+         *ngIf="model.researchAreaEnum == existingEnum.existing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.researchArea' | translate }}
+      </label>
+
+      <app-async-select #researchArea="ngModel"
+                        name="researchArea"
+                        restUrl="ResearchArea/Select"
+                        [title]="model.researchArea?.name || ''"
+                        [(ngModel)]="model.researchArea"
+                        [disabled]="!importFromXml">
+      </app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4"
+         *ngIf="model.researchAreaEnum == existingEnum.missing">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.studentInfo.researchArea' | translate }}
+        <app-help-tooltip class="ml-1"
+                          [tooltipText]="researchAreaMissing">
+        </app-help-tooltip>
+      </label>
+      <input #researchArea="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="researchArea"
+             [(ngModel)]="model.migrationResearchAreaName"
+             disabled>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        ОКС/ОНС
+      </label>
+
+      <app-async-select #educationalQualification="ngModel"
+                        name="educationalQualification"
+                        restUrl="EducationalQualification/Select"
+                        [filter]="{combineMasters: false}"
+                        [(ngModel)]="model.educationalQualification"
+                        [disabled]="!importFromXml"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Форма
+      </label>
+
+      <app-async-select #educationFormType="ngModel"
+                        name="educationFormType"
+                        restUrl="EducationFormType/Select"
+                        [(ngModel)]="model.educationFormType"
+                        [disabled]="!importFromXml"></app-async-select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-2"
+         *ngIf="model.educationType == educationType.doctoral">
+      <label>{{ 'applicationOne.new.studentInfo.course' | translate }}</label>
+      <select class="custom-select custom-select-sm"
+              name="yearType"
+              [(ngModel)]="model.doctoralYear"
+              [disabled]="!importFromXml">
+        <option [ngValue]="yearType.firstYear">
+          {{ yearTypeEnumLocalization[yearType.firstYear]}}
+        </option>
+        <option [ngValue]="yearType.secondYear">
+          {{ yearTypeEnumLocalization[yearType.secondYear]}}
+        </option>
+        <option [ngValue]="yearType.thirdYear">
+          {{ yearTypeEnumLocalization[yearType.thirdYear]}}
+        </option>
+        <option [ngValue]="yearType.fourthYear">
+          {{ yearTypeEnumLocalization[yearType.fourthYear]}}
+        </option>
+        <option [ngValue]="yearType.fifthYear">
+          {{ yearTypeEnumLocalization[yearType.fifthYear]}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-2"
+         *ngIf="model.educationType == educationType.student">
+      <label>{{ 'applicationOne.new.studentInfo.course' | translate }}</label>
+      <select class="custom-select custom-select-sm"
+              name="studentCourse"
+              [(ngModel)]="model.studentCourse"
+              [disabled]="!importFromXml">
+        <option [ngValue]="courseType.first">
+          {{ courseTypeEnumLocalization[courseType.first]}}
+        </option>
+        <option [ngValue]="courseType.second">
+          {{ courseTypeEnumLocalization[courseType.second]}}
+        </option>
+        <option [ngValue]="courseType.third">
+          {{ courseTypeEnumLocalization[courseType.third]}}
+        </option>
+        <option [ngValue]="courseType.fourth">
+          {{ courseTypeEnumLocalization[courseType.fourth]}}
+        </option>
+        <option [ngValue]="courseType.fifth">
+          {{ courseTypeEnumLocalization[courseType.fifth]}}
+        </option>
+        <option [ngValue]="courseType.sixth">
+          {{ courseTypeEnumLocalization[courseType.sixth]}}
+        </option>
+        <option [ngValue]="courseType.seventh">
+          {{ courseTypeEnumLocalization[courseType.seventh]}}
+        </option>
+      </select>
+    </div>
+  </div>
+</ng-form>

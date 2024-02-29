@@ -1,0 +1,16 @@
+<div class="d-flex mb-1"
+     style="align-items: baseline;">
+
+  <div style="margin-left: auto;">
+    <button class="btn btn-sm btn-primary"
+            (click)="createApplicationTwo()"
+            [disabled]="!canSubmit">
+      Създай прил. № 2
+    </button>
+  </div>
+</div>
+
+<app-application-two [isEditMode]="true"
+                     [(model)]="model"
+                     [isNewApplicationTwo]="true"
+                     (isValidForm)="changeFormValidStatus('ApplicationTwo', $event)"></app-application-two>

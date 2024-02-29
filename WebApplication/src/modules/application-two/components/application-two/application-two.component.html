@@ -1,0 +1,141 @@
+<ng-form>
+  <div class="mb-4">
+    <app-part-panel header="ИНФОРМАЦИЯ ОТНОСНО РАЗМЕРА НА КРЕДИТИТЕ, ОТПУСНАТИ ОТ БАНКАТА"
+                    margin_top="mt-0">
+      <div class="row">
+
+        <div class="form-group col-sm-12 col-md-8">
+          <label class="d-inline-flex align-items-center">
+            Банка
+          </label>
+
+          <app-async-select #bank="ngModel"
+                            name="bank"
+                            restUrl="BankNomenclature/Select"
+                            [(ngModel)]="model.bank"
+                            (ngModelChange)="setBankBulsat($event)"
+                            [required]="true"
+                            [disabled]="true">
+          </app-async-select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-4">
+          <label class="d-inline-flex align-items-center">Булстат</label>
+
+          <input class="form-control form-control-sm"
+                 name="bulstat"
+                 #bulstat="ngModel"
+                 [ngModel]="model.bank?.bulstat"
+                 [disabled]="true">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-3">
+          <label class="d-inline-flex align-items-center">
+            Дата на подаване
+          </label>
+
+          <div class="input-group input-group-sm">
+            <input class="form-control"
+                   name="creationDate"
+                   ngbDatepicker
+                   [ngStyle]="{'border': creationDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                   #creationDate="ngModel"
+                   #creationDateDatepicker="ngbDatepicker"
+                   placeholder="дд/мм/гггг"
+                   [(ngModel)]="model.creationDate"
+                   (keypress)="sharedService.filterDate($event)"
+                   [disabled]="!isEditMode"
+                   [required]="true"
+                   maxlength="20">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="creationDateDatepicker.toggle()"
+                      type="button"
+                      [disabled]="!isEditMode">
+                <app-icon icon="calendar2-event"
+                          width="12"
+                          height="12"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3">
+          <label class="d-inline-flex align-items-center">
+            Отчетна дата
+          </label>
+
+          <div class="input-group input-group-sm">
+            <input class="form-control"
+                   name="recordDate"
+                   ngbDatepicker
+                   [ngStyle]="{'border': recordDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                   #recordDate="ngModel"
+                   #recordDateDatepicker="ngbDatepicker"
+                   placeholder="дд/мм/гггг"
+                   [(ngModel)]="model.recordDate"
+                   (keypress)="sharedService.filterDate($event)"
+                   [disabled]="!isEditMode"
+                   [required]="true"
+                   maxlength="20">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-primary"
+                      (click)="recordDateDatepicker.toggle()"
+                      type="button"
+                      [disabled]="!isEditMode">
+                <app-icon icon="calendar2-event"
+                          width="12"
+                          height="12"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3">
+          <label class="d-inline-flex align-items-center">
+            Общ размер на кредитите
+          </label>
+
+          <input #totalSum="ngModel"
+                 type="number"
+                 name="totalSum"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.totalSum"
+                 [disabled]="!isEditMode"
+                 [required]="true"
+                 step=".01"
+                 min="0">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3">
+          <label class="d-inline-flex align-items-center">
+            Брой сключени договори
+          </label>
+
+          <input #creditCount="ngModel"
+                 type="number"
+                 name="creditCount"
+                 class="form-control form-control-sm"
+                 [(ngModel)]="model.creditCount"
+                 [disabled]="!isEditMode"
+                 [required]="true"
+                 step="any"
+                 min="0">
+        </div>
+      </div>
+    </app-part-panel>
+  </div>
+
+  <button *ngIf="!isNewApplicationTwo && isBankUser"
+          class="btn btn-sm btn-primary mb-1"
+          (click)="addRecord()">
+    <app-icon icon="plus"
+              class="thicker-icon"></app-icon>
+    Добави кредит
+  </button>
+
+  <app-application-two-table [recordEntries]="model.recordEntries"
+                             [isNewApplicationTwo]="isNewApplicationTwo"></app-application-two-table>
+</ng-form>

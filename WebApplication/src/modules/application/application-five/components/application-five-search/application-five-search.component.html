@@ -1,0 +1,193 @@
+<div class="search-panel">
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-6">
+      <label>{{ 'credit.search.bankName' | translate }}</label>
+      <app-async-select #bank="ngModel"
+                        name="bank"
+                        restUrl="BankNomenclature/Select"
+                        [(ngModel)]="filter.bank"
+                        (ngModelChange)="filter.bankId = $event?.id"
+                        [disabled]="isBankUser"
+                        [allowClear]="true"></app-async-select>
+    </div>
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Тип на приложение 5</label>
+      <select class="custom-select custom-select-sm"
+              [(ngModel)]="filter.applicationFiveType">
+        <option selected
+                [ngValue]="null">Всички</option>
+        <option [ngValue]="applicationFiveType.totalDebtExposure">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.totalDebtExposure] }}
+        </option>
+        <option [ngValue]="applicationFiveType.repaidCreditObligationsInTheRelevantYear">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.repaidCreditObligationsInTheRelevantYear] }}
+        </option>
+        <option [ngValue]="applicationFiveType.bankExpensesForTheEnforcementActions">
+          {{ applicationFiveTypeEnumLocalization[applicationFiveType.bankExpensesForTheEnforcementActions] }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Статус</label>
+      <select class="custom-select custom-select-sm"
+              [(ngModel)]="filter.commitState">
+        <option selected
+                [ngValue]="null">Всички</option>
+        <option [ngValue]="commitState.pending">
+          {{ commitStateEnumLocalization[commitState.pending] }}
+        </option>
+        <option [ngValue]="commitState.approved">
+          {{ commitStateEnumLocalization[commitState.approved] }}
+        </option>
+        <option [ngValue]="commitState.modification">
+          {{ commitStateEnumLocalization[commitState.modification] }}
+        </option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Дата на подаване от</label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="fromDate"
+               [ngStyle]="{'border': fromDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               ngbDatepicker
+               #fromDate="ngModel"
+               #fromDatepickerFrom="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="filter.from"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="fromDatepickerFrom.toggle()"
+                  type="button">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>Дата на подаване до</label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="toDate"
+               [ngStyle]="{'border': toDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               ngbDatepicker
+               #toDate="ngModel"
+               #toDatepickerFrom="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="filter.to"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="toDatepickerFrom.toggle()"
+                  type="button">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row utility-btns">
+    <div class="col-sm-12">
+
+      <div class="btn-group float-md-left">
+        <button type="button"
+                class="btn btn-outline-primary btn-sm"
+                routerLink="/application-five/new"
+                awaitable>
+
+          Създай прил. №5
+        </button>
+      </div>
+
+      <div class="float-md-right d-flex">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table search-table table-bordered mt-5">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 11%;">Дата на подаване</th>
+      <th scope="col"
+          style="width: 24%;">Банка</th>
+      <th scope="col"
+          style="width: 21%;">Тип на приложение 5</th>
+      <th scope="col"
+          style="width: 18%;">Статус</th>
+      <!-- <th scope="col"
+          style="width: 11%;">От</th>
+      <th scope="col"
+          style="width: 11%;">До</th> -->
+      <th scope="col"
+          style="width: 8%;">Детайли</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="!model.length">
+      <td colspan="7"
+          style="text-align: center">
+        Няма намерени резултати.
+      </td>
+    </tr>
+    <tr *ngFor="let application of model"
+        [ngStyle]="{'background-color': (application.commitState == commitState.pending && isAdmin) || (application.commitState == commitState.modification && isBankUser) 
+    ? 'lemonchiffon' 
+    : null }">
+      <td>{{ application.blankDate | date :'dd.MM.yyyy' }}г.</td>
+      <td>{{ application.bank?.name }}</td>
+      <td>{{ applicationFiveTypeEnumLocalization[application.applicationFiveType] }}</td>
+      <td>{{ commitStateEnumLocalization[application.commitState] }}</td>
+      <!-- <td>{{ application.from | date :'dd.MM.yyyy' }}г.</td>
+      <td>{{ application.to | date :'dd.MM.yyyy' }}г.</td> -->
+      <td style="text-align:center; vertical-align: middle;">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary"
+                awaitable
+                [routerLink]="['/application-five', application.id]">
+          <app-icon icon="search"
+                    width="13"
+                    height="13"></app-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

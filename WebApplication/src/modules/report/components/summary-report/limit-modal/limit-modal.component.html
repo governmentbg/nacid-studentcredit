@@ -1,0 +1,40 @@
+<div class="modal-header justify-content-center">
+  <h5>Годишен лимит за {{ year?.name }}г.</h5>
+</div>
+
+<div class="modal-body">
+  <form #resultForm="ngForm">
+
+    <div class="row">
+
+      <div class="form-group col-md-12">
+        <label class="d-inline-flex align-items-center">
+          Лимит
+        </label>
+
+        <input #limit="ngModel"
+               type="number"
+               name="limit"
+               class="form-control form-control-sm"
+               [(ngModel)]="yearLimit"
+               [required]="true"
+               step=".01">
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-sm btn-success"
+          (click)="save()"
+          [disabled]="!resultForm.form.valid">
+    Запази
+  </button>
+
+  <button type="button"
+          class="btn btn-sm btn-danger"
+          (click)="modal.close()">
+    Затвори
+  </button>
+</div>

@@ -1,0 +1,97 @@
+<div *ngFor="let personDoctoral of model?.doctorals; let i = index">
+  <div class="data-tab">
+    <div class="data-tab-header">
+      <span style="font-weight: bold"
+            [ngClass]="{
+      'text-red': personDoctoral.status?.alias === 'interrupted',
+      'text-green': personDoctoral.status?.alias === 'active',
+      'text-black': personDoctoral.status?.alias !== 'active' && personDoctoral.status?.alias !== 'interrupted'}">
+        {{ personDoctoral.status?.name }}</span> -
+      {{ personDoctoral.institution?.name }} -
+      {{ personDoctoral.speciality?.name }},
+      <div class="mt-2">
+        {{ personDoctoral.educationalQualification?.name }},
+        {{ personDoctoral.educationalForm?.name }},
+        {{ personDoctoral.researchArea?.name }},
+        {{ yearTypeEnumLocalization[personDoctoral?.yearType]}},
+        {{ personDoctoral?.duration }} г.
+      </div>
+    </div>
+    <div class="data-tab-body"
+         *ngIf="personDoctoral.status?.alias !== 'completed'">
+      <div class="form-group col-sm-3"
+           *ngIf="personDoctoral.status.alias === 'active'">
+        <label class="d-inline-flex align-items-center">
+          {{ 'student.view.startDate' | translate }}
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="startDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': startDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #startDate="ngModel"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="personDoctoral.startDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="true">
+        </div>
+      </div>
+      <div class="form-group col-sm-3"
+           *ngIf="personDoctoral.finishDate">
+        <label class="d-inline-flex align-items-center">
+          {{ 'student.view.finishDate' | translate }}
+          <app-help-tooltip class="ml-1"
+                            tooltipText="{{ 'student.view.graduatedCourse' | translate }}">
+          </app-help-tooltip>
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="finishDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': finishDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #finishDate="ngModel"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="personDoctoral.finishDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="true">
+        </div>
+      </div>
+      <div class="form-group col-sm-3"
+           *ngIf="personDoctoral.graduationDate">
+        <label class="d-inline-flex align-items-center">
+          {{ 'student.view.graduationDate' | translate }}
+        </label>
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="graduationDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': graduationDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #graduationDate="ngModel"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="personDoctoral.graduationDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 validDate
+                 required
+                 maxlength="20"
+                 [disabled]="true">
+        </div>
+      </div>
+      <div class="form-group col-sm-6"
+           *ngIf="personDoctoral.status.alias === 'interrupted'">
+        <label>{{ 'student.view.interruptionReason' | translate }}</label>
+        <input class="form-control form-control-sm"
+               type="text"
+               name="interruptionReason"
+               #interruptionReason="ngModel"
+               disabled
+               [(ngModel)]="personDoctoral.interruptionReason">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="root">
+  <div *ngIf="currentLanguage !== 'bg'"
+       class="lang d-flex"
+       [ngClass]="{'mobile-lang': isMobile === true}"
+       (click)="switchLang('bg')">
+    <app-icon icon="globe"
+              style="margin-right: 5px;"></app-icon>БГ
+  </div>
+  <div *ngIf="currentLanguage !== 'en'"
+       class="lang d-flex"
+       [ngClass]="{'mobile-lang': isMobile === true}"
+       (click)="switchLang('en')">
+    <app-icon icon="globe"
+              style="margin-right: 5px;"></app-icon>EN
+  </div>
+</div>

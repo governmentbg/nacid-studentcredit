@@ -1,0 +1,80 @@
+<div *ngFor="let credit of model?.credits; let i = index">
+  <div *ngIf="i !== 0"
+       class="separator"></div>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>
+        Тип кредит
+      </label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="applicationOnetype"
+             #applicationOnetype="ngModel"
+             disabled
+             [(ngModel)]="credit.applicationOneType.name">
+    </div>
+    <div class="form-group col-sm-12 col-md-3">
+      <label>
+        {{ 'student.view.creditType' | translate }}
+      </label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="bankName"
+             #bankName="ngModel"
+             disabled
+             [(ngModel)]="creditTypeEnumLocalization[credit.creditType]">
+    </div>
+    <div class="form-group col-sm-5">
+      <label>{{ 'student.view.bankName' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="bankName"
+             #bankName="ngModel"
+             disabled
+             [(ngModel)]="credit.bankName"
+             [title]="credit.bankName">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'student.educationalQualification' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="educationalQualification"
+             #educationalQualification="ngModel"
+             disabled
+             [(ngModel)]="credit.educationalQualificationName">
+    </div>
+    <div class="form-group col-sm-12 col-md-4">
+      <label>{{ 'student.view.speciality' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="speciality"
+             #speciality="ngModel"
+             disabled
+             [(ngModel)]="credit.specialityName"
+             [title]="credit.specialityName">
+    </div>
+    <div class="form-group col-sm-4">
+      <label class="d-inline-flex align-items-center">
+        {{ credit.applicationOneType.alias == applicationOneTypeAliases.NEW_CONTRACT
+        ? 'Дата на сключване на договор за кредит' : 'Дата на отказ за сключване на договор за кредит'}}
+      </label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="contractDate"
+               ngbDatepicker
+               [ngStyle]="{'border': contractDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #contractDate="ngModel"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="credit.contractDate"
+               (keypress)="sharedService.filterDate($event)"
+               validDate
+               required
+               maxlength="20"
+               [disabled]="true">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+.separator {
+  border-top: 2px solid var(--studentcredit-primary-color);
+  margin-top: 2em;
+  margin-bottom: 2em;
+}

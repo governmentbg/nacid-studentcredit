@@ -1,0 +1,191 @@
+* {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+:root {
+  --studentcredit-primary-color: #135496;
+}
+
+body {
+  position: relative;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4em;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  background-color: #ffffff;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+  box-shadow: none;
+}
+
+.form-control:invalid {
+  border: 1px solid #dc3545;
+  box-shadow: none;
+}
+
+thead>tr>th {
+  font-size: 14px;
+}
+
+.form-group>label {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.thicker-icon>svg.bi {
+  stroke: #ffffff;
+}
+
+.btn {
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.show>.btn-outline-primary.dropdown-toggle {
+  background-color: var(--studentcredit-primary-color) !important;
+  border-color: var(--studentcredit-primary-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  color: var(--studentcredit-primary-color) !important;
+  border-color: var(--studentcredit-primary-color) !important;
+}
+
+.container {
+  width: 1150px
+}
+
+.multi-container {
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  padding-bottom: .5em;
+  margin-bottom: .5em;
+}
+
+.required-field label:after {
+  content: "*";
+  color: red;
+}
+
+.search-table {
+  font-size: 14px;
+}
+
+.table>:not(caption)>*>* {
+  padding: 12px 12px 12px 12px !important;
+}
+
+.search-table thead {
+  line-height: .75em;
+}
+
+.search-table thead th {
+  background-color: #f5f5f5 !important;
+}
+
+.search-table td.preview {
+  vertical-align: middle;
+  padding: 0 .75em;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  resize: none;
+}
+
+.custom-select:disabled {
+  color: black;
+}
+
+.custom-select {
+  font-size: .875rem
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.separator {
+  border-top: 1px solid var(--studentcredit-primary-color);
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.text-green {
+  color: green;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-black {
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.centered {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  margin-top: 15em !important;
+}
+
+.search-panel {
+  padding: 2em 2em 1em 2em;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+}
+
+.utility-btns {
+  margin-top: 2em;
+}
+
+.table-action-btn {
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  margin-left: 0.5em;
+}

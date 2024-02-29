@@ -1,0 +1,6 @@
+<ul class="mb-3">
+  <li *ngFor="let breadcrumb of (breadcrumbs$ | async)">
+    <a class="link"
+       [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a>
+  </li>
+</ul>

@@ -1,0 +1,111 @@
+<div class="search-panel">
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-5">
+      <label>{{ 'bank.search.name' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="name"
+             [(ngModel)]="filter.name">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label>{{ 'bank.search.bulstat' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="bulstat"
+             [(ngModel)]="filter.bulstat">
+    </div>
+
+    <div class="col-sm-12 mt-4">
+      <div class="btn-group float-md-left">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary"
+                awaitable
+                routerLink="/bank/create">
+          {{ 'bank.table.addNew' | translate }}
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table search-table table-bordered mt-4">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col"
+          style="width: 25%;">{{ 'bank.table.name' | translate }}</th>
+      <th scope="col"
+          style="width: 20%;">{{ 'bank.table.address' | translate }}</th>
+      <th scope="col"
+          style="width: 45%;">{{ 'bank.table.contracts' | translate }}</th>
+      <th scope="col">{{ 'bank.table.actions' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="!model.length">
+      <td colspan="7"
+          style="text-align: center">
+        {{ 'bank.table.noResults' | translate }}
+      </td>
+    </tr>
+    <tr *ngFor="let bank of model">
+      <td>{{ bank.name }}
+        <span *ngIf="!bank.isActive"
+              style="font-style: italic; font-weight: 600;">{{ 'bank.table.inactive' | translate }}</span>
+        <br>
+        <span style="font-weight: 600;"> {{ 'bank.table.bulstat' | translate }}: </span> {{ bank.bulstat }}
+      </td>
+      <td>{{ bank.address }}</td>
+      <td>
+        <ng-container *ngFor="let contract of bank.contracts | orderBy: 'type'">
+          <div *ngIf="contract.type === contractTypes.concluded">
+            <span style="font-weight: 600;"> {{ 'bank.table.concluded' | translate }}: </span>
+            {{ contract.number }}/{{ contract.date | date: 'dd.MM.yyyy' }}
+          </div>
+          <div *ngIf="contract.type === contractTypes.changed">
+            <span style="font-weight: 600;"> {{ 'bank.table.changed' | translate }}: </span>
+            {{ contract.date | date: 'dd.MM.yyyy' }}
+          </div>
+          <div *ngIf="contract.type === contractTypes.terminated">
+            <span style="font-weight: 600;"> {{ 'bank.table.terminated' | translate }}: </span>
+            {{ contract.date | date: 'dd.MM.yyyy' }}
+          </div>
+        </ng-container>
+      </td>
+      <td class="preview"
+          style="text-align: center;">
+        <a class="btn btn-sm btn-outline-primary"
+           [routerLink]="['edit', bank.id]"
+           title="{{ 'bank.table.actionsTooltip' | translate }}">
+          <app-icon icon="search"
+                    width="14"
+                    height="14"></app-icon>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,139 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label>
+        {{ 'applicationFour.new.creditInfo.creditType' | translate }}
+      </label>
+      <select class="custom-select custom-select-sm"
+              name="creditType"
+              [(ngModel)]="model.creditType"
+              required
+              [disabled]="true">
+        <option [ngValue]="creditType.educationTaxes">
+          {{ creditTypeEnumLocalization[creditType.educationTaxes]}}
+        </option>
+        <option [ngValue]="creditType.maintenance">
+          {{ creditTypeEnumLocalization[creditType.maintenance]}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.creditNumber' | translate }}
+      </label>
+      <input #creditNumber="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="creditNumber"
+             [(ngModel)]="model.creditNumber"
+             required
+             [disabled]="true">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.contractDate' | translate }}
+      </label>
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="contractDate"
+               ngbDatepicker
+               [ngStyle]="{'border': contractDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #contractDate="ngModel"
+               #contractDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.contractDate"
+               (keypress)="sharedService.filterDate($event)"
+               validDate
+               required
+               maxlength="20"
+               [disabled]="true">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="contractDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.schoolRemaining' | translate }}
+      </label>
+      <input #schoolRemaining="ngModel"
+             type="number"
+             name="schoolRemaining"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.schoolRemaining"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             maxlength="2"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.paymentPeriod' | translate }}
+      </label>
+      <input #paymentPeriod="ngModel"
+             type="number"
+             name="paymentPeriod"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.paymentPeriod"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             maxlength="2"
+             required
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.interest' | translate }}
+      </label>
+      <input #interest="ngModel"
+             type="number"
+             name="interest"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.interest"
+             required
+             step=".01"
+             min="0"
+             [disabled]="!isEditMode">
+    </div>
+
+    <div class="form-group col-sm-12 col-md-3">
+      <label class="d-inline-flex align-items-center">
+        Размер на непогасената част
+      </label>
+      <input #outstandingDebtAmount="ngModel"
+             type="number"
+             name="outstandingDebtAmount"
+             class="form-control form-control-sm"
+             [(ngModel)]="model.outstandingDebtAmount"
+             required
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-12">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationFour.new.creditInfo.description' | translate }}
+      </label>
+      <input #description="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="description"
+             [(ngModel)]="model.description"
+             required
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+</ng-form>

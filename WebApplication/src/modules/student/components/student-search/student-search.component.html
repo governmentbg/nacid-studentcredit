@@ -1,0 +1,90 @@
+<div class="search-panel">
+  <div class="row">
+    <div class="form-group col-sm-2">
+      <label>
+        {{ 'student.search.identificationType' | translate }}
+      </label>
+      <select class="custom-select custom-select-sm form-control"
+              name="identificationType"
+              #identificationType="ngModel"
+              [(ngModel)]="filter.identificationType"
+              required>
+        <option [ngValue]="identificationTypes.UIN">
+          {{ identificationTypeEnumLocalization[identificationTypes.UIN]}}
+        </option>
+        <option [ngValue]="identificationTypes.ForeignerNumber">
+          {{ identificationTypeEnumLocalization[identificationTypes.ForeignerNumber]}}
+        </option>
+        <option [ngValue]="identificationTypes.UAN">
+          {{ identificationTypeEnumLocalization[identificationTypes.UAN]}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-sm-4">
+      <label>{{ 'student.search.identificator' | translate }}</label>
+      <input class="form-control form-control-sm"
+             type="text"
+             name="identificator"
+             #identificator="ngModel"
+             required
+             [(ngModel)]="filter.identificator">
+    </div>
+    <div class="form-group col-sm-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'student.educationalQualification' | translate }}
+      </label>
+      <app-async-select #educationalQualification="ngModel"
+                        name="educationalQualification"
+                        restUrl="EducationalQualification/Select"
+                        [filter]="{combineMasters: true}"
+                        [(ngModel)]="filter.educationalQualification"
+                        (ngModelChange)="filter.educationalQualificationId = $event?.id"
+                        [allowClear]="true"></app-async-select>
+    </div>
+    <div class="form-group col-sm-3">
+      <label class="d-inline-flex align-items-center">
+        {{ 'student.educationalForm' | translate }}
+      </label>
+      <app-async-select #educationalForm="ngModel"
+                        name="educationalForm"
+                        restUrl="EducationFormType/Select"
+                        [(ngModel)]="filter.educationalForm"
+                        (ngModelChange)="filter.educationalFormId = $event?.id"
+                        [allowClear]="true"></app-async-select>
+    </div>
+  </div>
+  <div class="row utility-btns">
+    <div class="col-sm-12">
+      <div class="btn-group float-md-left">
+
+      </div>
+
+      <div class="float-md-right d-flex">
+        <button type="button"
+                class="btn btn-primary btn-sm"
+                (click)="search()"
+                [disabled]="identificationType.invalid || identificator.invalid"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="search"
+                    width="12"
+                    height="12"></app-icon>
+          {{ 'buttons.search' | translate }}
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-secondary ml-3"
+                (click)="clearFilter()"
+                awaitable>
+          <app-icon class="thicker-icon"
+                    icon="trash"
+                    width="13"
+                    height="13"></app-icon>
+          {{ 'buttons.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-student-view *ngIf="result"
+                  [model]="model"></app-student-view>

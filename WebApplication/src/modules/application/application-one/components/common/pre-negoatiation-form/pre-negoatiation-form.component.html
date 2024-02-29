@@ -1,0 +1,260 @@
+<ng-form>
+  <div class="row">
+    <div class="form-group col-sm-12 col-md-4">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.pre-negoatiation.recontractionDate' | translate }}
+      </label>
+
+      <div class="input-group input-group-sm">
+        <input class="form-control"
+               name="recontractionDate"
+               ngbDatepicker
+               [ngStyle]="{'border': recontractionDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+               #recontractionDate="ngModel"
+               #recontractionDateDatepicker="ngbDatepicker"
+               placeholder="дд/мм/гггг"
+               [(ngModel)]="model.recontractionDate"
+               (keypress)="sharedService.filterDate($event)"
+               [required]="model.applicationOneType?.alias == 'renegotiation'"
+               [disabled]="!isEditMode"
+               maxlength="20">
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="recontractionDateDatepicker.toggle()"
+                  type="button"
+                  [disabled]="!isEditMode">
+            <app-icon icon="calendar2-event"
+                      width="12"
+                      height="12"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-8">
+      <label class="d-inline-flex align-items-center">
+        {{ 'applicationOne.new.pre-negoatiation.recontractionInfo' | translate }}
+      </label>
+
+      <input #recontractionInfo="ngModel"
+             class="form-control form-control-sm"
+             type="text"
+             name="recontractionInfo"
+             [title]="model.recontractionInfo || ''"
+             [(ngModel)]="model.recontractionInfo"
+             maxlength="300"
+             [pattern]="cyrillicNumberRegExp"
+             [disabled]="!isEditMode">
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="form-group col-sm-12 col-md-4">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 type="radio"
+                 name="individual"
+                 (ngModelChange)="onChange()"
+                 [value]="recontractionTypes.extensionOfGracePeriod"
+                 [(ngModel)]="model.recontractionType"
+                 [disabled]="!isEditMode">
+          Удължаване на срока на гратисния период
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 type="radio"
+                 name="legalEntity"
+                 (ngModelChange)="onChange()"
+                 [value]="recontractionTypes.reductionOfLoanAmount"
+                 [(ngModel)]="model.recontractionType"
+                 [disabled]="!isEditMode">
+          Намален размера на кредита поради договор с друга банка
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-2">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input"
+                 type="radio"
+                 name="foreigner"
+                 (ngModelChange)="onChange()"
+                 [value]="recontractionTypes.postponement"
+                 [(ngModel)]="model.recontractionType"
+                 [disabled]="!isEditMode">
+          Отсрочване
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="model.recontractionType === recontractionTypes.extensionOfGracePeriod">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-8">
+        <label class="d-inline-flex align-items-center">
+          Основание за удължаване на срока на гратисния период
+        </label>
+
+        <app-async-select #extensionOfGracePeriod="ngModel"
+                          name="extensionOfGracePeriod"
+                          restUrl="extensionOfGracePeriod"
+                          [allowClear]="true"
+                          [(ngModel)]="model.extensionOfGracePeriod"
+                          [title]="model.extensionOfGracePeriod?.name || ''"
+                          [disabled]="!isEditMode"></app-async-select>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-4">
+        <label class="d-inline-flex align-items-center">
+          Нова дата на изтичане на гратисния период
+        </label>
+
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="newExpirationDateOfGracePeriod"
+                 ngbDatepicker
+                 [ngStyle]="{'border': newExpirationDateOfGracePeriod.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #newExpirationDateOfGracePeriod="ngModel"
+                 #newExpirationDateOfGracePeriodDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="model.newExpirationDateOfGracePeriod"
+                 (keypress)="sharedService.filterDate($event)"
+                 [required]="model.extensionOfGracePeriod != null"
+                 [disabled]="!isEditMode"
+                 maxlength="20">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="newExpirationDateOfGracePeriodDatepicker.toggle()"
+                    type="button"
+                    [disabled]="!isEditMode">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="model.recontractionType === recontractionTypes.reductionOfLoanAmount">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Усвоена главница ({{ 'common.currency' | translate }})
+        </label>
+
+        <input #principalAbsorbedInOldBank="ngModel"
+               type="number"
+               name="principalAbsorbedInOldBank"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.principalAbsorbedInOldBank"
+               step=".01"
+               min="0"
+               [disabled]="!isEditMode">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Дължима лихва ({{ 'common.currency' | translate }})
+        </label>
+
+        <input #interestDueInOldBank="ngModel"
+               type="number"
+               name="interestDueInOldBank"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.interestDueInOldBank"
+               step=".01"
+               min="0"
+               [disabled]="!isEditMode">
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          Общ размер ({{ 'common.currency' | translate }})
+        </label>
+
+        <input #overallSizeInOldBank="ngModel"
+               type="number"
+               name="overallSizeInOldBank"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.overallSizeInOldBank"
+               step=".01"
+               min="0"
+               [disabled]="!isEditMode">
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="model.recontractionType === recontractionTypes.postponement">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-9">
+        <label class="d-inline-flex align-items-center">
+          Основание за отсрочване
+        </label>
+
+        <app-async-select #adjournType="ngModel"
+                          name="adjournType"
+                          restUrl="AdjournType"
+                          [(ngModel)]="model.adjournType"
+                          [allowClear]="true"
+                          [title]="model.adjournType?.name || ''"
+                          [disabled]="!isEditMode"></app-async-select>
+      </div>
+
+      <div class="form-group col-sm-12 col-md-3">
+        <label class="d-inline-flex align-items-center">
+          {{ 'applicationOne.new.pre-negoatiation.adjournPeriod' | translate }}
+        </label>
+
+        <input #adjournPeriod="ngModel"
+               type="number"
+               name="adjournPeriod"
+               class="form-control form-control-sm"
+               [(ngModel)]="model.adjournPeriod"
+               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+               maxlength="2"
+               [disabled]="!isEditMode">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-5">
+        <label class="d-inline-flex align-items-center">
+          {{ 'applicationOne.new.pre-negoatiation.adjournDate' | translate }}
+        </label>
+
+        <div class="input-group input-group-sm">
+          <input class="form-control"
+                 name="adjournDate"
+                 ngbDatepicker
+                 [ngStyle]="{'border': adjournDate.status == 'INVALID' ? '1px solid #dc3545' : null}"
+                 #adjournDate="ngModel"
+                 #adjournDateDatepicker="ngbDatepicker"
+                 placeholder="дд/мм/гггг"
+                 [(ngModel)]="model.adjournDate"
+                 (keypress)="sharedService.filterDate($event)"
+                 [disabled]="!isEditMode"
+                 maxlength="20">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="adjournDateDatepicker.toggle()"
+                    type="button"
+                    [disabled]="!isEditMode">
+              <app-icon icon="calendar2-event"
+                        width="12"
+                        height="12"></app-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-form>
